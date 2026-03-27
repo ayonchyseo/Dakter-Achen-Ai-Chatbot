@@ -4,17 +4,17 @@
   --font-headline: "Manrope", "Hind Siliguri", sans-serif;
   --font-body: "Public Sans", "Hind Siliguri", sans-serif;
   
-  --color-primary: #006767;
-  --color-primary-container: #008282;
-  --color-surface: #f8fafa;
-  --color-surface-container: #eceeee;
-  --color-surface-container-low: #f2f4f4;
+  --color-primary: #2D6A4F;
+  --color-primary-container: #B7E4C7;
+  --color-surface: #ffffff;
+  --color-surface-container: #f8faf9;
+  --color-surface-container-low: #f1f5f3;
   --color-surface-container-lowest: #ffffff;
-  --color-on-surface: #191c1d;
-  --color-on-surface-variant: #3d4949;
-  --color-secondary-container: #cbe7f5;
-  --color-outline: #6d7979;
-  --color-outline-variant: #bcc9c8;
+  --color-on-surface: #1b1d1c;
+  --color-on-surface-variant: #444b48;
+  --color-secondary-container: #d8f3dc;
+  --color-outline: #707975;
+  --color-outline-variant: #c0c9c4;
 }
 
 @layer base {
@@ -23,12 +23,12 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    @apply font-headline tracking-tight;
   }
 }
 
 .hero-gradient {
-  background: linear-gradient(135deg, #006767 0%, #008282 100%);
+  background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
 }
 
 .editorial-shadow {
