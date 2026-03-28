@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Loader2, Bot, User, AlertTriangle, Image as ImageIcon, Mic, MicOff } from 'lucide-react';
+import { MessageSquare, X, Send, Loader2, Bot, User, AlertTriangle, Image as ImageIcon, Mic, MicOff, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GoogleGenAI } from "@google/genai";
+import { withRotation, SYSTEM_INSTRUCTION } from "../lib/gemini";
 import Markdown from 'react-markdown';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 interface Message {
   role: 'user' | 'bot';
@@ -24,176 +22,54 @@ const Chatbot = () => {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const chatRef = useRef<any>(null);
 
   // Listen for external open-chat events
   useEffect(() => {
-    const handleOpenChat = () => setIsOpen(true);
+    const handleOpenChat = (e: any) => {
+      setIsOpen(true);
+      if (e.detail?.message) {
+        // We need to wait a tiny bit for the component to be fully ready if it was just opened
+        setTimeout(() => {
+          autoSendMessage(e.detail.message);
+        }, 300);
+      }
+    };
     window.addEventListener('open-chat', handleOpenChat);
     return () => window.removeEventListener('open-chat', handleOpenChat);
   }, []);
 
-  // Initialize chat instance once so it remembers history
-  useEffect(() => {
-    if (!chatRef.current) {
-      chatRef.current = ai.chats.create({
-        model: "gemini-3-flash-preview",
-        config: {
-          systemInstruction: `You are a healthcare assistant for a Bangladesh-based platform named "Dakter Achen".
+  const autoSendMessage = async (text: string) => {
+    if (isLoading) return;
+    
+    setMessages(prev => [...prev, { role: 'user', text }]);
+    setIsLoading(true);
 
-Your role:
-Help users understand their situation, give simple home care suggestions, show possible cost, and guide next steps safely.
-
-You are NOT a doctor.
-
----
-
-## 🚫 STRICT RULES (MUST FOLLOW)
-
-DO NOT:
-* diagnose any disease
-* give medical treatment instructions
-* suggest specific medicine names or brands
-* say "you must do this"
-* suggest which tests are required
-
-ALWAYS:
-* use very simple Bangla
-* use short sentences
-* stay calm and helpful
-* give general safe home support tips
-* give cost range (doctor + possible test + medicine)
-* suggest seeing a doctor when needed
-* include disclaimer
-
----
-
-## 🧠 RESPONSE STRUCTURE (MANDATORY)
-
-Always follow this order:
-
----
-
-### 1. Understanding
-Start with:
-"এই ধরনের সমস্যায় সাধারণত:"
-Then explain simply.
-
----
-
-### 2. Safe Home Support (IMPORTANT)
-Give ONLY general, safe, low-risk suggestions.
-Examples:
-* পানি বেশি পান করা
-* বিশ্রাম নেওয়া
-* হালকা খাবার খাওয়া
-* গরম/ঠান্ডা সেক (if general and safe)
-
-DO NOT:
-* mention medicine names
-* give strong treatment advice
-
-Use this style:
-"বাড়িতে যা করতে পারেন:"
-
----
-
-### 3. What usually happens
-Explain general flow:
-* অনেক সময় নিজে নিজে কমে
-* না কমলে ডাক্তার দেখানো হয়
-
----
-
-### 4. Cost estimate
-Show:
-ডাক্তার: xxx–xxx টাকা
-সম্ভাব্য টেস্ট খরচ: xxx–xxx টাকা
-ওষুধ: xxx–xxx টাকা
-
-মোট: xxx–xxx টাকা
-
-Use words like:
-"হতে পারে", "সাধারণত"
-
----
-
-### 5. Safe Options
-Show:
-আপনি করতে পারেন:
-✔ কিছু সময় পর্যবেক্ষণ
-✔ প্রয়োজন হলে ডাক্তার দেখানো
-✔ বেশি সমস্যা হলে হাসপাতালে যাওয়া
-
----
-
-### 6. Night / Emergency Handling
-If user mentions:
-* রাত
-* জরুরি
-* বেশি ব্যথা
-
-Then say:
-"রাতে বেশিরভাগ চেম্বার বন্ধ থাকে। জরুরি হলে কাছের হাসপাতালের জরুরি বিভাগে যাওয়া হয়।"
-
----
-
-### 7. Medicine Cost Awareness
-Say:
-"এই ধরনের সমস্যায় ওষুধের খরচ সাধারণত xxx–xxx টাকার মধ্যে হতে পারে। একই ওষুধের দাম ভিন্ন হতে পারে।"
-
----
-
-### 8. Disclaimer (MANDATORY)
-End with:
-"এটি সাধারণ তথ্য। সমস্যা বেশি হলে অবশ্যই ডাক্তার দেখান।"
-
----
-
-## 🎯 TONE
-* Friendly
-* Simple
-* Reassuring
-* Not technical
-* Not scary
-
----
-
-## ✅ EXAMPLE RESPONSE
-
-User:
-"আমার জ্বর হয়েছে"
-
-Answer:
-
-এই ধরনের সমস্যায় সাধারণত:
-* শরীর গরম থাকে
-* দুর্বল লাগতে পারে
-
-বাড়িতে যা করতে পারেন:
-✔ বেশি পানি পান করুন
-✔ বিশ্রাম নিন
-✔ হালকা খাবার খান
-
-অনেক সময় নিজে নিজে কমে। না কমলে ডাক্তার দেখানো হয়।
-
-সম্ভাব্য খরচ:
-ডাক্তার: 500–1000 টাকা
-সম্ভাব্য টেস্ট খরচ: 500–1500 টাকা
-ওষুধ: 200–500 টাকা
-
-মোট: 1200–3000 টাকা
-
-আপনি করতে পারেন:
-✔ কিছু সময় পর্যবেক্ষণ
-✔ প্রয়োজন হলে ডাক্তার দেখানো
-✔ বেশি সমস্যা হলে হাসপাতালে যাওয়া
-
-এটি সাধারণ তথ্য। সমস্যা বেশি হলে অবশ্যই ডাক্তার দেখান।`,
-        },
+    try {
+      const response = await withRotation(async (ai) => {
+        const chat = ai.chats.create({
+          model: "gemini-3-flash-preview",
+          config: { systemInstruction: SYSTEM_INSTRUCTION },
+        });
+        return await chat.sendMessage({ message: text });
       });
+      
+      const botText = response.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না।";
+      setMessages(prev => [...prev, { role: 'bot', text: botText }]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      setMessages(prev => [...prev, { role: 'bot', text: "দুঃখিত, একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।" }]);
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  };
+
+  // We'll manage history manually to support key rotation
+  const getChatHistory = (msgs: Message[]) => {
+    return msgs.slice(1).map(m => ({
+      role: m.role === 'user' ? 'user' : 'model',
+      parts: [{ text: m.text }]
+    }));
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -274,7 +150,15 @@ Answer:
         ];
       }
 
-      const response = await chatRef.current.sendMessage({ message: messagePayload });
+      const response = await withRotation(async (ai) => {
+        const chat = ai.chats.create({
+          model: "gemini-3-flash-preview",
+          config: { systemInstruction: SYSTEM_INSTRUCTION },
+          history: getChatHistory(messages)
+        });
+        return await chat.sendMessage({ message: messagePayload });
+      });
+      
       const botText = response.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না।";
       
       setMessages(prev => [...prev, { role: 'bot', text: botText }]);
@@ -284,6 +168,65 @@ Answer:
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const renderBotMessage = (text: string) => {
+    try {
+      // Try to find JSON in the text (sometimes it's wrapped in markdown code blocks)
+      const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const jsonStr = jsonMatch[1] || jsonMatch[0];
+        const data = JSON.parse(jsonStr);
+        if (data.facilities && Array.isArray(data.facilities)) {
+          return (
+            <div className="space-y-4 my-2">
+              <div className="prose prose-sm max-w-none text-on-surface-variant mb-4">
+                <Markdown>{text.replace(jsonMatch[0], '')}</Markdown>
+              </div>
+              <div className="grid gap-3">
+                {data.facilities.map((f: any, i: number) => (
+                  <div key={i} className="bg-white p-4 rounded-2xl border border-primary/10 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="font-bold text-primary text-lg">{f.name}</h4>
+                      <span className="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider">
+                        {f.type}
+                      </span>
+                    </div>
+                    <div className="space-y-2 text-sm text-on-surface-variant">
+                      <div className="flex items-start gap-2">
+                        <MapPin size={16} className="mt-0.5 shrink-0 text-primary/60" />
+                        <p>{f.address}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {f.specialties?.map((s: string, j: number) => (
+                          <span key={j} className="bg-slate-100 px-2 py-1 rounded-lg text-[11px] font-medium">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="pt-3 mt-3 border-t border-slate-100 flex justify-between items-center">
+                        <span className="font-bold text-primary">ফি: {f.approx_fee || f.estimated_fee}</span>
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${f.name}, ${f.address}`);
+                          }}
+                          className="text-xs font-bold text-primary/60 hover:text-primary transition-colors flex items-center gap-1"
+                        >
+                          ঠিকানা কপি করুন
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+      }
+    } catch (e) {
+      // Not JSON or invalid, fall back to markdown
+    }
+    return <Markdown>{text}</Markdown>;
   };
 
   return (
@@ -349,7 +292,7 @@ Answer:
                         msg.text
                       ) : (
                         <div className="markdown-body">
-                          <Markdown>{msg.text}</Markdown>
+                          {renderBotMessage(msg.text)}
                         </div>
                       )}
                     </div>
