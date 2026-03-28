@@ -1,12 +1,13 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Get keys from environment variables
+// Get keys from environment variables (Vite uses import.meta.env)
 const getApiKeys = () => {
-  const keysStr = process.env.GEMINI_API_KEYS || "";
+  // Try Vite prefixed variables first (standard for client-side)
+  const keysStr = (import.meta as any).env.VITE_GEMINI_API_KEYS || (process.env as any).GEMINI_API_KEYS || "";
   const keys = keysStr.split(",").map(k => k.trim()).filter(k => k !== "");
   
-  // Also include the single GEMINI_API_KEY if it's not already in the list
-  const singleKey = process.env.GEMINI_API_KEY;
+  // Also include the single GEMINI_API_KEY
+  const singleKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
   if (singleKey && !keys.includes(singleKey)) {
     keys.unshift(singleKey);
   }

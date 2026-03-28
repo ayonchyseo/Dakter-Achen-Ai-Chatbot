@@ -34,54 +34,58 @@ const Navbar = () => (
   <header className="bg-primary sticky top-0 z-50 w-full shadow-lg">
     <div className="flex justify-between items-center px-4 md:px-6 py-3 md:py-4 w-full max-w-7xl mx-auto">
       <div className="flex items-center gap-3">
-        {/* Replace the icon below with the actual logo image path if available */}
-        <div className="bg-white p-1.5 rounded-xl shadow-inner flex items-center justify-center">
-          <Droplet className="text-primary" size={24} fill="currentColor" />
+        <div className="bg-white p-2 rounded-xl shadow-md flex items-center justify-center">
+          <Stethoscope className="text-primary" size={24} />
         </div>
         <h1 className="text-xl md:text-2xl font-black text-white tracking-tight">Dakter Achen</h1>
+      </div>
+      <div className="hidden md:flex items-center gap-4">
+        <button onClick={() => openChat()} className="text-white/80 hover:text-white text-sm font-bold transition-colors">সহায়তা</button>
+        <div className="w-px h-4 bg-white/20" />
+        <span className="text-white/60 text-xs font-medium">বাংলাদেশের প্রথম হেলথ গাইড</span>
       </div>
     </div>
   </header>
 );
 
 const Hero = () => (
-  <section className="py-16 md:py-32 flex flex-col items-center text-center gap-12 px-4">
-    <div className="space-y-8 max-w-5xl mx-auto">
-      <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold animate-fade-in">
+  <section className="py-12 md:py-32 flex flex-col items-center text-center gap-8 md:gap-12 px-4">
+    <div className="space-y-6 md:space-y-8 max-w-5xl mx-auto">
+      <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs md:text-sm font-bold animate-fade-in">
         <ShieldCheck size={18} />
         <span>বাংলাদেশের প্রথম হেলথ ডিসিশন প্ল্যাটফর্ম</span>
       </div>
-      <h2 className="text-3xl md:text-6xl font-bold text-on-surface leading-[1.1] tracking-tight">
-        আপনার সমস্যার <br />
+      <h2 className="text-4xl md:text-7xl font-bold text-on-surface leading-[1.1] tracking-tight px-2">
+        আপনার সমস্যার <br className="hidden md:block" />
         <span className="text-primary">পুরো চিত্র</span> জানুন
       </h2>
-      <p className="text-base md:text-xl text-on-surface-variant font-medium max-w-2xl mx-auto leading-relaxed">
+      <p className="text-sm md:text-xl text-on-surface-variant font-medium max-w-2xl mx-auto leading-relaxed px-4">
         কী হতে পারে, কত খরচ হতে পারে, কী করবেন — সব এক জায়গায় সহজে জানুন।
       </p>
     </div>
     
-    <div className="w-full max-w-3xl bg-white p-3 rounded-[2rem] md:rounded-full shadow-[0_20px_60px_-15px_rgba(0,103,103,0.15)] border border-primary/10 flex flex-col md:flex-row gap-3">
-      <div className="flex-1 flex items-center px-6 gap-4">
-        <Search className="text-primary/40" size={24} />
+    <div className="w-full max-w-3xl bg-white p-2 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_20px_60px_-15px_rgba(0,103,103,0.15)] border border-primary/10 flex flex-col md:flex-row gap-2 md:gap-3">
+      <div className="flex-1 flex items-center px-4 md:px-6 gap-3 md:gap-4">
+        <Search className="text-primary/40 shrink-0" size={20} />
         <input 
           type="text" 
-          placeholder="আপনার সমস্যা লিখুন (যেমন: জ্বর, মাথা ব্যথা)" 
-          className="w-full py-4 bg-transparent outline-none text-on-surface text-lg md:text-xl placeholder:text-outline/40 font-medium"
+          placeholder="আপনার সমস্যা লিখুন (যেমন: জ্বর)" 
+          className="w-full py-3 md:py-4 bg-transparent outline-none text-on-surface text-base md:text-xl placeholder:text-outline/40 font-medium"
         />
       </div>
       <button 
         onClick={() => openChat()}
-        className="bg-primary text-white px-10 py-4 rounded-2xl md:rounded-full font-bold text-xl active:scale-95 transition-all flex items-center justify-center gap-3 shadow-lg shadow-primary/20 hover:bg-primary-container"
+        className="bg-primary text-white px-6 md:px-10 py-4 rounded-2xl md:rounded-full font-bold text-lg md:text-xl active:scale-95 transition-all flex items-center justify-center gap-2 md:gap-3 shadow-lg shadow-primary/20 hover:bg-primary-container"
       >
-        <MessageSquare size={24} />
+        <MessageSquare size={20} className="md:w-6 md:h-6" />
         চ্যাট করে জানুন
       </button>
     </div>
 
-    <div className="flex flex-wrap justify-center gap-6 text-sm md:text-base font-bold text-outline/60 uppercase tracking-widest">
-      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> ১০০% সঠিক তথ্য</span>
-      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> বাংলাদেশের জন্য তৈরি</span>
-      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> সহজ বাংলা ভাষা</span>
+    <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-[10px] md:text-base font-bold text-outline/60 uppercase tracking-widest">
+      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> ১০০% সঠিক তথ্য</span>
+      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> বাংলাদেশের জন্য তৈরি</span>
+      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> সহজ বাংলা ভাষা</span>
     </div>
   </section>
 );
@@ -588,7 +592,7 @@ const Testimonials = () => (
 
 const Footer = () => (
   <footer className="py-10 text-center text-on-surface-variant opacity-60 text-sm">
-    <p>© ২০২৪ Dakter Achen. সকল স্বত্ব সংরক্ষিত।</p>
+    <p>© since 2017-2026 present Dakter Achen. সকল স্বত্ব সংরক্ষিত।</p>
   </footer>
 );
 

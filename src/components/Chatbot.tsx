@@ -13,7 +13,7 @@ interface Message {
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: 'আসসালামু আলাইকুম! আমি ডাক্তার আছেন-এর এআই অ্যাসিস্ট্যান্ট। আমি আপনাকে কীভাবে সাহায্য করতে পারি?' }
+    { role: 'bot', text: 'আদাব! আমি ডাক্তার আছেন-এর এআই অ্যাসিস্ট্যান্ট। আমি আপনাকে কীভাবে সাহায্য করতে পারি?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -119,6 +119,17 @@ const Chatbot = () => {
     };
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error", event.error);
+      if (event.error === 'not-allowed') {
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          text: "দুঃখিত, মাইক্রোফোন ব্যবহারের অনুমতি পাওয়া যায়নি। দয়া করে ব্রাউজার সেটিংসে গিয়ে মাইক্রোফোন পারমিশন চেক করুন এবং আবার চেষ্টা করুন।" 
+        }]);
+      } else if (event.error === 'network') {
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          text: "ইন্টারনেট সংযোগে সমস্যা হচ্ছে। দয়া করে আপনার কানেকশন চেক করুন।" 
+        }]);
+      }
       setIsRecording(false);
     };
     recognition.onend = () => setIsRecording(false);
@@ -315,23 +326,23 @@ const Chatbot = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-white border-t border-outline-variant/10 flex flex-col gap-3 shrink-0 pb-8 md:pb-4">
+            <div className="p-4 bg-white border-t border-outline-variant/10 flex flex-col gap-3 shrink-0 pb-10 md:pb-4">
               {/* Image Preview */}
               {selectedImage && (
                 <div className="relative self-start mb-1">
-                  <img src={selectedImage} alt="Preview" className="h-20 w-20 object-cover rounded-xl border-2 border-primary/10 shadow-sm" />
+                  <img src={selectedImage} alt="Preview" className="h-16 w-16 md:h-20 md:w-20 object-cover rounded-xl border-2 border-primary/10 shadow-sm" />
                   <button 
                     onClick={() => setSelectedImage(null)}
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow-md transition-colors"
                   >
-                    <X size={14} />
+                    <X size={12} />
                   </button>
                 </div>
               )}
               
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                className="flex gap-3 items-center"
+                className="flex gap-2 md:gap-3 items-center"
               >
                 <input 
                   type="file" 
@@ -341,23 +352,23 @@ const Chatbot = () => {
                   onChange={handleImageSelect} 
                 />
                 
-                <div className="flex gap-1">
+                <div className="flex gap-0.5 md:gap-1">
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-2.5 text-gray-500 hover:text-primary hover:bg-surface-container rounded-xl transition-all"
+                    className="p-2 text-gray-500 hover:text-primary hover:bg-surface-container rounded-xl transition-all"
                     title="ছবি আপলোড করুন"
                   >
-                    <ImageIcon size={22} />
+                    <ImageIcon size={20} className="md:w-5.5 md:h-5.5" />
                   </button>
   
                   <button
                     type="button"
                     onClick={toggleRecording}
-                    className={`p-2.5 rounded-xl transition-all ${isRecording ? 'text-red-500 bg-red-50 animate-pulse' : 'text-gray-500 hover:text-primary hover:bg-surface-container'}`}
+                    className={`p-2 rounded-xl transition-all ${isRecording ? 'text-red-500 bg-red-50 animate-pulse' : 'text-gray-500 hover:text-primary hover:bg-surface-container'}`}
                     title="ভয়েস টাইপিং"
                   >
-                    {isRecording ? <MicOff size={22} /> : <Mic size={22} />}
+                    {isRecording ? <MicOff size={20} className="md:w-5.5 md:h-5.5" /> : <Mic size={20} className="md:w-5.5 md:h-5.5" />}
                   </button>
                 </div>
 
@@ -365,16 +376,16 @@ const Chatbot = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={isRecording ? "শুনছি..." : "আপনার প্রশ্ন লিখুন..."}
-                  className="flex-1 bg-surface-container-low border-none rounded-2xl px-5 py-3 text-sm md:text-base focus:ring-2 focus:ring-primary outline-none transition-all"
+                  placeholder={isRecording ? "শুনছি..." : "প্রশ্ন লিখুন..."}
+                  className="flex-1 bg-surface-container-low border-none rounded-2xl px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base focus:ring-2 focus:ring-primary outline-none transition-all"
                 />
                 
                 <button 
                   type="submit"
                   disabled={isLoading || (!input.trim() && !selectedImage)}
-                  className="bg-primary text-white p-3 rounded-2xl hover:bg-primary-container transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-95"
+                  className="bg-primary text-white p-2.5 md:p-3 rounded-2xl hover:bg-primary-container transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-95"
                 >
-                  <Send size={20} />
+                  <Send size={18} className="md:w-5 md:h-5" />
                 </button>
               </form>
             </div>
