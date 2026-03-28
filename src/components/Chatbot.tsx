@@ -212,7 +212,6 @@ Answer:
       };
       reader.readAsDataURL(file);
     }
-    // Reset input so the same file can be selected again if needed
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -224,7 +223,7 @@ Answer:
       return;
     }
     
-    // @ts-ignore - SpeechRecognition is not fully typed in standard TS DOM lib
+    // @ts-ignore
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("আপনার ব্রাউজার ভয়েস টাইপিং সাপোর্ট করে না।");
@@ -232,7 +231,7 @@ Answer:
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'bn-BD'; // Bengali
+    recognition.lang = 'bn-BD';
     recognition.continuous = false;
     recognition.interimResults = false;
 
@@ -295,24 +294,27 @@ Answer:
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-white rounded-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.3)] w-[350px] md:w-[400px] h-[500px] flex flex-col overflow-hidden border border-gray-200 mb-4 ring-1 ring-black/5"
+            className="bg-white md:rounded-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.3)] w-full h-full md:w-[450px] md:h-[650px] fixed inset-0 md:relative md:inset-auto flex flex-col overflow-hidden border border-gray-200 md:mb-4 ring-1 ring-black/5 z-[70] md:z-auto"
           >
             {/* Header */}
-            <div className="hero-gradient p-4 flex justify-between items-center text-white">
-              <div className="flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-full">
-                  <Bot size={20} />
+            <div className="hero-gradient p-5 flex justify-between items-center text-white shrink-0">
+              <div className="flex items-center gap-4">
+                <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md">
+                  <Bot size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">Dakter Achen AI</h3>
-                  <p className="text-[10px] opacity-80">Online | Always here to help</p>
+                  <h3 className="font-bold text-base md:text-lg">Dakter Achen AI</h3>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <p className="text-xs opacity-80">Online | Always here to help</p>
+                  </div>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="hover:bg-white/20 p-1 rounded-full transition-all"
+                className="hover:bg-white/20 p-2 rounded-full transition-all"
               >
-                <X size={20} />
+                <X size={24} />
               </button>
             </div>
 
@@ -331,11 +333,11 @@ Answer:
                   key={i} 
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`flex gap-2 max-w-[80%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex gap-2 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-primary text-white' : 'bg-secondary-container text-primary'}`}>
                       {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                     </div>
-                    <div className={`p-3 rounded-2xl text-sm ${msg.role === 'user' ? 'bg-primary text-white rounded-tr-none shadow-md' : 'bg-white text-on-surface shadow-md border border-gray-100 rounded-tl-none'}`}>
+                    <div className={`p-3 rounded-2xl text-sm md:text-base ${msg.role === 'user' ? 'bg-primary text-white rounded-tr-none shadow-md' : 'bg-white text-on-surface shadow-md border border-gray-100 rounded-tl-none'}`}>
                       {msg.image && (
                         <img 
                           src={msg.image} 
@@ -370,23 +372,23 @@ Answer:
             </div>
 
             {/* Input Area */}
-            <div className="p-3 bg-white border-t border-outline-variant/10 flex flex-col gap-2">
+            <div className="p-4 bg-white border-t border-outline-variant/10 flex flex-col gap-3 shrink-0 pb-8 md:pb-4">
               {/* Image Preview */}
               {selectedImage && (
                 <div className="relative self-start mb-1">
-                  <img src={selectedImage} alt="Preview" className="h-16 w-16 object-cover rounded-lg border border-gray-200" />
+                  <img src={selectedImage} alt="Preview" className="h-20 w-20 object-cover rounded-xl border-2 border-primary/10 shadow-sm" />
                   <button 
                     onClick={() => setSelectedImage(null)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 shadow-sm"
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow-md transition-colors"
                   >
-                    <X size={12} />
+                    <X size={14} />
                   </button>
                 </div>
               )}
               
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                className="flex gap-2 items-center"
+                className="flex gap-3 items-center"
               >
                 <input 
                   type="file" 
@@ -396,38 +398,40 @@ Answer:
                   onChange={handleImageSelect} 
                 />
                 
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="p-2 text-gray-500 hover:text-primary hover:bg-surface-container rounded-full transition-all"
-                  title="ছবি আপলোড করুন"
-                >
-                  <ImageIcon size={20} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={toggleRecording}
-                  className={`p-2 rounded-full transition-all ${isRecording ? 'text-red-500 bg-red-50 animate-pulse' : 'text-gray-500 hover:text-primary hover:bg-surface-container'}`}
-                  title="ভয়েস টাইপিং"
-                >
-                  {isRecording ? <MicOff size={20} /> : <Mic size={20} />}
-                </button>
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="p-2.5 text-gray-500 hover:text-primary hover:bg-surface-container rounded-xl transition-all"
+                    title="ছবি আপলোড করুন"
+                  >
+                    <ImageIcon size={22} />
+                  </button>
+  
+                  <button
+                    type="button"
+                    onClick={toggleRecording}
+                    className={`p-2.5 rounded-xl transition-all ${isRecording ? 'text-red-500 bg-red-50 animate-pulse' : 'text-gray-500 hover:text-primary hover:bg-surface-container'}`}
+                    title="ভয়েস টাইপিং"
+                  >
+                    {isRecording ? <MicOff size={22} /> : <Mic size={22} />}
+                  </button>
+                </div>
 
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={isRecording ? "শুনছি..." : "আপনার প্রশ্ন লিখুন..."}
-                  className="flex-1 bg-surface-container-low border-none rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none"
+                  className="flex-1 bg-surface-container-low border-none rounded-2xl px-5 py-3 text-sm md:text-base focus:ring-2 focus:ring-primary outline-none transition-all"
                 />
                 
                 <button 
                   type="submit"
                   disabled={isLoading || (!input.trim() && !selectedImage)}
-                  className="bg-primary text-white p-2 rounded-full hover:bg-primary-container transition-all disabled:opacity-50"
+                  className="bg-primary text-white p-3 rounded-2xl hover:bg-primary-container transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-95"
                 >
-                  <Send size={18} />
+                  <Send size={20} />
                 </button>
               </form>
             </div>

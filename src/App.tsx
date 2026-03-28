@@ -19,7 +19,8 @@ import {
   User,
   Droplet,
   Home,
-  Languages
+  Languages,
+  AlertTriangle
 } from 'lucide-react';
 import Chatbot from './components/Chatbot';
 
@@ -49,22 +50,82 @@ const Navbar = () => (
 );
 
 const Hero = () => (
-  <section className="py-12 md:py-20 flex flex-col items-start gap-8">
-    <div className="space-y-4 max-w-3xl">
-      <h2 className="text-4xl md:text-6xl font-extrabold text-on-surface leading-tight tracking-tighter">
-        ডাক্তার আছেন – <span className="text-primary">আগে জানুন,</span> তারপর সিদ্ধান্ত নিন
+  <section className="py-16 md:py-32 flex flex-col items-center text-center gap-12 px-4">
+    <div className="space-y-8 max-w-5xl mx-auto">
+      <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold animate-fade-in">
+        <ShieldCheck size={18} />
+        <span>বাংলাদেশের প্রথম হেলথ ডিসিশন প্ল্যাটফর্ম</span>
+      </div>
+      <h2 className="text-5xl md:text-8xl font-black text-on-surface leading-[0.9] tracking-tighter">
+        আপনার সমস্যার <br />
+        <span className="text-primary">পুরো চিত্র</span> জানুন
       </h2>
-      <p className="text-lg md:text-xl text-on-surface-variant font-medium">
-        আপনি জানতে পারবেন: কোন টেস্ট লাগবে, কত খরচ হবে, কোন ডাক্তার দেখাবেন
+      <p className="text-xl md:text-3xl text-on-surface-variant font-medium max-w-3xl mx-auto leading-relaxed">
+        কী হতে পারে, কত খরচ হতে পারে, কী করবেন — সব এক জায়গায় সহজে জানুন।
       </p>
     </div>
-    <button 
-      onClick={openChat}
-      className="editorial-gradient text-white px-10 py-4 rounded-full font-bold text-lg active:scale-95 transition-transform shadow-lg shadow-primary/20 flex items-center gap-3"
-    >
-      <MessageSquare size={24} />
-      চ্যাট করে জানুন
-    </button>
+    
+    <div className="w-full max-w-3xl bg-white p-3 rounded-[2rem] md:rounded-full shadow-[0_20px_60px_-15px_rgba(0,103,103,0.15)] border border-primary/10 flex flex-col md:flex-row gap-3">
+      <div className="flex-1 flex items-center px-6 gap-4">
+        <Search className="text-primary/40" size={24} />
+        <input 
+          type="text" 
+          placeholder="আপনার সমস্যা লিখুন (যেমন: জ্বর, মাথা ব্যথা)" 
+          className="w-full py-4 bg-transparent outline-none text-on-surface text-lg md:text-xl placeholder:text-outline/40 font-medium"
+        />
+      </div>
+      <button 
+        onClick={openChat}
+        className="bg-primary text-white px-10 py-4 rounded-2xl md:rounded-full font-bold text-xl active:scale-95 transition-all flex items-center justify-center gap-3 shadow-lg shadow-primary/20 hover:bg-primary-container"
+      >
+        <MessageSquare size={24} />
+        চ্যাট করে জানুন
+      </button>
+    </div>
+
+    <div className="flex flex-wrap justify-center gap-6 text-sm md:text-base font-bold text-outline/60 uppercase tracking-widest">
+      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> ১০০% সঠিক তথ্য</span>
+      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> বাংলাদেশের জন্য তৈরি</span>
+      <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary/40" /> সহজ বাংলা ভাষা</span>
+    </div>
+  </section>
+);
+
+const SymptomEntry = () => (
+  <section className="py-12 md:py-20">
+    <div className="bg-primary/5 rounded-[3rem] p-8 md:p-16 border border-primary/10 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-48 -mt-48 blur-3xl" />
+      <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+        <div className="space-y-6">
+          <h2 className="text-3xl md:text-5xl font-black text-on-surface tracking-tighter leading-tight">আপনার কী সমস্যা হচ্ছে?</h2>
+          <p className="text-lg md:text-xl text-on-surface-variant font-medium">নিচের বক্সে আপনার সমস্যাটি লিখুন। আমাদের এআই আপনাকে বুঝতে সাহায্য করবে কী হতে পারে এবং সম্ভাব্য খরচ কত।</p>
+          <div className="flex flex-wrap gap-3">
+            {['জ্বর', 'মাথা ব্যথা', 'পেট খারাপ', 'কাশি', 'দুর্বলতা'].map(s => (
+              <button key={s} onClick={openChat} className="bg-white px-4 py-2 rounded-xl text-sm font-bold border border-primary/10 hover:border-primary transition-all">
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-[2.5rem] shadow-xl shadow-primary/5 border border-primary/5 space-y-4">
+          <div className="flex items-center gap-3 text-primary font-bold mb-2">
+            <Lightbulb size={24} />
+            <span>সহজ সমাধান পান</span>
+          </div>
+          <textarea 
+            placeholder="আপনার সমস্যা বিস্তারিত লিখুন..."
+            className="w-full h-32 p-4 bg-slate-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none text-lg"
+          />
+          <button 
+            onClick={openChat}
+            className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg hover:bg-primary-container transition-all flex items-center justify-center gap-2"
+          >
+            <MessageSquare size={20} />
+            সমাধান দেখুন
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 );
 
@@ -97,22 +158,6 @@ const QuickActionGrid = () => (
       </div>
       <h3 className="font-bold text-lg mb-1">ল্যাব তুলনা করুন</h3>
       <p className="text-sm text-on-surface-variant">নিকটস্থ সুবিধা</p>
-    </div>
-  </section>
-);
-
-const SymptomEntry = () => (
-  <section className="mb-16">
-    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-      <Activity className="text-primary" size={24} />
-      আপনার সমস্যা দিয়ে শুরু করুন
-    </h2>
-    <div className="flex flex-wrap gap-3">
-      {["জ্বর", "পেট ব্যথা", "মাথা ব্যথা", "বুক ব্যথা"].map((symptom, i) => (
-        <button key={i} onClick={openChat} className="bg-surface-container-high hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors px-6 py-3 rounded-full font-bold flex items-center gap-2">
-          {symptom}
-        </button>
-      ))}
     </div>
   </section>
 );
@@ -158,6 +203,71 @@ const DoctorShowcase = () => {
     </section>
   );
 };
+
+const CostIntelligenceDashboard = () => (
+  <section id="costs" className="py-16 md:py-24 space-y-12">
+    <div className="text-center space-y-4">
+      <h2 className="text-3xl md:text-5xl font-extrabold text-on-surface tracking-tighter">খরচের সঠিক ধারণা (Cost Intelligence)</h2>
+      <p className="text-on-surface-variant max-w-2xl mx-auto text-lg md:text-xl">বাংলাদেশে চিকিৎসা সেবার সাধারণ খরচের একটি ধারণা নিন</p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+      {[
+        { 
+          title: "ডাক্তারের ফি", 
+          range: "৳ ৫০০ – ১৫০০", 
+          icon: <User size={32} />, 
+          details: "এমবিবিএস থেকে বিশেষজ্ঞ ডাক্তার। এলাকা এবং অভিজ্ঞতা ভেদে ফি ভিন্ন হয়।",
+          color: "bg-blue-50 text-blue-700"
+        },
+        { 
+          title: "ল্যাব টেস্ট", 
+          range: "৳ ৫০০ – ৫০০০", 
+          icon: <Activity size={32} />, 
+          details: "রক্ত পরীক্ষা থেকে এমআরআই। ল্যাবের মান অনুযায়ী দামের পার্থক্য হতে পারে।",
+          color: "bg-purple-50 text-purple-700"
+        },
+        { 
+          title: "ওষুধের খরচ", 
+          range: "৳ ২০০ – ২০০০", 
+          icon: <Stethoscope size={32} />, 
+          details: "সাধারণ থেকে দীর্ঘমেয়াদী রোগ। একই ওষুধের দাম বিভিন্ন কোম্পানির ভিন্ন হতে পারে।",
+          color: "bg-orange-50 text-orange-700"
+        }
+      ].map((item, i) => (
+        <div key={i} className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-outline-variant/20 editorial-shadow space-y-8 hover:border-primary/30 transition-all group relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16 transition-all group-hover:scale-150" />
+          <div className={`${item.color} w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform relative z-10`}>
+            {item.icon}
+          </div>
+          <div className="space-y-3 relative z-10">
+            <h3 className="text-xl md:text-2xl font-bold">{item.title}</h3>
+            <p className="text-4xl md:text-5xl font-black text-primary tracking-tighter">{item.range}</p>
+            <p className="text-sm md:text-base text-outline font-medium leading-relaxed">{item.details}</p>
+          </div>
+          <button 
+            onClick={openChat}
+            className="w-full py-4 rounded-2xl border-2 border-primary/10 text-primary font-bold hover:bg-primary hover:text-white transition-all relative z-10"
+          >
+            বিস্তারিত জানুন
+          </button>
+        </div>
+      ))}
+    </div>
+    
+    <div className="bg-secondary-container/30 p-8 rounded-3xl border border-secondary/10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+      <div className="bg-white p-4 rounded-full text-secondary shadow-sm shrink-0">
+        <AlertTriangle size={32} />
+      </div>
+      <div className="space-y-1">
+        <p className="text-secondary font-bold text-lg">সতর্কতা ও তথ্য</p>
+        <p className="text-secondary/80 font-medium text-sm md:text-base leading-relaxed">
+          হাসপাতালের ধরন, অবস্থান এবং ডাক্তারের অভিজ্ঞতার ওপর ভিত্তি করে এই খরচ কম-বেশি হতে পারে। সঠিক খরচের জন্য আমাদের <button onClick={openChat} className="underline font-bold text-secondary">এআই চ্যাটবট</button> ব্যবহার করুন।
+        </p>
+      </div>
+    </div>
+  </section>
+);
 
 const CostExamples = () => (
   <section className="mb-16 bg-surface-container-low rounded-[3rem] p-8 md:p-12">
@@ -356,6 +466,7 @@ export default function App() {
         <QuickActionGrid />
         <SymptomEntry />
         <DoctorShowcase />
+        <CostIntelligenceDashboard />
         <CostExamples />
         <HealthPackages />
         <TrustSection />

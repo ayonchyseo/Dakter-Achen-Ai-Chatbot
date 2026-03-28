@@ -52,6 +52,19 @@
   background: linear-gradient(135deg, #006767 0%, #008282 100%);
 }
 
+.hero-gradient {
+  background: linear-gradient(135deg, #006767 0%, #004f4f 100%);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
 .glass-nav {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
