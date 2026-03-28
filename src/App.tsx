@@ -146,62 +146,137 @@ const QuickActionGrid = () => (
   <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16 px-4">
     <div 
       onClick={() => openChat("ল্যাব টেস্টের খরচ কত হতে পারে?")}
-      className="bg-surface-container-low p-6 rounded-3xl hover:bg-surface-container transition-all group cursor-pointer"
+      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
     >
-      <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <CreditCard className="text-primary" size={24} />
+      <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <CreditCard className="text-blue-600" size={24} />
       </div>
       <h3 className="font-bold text-lg mb-1">টেস্টের খরচ</h3>
-      <p className="text-sm text-on-surface-variant">ল্যাব অনুযায়ী দাম</p>
+      <p className="text-xs text-on-surface-variant leading-relaxed">বিভিন্ন ল্যাবের টেস্টের দামের তুলনা করুন</p>
     </div>
     <div 
       onClick={() => openChat("আমার কিছু শারীরিক সমস্যা হচ্ছে, আমি কোন ডাক্তার দেখাব?")}
-      className="bg-secondary-container/30 p-6 rounded-3xl hover:bg-secondary-container transition-all group cursor-pointer"
+      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
     >
-      <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <Stethoscope className="text-secondary" size={24} />
+      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <Stethoscope className="text-emerald-600" size={24} />
       </div>
-      <h3 className="font-bold text-lg mb-1">রোগ বুঝুন</h3>
-      <p className="text-sm text-on-surface-variant">সহজ ব্যাখ্যা</p>
+      <h3 className="font-bold text-lg mb-1">ডাক্তার গাইড</h3>
+      <p className="text-xs text-on-surface-variant leading-relaxed">লক্ষণ অনুযায়ী সঠিক বিশেষজ্ঞ খুঁজে নিন</p>
     </div>
     <div 
       onClick={() => openChat("আমার একটি প্রেসক্রিপশন আছে, এটি আমাকে বুঝিয়ে বলুন।")}
-      className="bg-amber-100/50 p-6 rounded-3xl hover:bg-amber-100 transition-all group cursor-pointer border border-amber-200/50"
+      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
     >
-      <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+      <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
         <Package className="text-amber-600" size={24} />
       </div>
       <h3 className="font-bold text-lg mb-1">প্রেসক্রিপশন</h3>
-      <p className="text-sm text-on-surface-variant">সহজ বাংলায় জানুন</p>
+      <p className="text-xs text-on-surface-variant leading-relaxed">ওষুধের কাজ ও খাওয়ার নিয়ম বুঝে নিন</p>
     </div>
     <div 
       onClick={() => openChat("আপনাদের হেলথ প্যাকেজগুলো সম্পর্কে জানতে চাই।")}
-      className="bg-tertiary-fixed/30 p-6 rounded-3xl hover:bg-tertiary-fixed transition-all group cursor-pointer"
+      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
     >
-      <div className="w-12 h-12 rounded-2xl bg-tertiary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <Package className="text-tertiary" size={24} />
+      <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <ShieldCheck className="text-purple-600" size={24} />
       </div>
-      <h3 className="font-bold text-lg mb-1">প্যাকেজ</h3>
-      <p className="text-sm text-on-surface-variant">সেরা ডিলসমূহ</p>
+      <h3 className="font-bold text-lg mb-1">হেলথ প্যাকেজ</h3>
+      <p className="text-xs text-on-surface-variant leading-relaxed">সাশ্রয়ী চেকআপ প্যাকেজগুলো দেখুন</p>
     </div>
     <div 
       onClick={() => openChat("আমার এলাকায় ভালো ল্যাব বা হাসপাতাল কোথায় আছে?")}
-      className="bg-surface-container-highest p-6 rounded-3xl hover:bg-surface-container-high transition-all group cursor-pointer"
+      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
     >
-      <div className="w-12 h-12 rounded-2xl bg-on-surface-variant/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <ArrowRightLeft className="text-on-surface-variant" size={24} />
+      <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <MapPin className="text-rose-600" size={24} />
       </div>
-      <h3 className="font-bold text-lg mb-1">ল্যাব তুলনা</h3>
-      <p className="text-sm text-on-surface-variant">নিকটস্থ সুবিধা</p>
+      <h3 className="font-bold text-lg mb-1">হাসপাতাল ম্যাপ</h3>
+      <p className="text-xs text-on-surface-variant leading-relaxed">নিকটস্থ স্বাস্থ্যসেবা কেন্দ্র খুঁজে নিন</p>
+    </div>
+  </section>
+);
+
+const HowItWorks = () => (
+  <section className="py-20 px-4">
+    <div className="text-center mb-16 space-y-4">
+      <h2 className="text-3xl md:text-4xl font-bold">কিভাবে কাজ করে?</h2>
+      <p className="text-on-surface-variant max-w-xl mx-auto">সহজ ৪টি ধাপে আপনার স্বাস্থ্য সমস্যার সমাধান ও খরচের ধারণা পান</p>
+    </div>
+    <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+      {[
+        { step: "০১", title: "সমস্যা বলুন", desc: "চ্যাটবটে আপনার লক্ষণ বা সমস্যার কথা লিখুন।", icon: <MessageSquare size={24} /> },
+        { step: "০২", title: "বিশ্লেষণ", desc: "আমাদের এআই আপনার লক্ষণ বিশ্লেষণ করে সম্ভাব্য রোগ জানাবে।", icon: <Activity size={24} /> },
+        { step: "০৩", title: "খরচের ধারণা", desc: "ডাক্তার, টেস্ট ও ওষুধের সম্ভাব্য খরচের তালিকা দেখুন।", icon: <CreditCard size={24} /> },
+        { step: "০৪", title: "সঠিক সিদ্ধান্ত", desc: "সঠিক ডাক্তার বা ল্যাব নির্বাচন করে চিকিৎসা শুরু করুন।", icon: <ShieldCheck size={24} /> }
+      ].map((item, i) => (
+        <div key={i} className="relative group">
+          <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 hover:border-primary/20 transition-all hover:shadow-xl h-full">
+            <span className="text-5xl font-black text-slate-100 absolute top-6 right-8 group-hover:text-primary/5 transition-colors">{item.step}</span>
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 relative z-10">
+              {item.icon}
+            </div>
+            <h3 className="text-xl font-bold mb-3 relative z-10">{item.title}</h3>
+            <p className="text-sm text-on-surface-variant leading-relaxed relative z-10">{item.desc}</p>
+          </div>
+          {i < 3 && (
+            <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
+              <ArrowRight className="text-slate-200" size={24} />
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   </section>
 );
 
 const DoctorShowcase = () => {
   const doctors = [
-    { name: "ডাঃ আহমেদ হাসান", specialty: "মেডিসিন বিশেষজ্ঞ", location: "চট্টগ্রাম", fee: "৫০০ – ১২০০", tag: "Popular", tagColor: "bg-primary/10 text-primary", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuClUI5scIudpJ7-OW1zcze5fu9NfYGJduuh5T6TtLYV2SbwDyYq_DSCcCR0UYiau7fvx0JI3mUf3DbXkzgadZ3LAROYfCr_4lYRK_UHAXUPOW2Fi3v3adxFzMVoAmdpbzAUQMvgZ47yrqtLPGrynkoL7htAxPd3t7mXmfiyQ4nmgqvr0YzOxYkQORAlL8Cp_erU4wiTajwDOfPJa-UpYHmYd1W5xqtDUNJfTv0WmR1qCvVphYSlgXYWNgyukpPByAARyRbm0XqjukI" },
-    { name: "ডাঃ ফাতেমা জোহরা", specialty: "স্ত্রীরোগ বিশেষজ্ঞ", location: "ঢাকা", fee: "৮০০ – ১৫০০", tag: "Recommended", tagColor: "bg-secondary-container text-on-secondary-container", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD9OwDMQjiYRrep4gsqGCmM0eJxbVfe2kjishGsSv2H7UIz-aCToqhe31ePqKshKt1qNqpgpk2f_NH-ZHMxVIkhmdYuQFDH6UWNTynKEjdglwpio9RvqrnbYihnd7OHIHQWs-VgxGbK2kEG7Ib77bUOEAtCYhkYOI4hB_7BMwb_Y-1dP-jEi4x8HnHuPU8haiEjzLDoDLBjQA5FkXHoUdS754sKLSUR-78q_YbtrqLq48uBQbvGepDMdA2ySBtUPN_Mn9jqv3H4wyE" },
-    { name: "ডাঃ কবির উদ্দীন", specialty: "হৃদরোগ বিশেষজ্ঞ", location: "সিলেট", fee: "১০০০ – ২০০০", tag: "Popular", tagColor: "bg-primary/10 text-primary", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBalLCjw8iWaTJAQAjKcL-5HHA7iB1-_SnH88PnIPGPgdw_Pqp8GE-nzrYo10EQlI092LfOPCB4g9HoyO9sI8VWgRWs7370Ao8P5zbhMDUzNolgZ99J6qSpKOLADUKK2-XRz20Vxjwd2pi65OjUtYBfs-cm9qcqU2i7zRAESQloSwu5_yCEz2NYl0-w0QNOW8pvT0UG7f_yrvLO7E6vjN_QqeEdP4oAtiOboTQEJ7BybBH6wUWnMfA0uyCBm8d4RWnEkPZb5UoMQ3I" }
+    { 
+      name: "ডাঃ আবু সায়েম মোহাম্মদ ওমর ফারুক", 
+      specialty: "হৃদরোগ বিশেষজ্ঞ", 
+      degrees: "MBBS, BCS (Health), MD (Cardiology)",
+      experience: "১৬ বছরের অভিজ্ঞতা",
+      location: "অ্যাপোলো ইমপেরিয়াল ও শেভরন, চট্টগ্রাম", 
+      fee: "৫০০ – ১০০০", 
+      tag: "Popular", 
+      tagColor: "bg-primary/10 text-primary", 
+      img: "https://cdn.sasthyaseba.com/doctors/6096/ueXXfe2uKQ2ayVhnFzjbcSNa9suLiQpX7fGmnLvg/dr-abu-sayem-mohammed-omar-faroque.jpg",
+      details: "চেম্বার ১: অ্যাপোলো ইমপেরিয়াল (সকাল), সিরিয়াল: ০৯৬১০৮৪৭৮৪৭ | চেম্বার ২: শেভরন ল্যাব (সন্ধ্যা ৬-৯টা), সিরিয়াল: ০১৮৪৬৪৬৯৩৩১"
+    },
+    { 
+      name: "ডাঃ আহমেদ হাসান", 
+      specialty: "মেডিসিন বিশেষজ্ঞ", 
+      degrees: "MBBS, FCPS (Medicine)",
+      experience: "১২ বছরের অভিজ্ঞতা",
+      location: "চট্টগ্রাম মেডিকেল কলেজ", 
+      fee: "৫০০ – ১২০০", 
+      tag: "Popular", 
+      tagColor: "bg-primary/10 text-primary", 
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuClUI5scIudpJ7-OW1zcze5fu9NfYGJduuh5T6TtLYV2SbwDyYq_DSCcCR0UYiau7fvx0JI3mUf3DbXkzgadZ3LAROYfCr_4lYRK_UHAXUPOW2Fi3v3adxFzMVoAmdpbzAUQMvgZ47yrqtLPGrynkoL7htAxPd3t7mXmfiyQ4nmgqvr0YzOxYkQORAlL8Cp_erU4wiTajwDOfPJa-UpYHmYd1W5xqtDUNJfTv0WmR1qCvVphYSlgXYWNgyukpPByAARyRbm0XqjukI" 
+    },
+    { 
+      name: "ডাঃ ফাতেমা জোহরা", 
+      specialty: "স্ত্রীরোগ বিশেষজ্ঞ", 
+      degrees: "MBBS, MS (Gynae)",
+      experience: "১০ বছরের অভিজ্ঞতা",
+      location: "ঢাকা মেডিকেল কলেজ", 
+      fee: "৮০০ – ১৫০০", 
+      tag: "Recommended", 
+      tagColor: "bg-secondary-container text-on-secondary-container", 
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD9OwDMQjiYRrep4gsqGCmM0eJxbVfe2kjishGsSv2H7UIz-aCToqhe31ePqKshKt1qNqpgpk2f_NH-ZHMxVIkhmdYuQFDH6UWNTynKEjdglwpio9RvqrnbYihnd7OHIHQWs-VgxGbK2kEG7Ib77bUOEAtCYhkYOI4hB_7BMwb_Y-1dP-jEi4x8HnHuPU8haiEjzLDoDLBjQA5FkXHoUdS754sKLSUR-78q_YbtrqLq48uBQbvGepDMdA2ySBtUPN_Mn9jqv3H4wyE" 
+    },
+    { 
+      name: "ডাঃ কবির উদ্দীন", 
+      specialty: "হৃদরোগ বিশেষজ্ঞ", 
+      degrees: "MBBS, MD (Cardiology)",
+      experience: "১৫ বছরের অভিজ্ঞতা",
+      location: "সিলেট এম এ জি ওসমানী মেডিকেল", 
+      fee: "১০০০ – ২০০০", 
+      tag: "Popular", 
+      tagColor: "bg-primary/10 text-primary", 
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBalLCjw8iWaTJAQAjKcL-5HHA7iB1-_SnH88PnIPGPgdw_Pqp8GE-nzrYo10EQlI092LfOPCB4g9HoyO9sI8VWgRWs7370Ao8P5zbhMDUzNolgZ99J6qSpKOLADUKK2-XRz20Vxjwd2pi65OjUtYBfs-cm9qcqU2i7zRAESQloSwu5_yCEz2NYl0-w0QNOW8pvT0UG7f_yrvLO7E6vjN_QqeEdP4oAtiOboTQEJ7BybBH6wUWnMfA0uyCBm8d4RWnEkPZb5UoMQ3I" 
+    }
   ];
 
   return (
@@ -212,25 +287,39 @@ const DoctorShowcase = () => {
           সব ডাক্তার দেখুন <ArrowRight size={16} />
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {doctors.map((doc, i) => (
-          <div key={i} className="bg-surface-container-lowest p-6 rounded-[2rem] shadow-sm hover:shadow-xl transition-all border border-transparent hover:border-primary/10">
+          <div key={i} className="bg-surface-container-lowest p-6 rounded-[2rem] shadow-sm hover:shadow-xl transition-all border border-transparent hover:border-primary/10 flex flex-col">
             <div className="flex gap-4 mb-4">
-              <img className="w-20 h-20 rounded-2xl object-cover" src={doc.img} alt={doc.name} referrerPolicy="no-referrer" loading="lazy" />
+              <img className="w-16 h-16 rounded-2xl object-cover" src={doc.img} alt={doc.name} referrerPolicy="no-referrer" loading="lazy" />
               <div>
                 <div className="flex gap-2 mb-1">
-                  <span className={`${doc.tagColor} text-[10px] font-bold px-2 py-0.5 rounded-full uppercase`}>{doc.tag}</span>
+                  <span className={`${doc.tagColor} text-[9px] font-bold px-2 py-0.5 rounded-full uppercase`}>{doc.tag}</span>
                 </div>
-                <h3 className="font-bold text-xl">{doc.name}</h3>
-                <p className="text-primary font-medium text-sm">{doc.specialty}</p>
+                <h3 className="font-bold text-lg leading-tight">{doc.name}</h3>
+                <p className="text-primary font-bold text-xs mt-1">{doc.specialty}</p>
               </div>
             </div>
-            <div className="space-y-2 mb-6 text-sm text-on-surface-variant">
-              <p className="flex items-center gap-2"><MapPin size={16} /> {doc.location}</p>
-              <p className="flex items-center gap-2"><CreditCard size={16} /> ফি: {doc.fee} টাকা</p>
+            
+            <div className="flex-1 space-y-3 mb-6">
+              <p className="text-xs text-on-surface-variant font-medium leading-relaxed">{doc.degrees}</p>
+              <div className="space-y-1.5 text-[13px] text-on-surface-variant">
+                <p className="flex items-center gap-2 font-medium"><Activity size={14} className="text-primary/60" /> {doc.experience}</p>
+                <p className="flex items-center gap-2"><MapPin size={14} className="text-primary/60" /> {doc.location}</p>
+                <p className="flex items-center gap-2 font-bold text-on-surface"><CreditCard size={14} className="text-primary/60" /> ফি: {doc.fee} টাকা</p>
+                {doc.details && (
+                  <p className="text-[11px] text-primary font-medium mt-2 leading-relaxed bg-primary/5 p-2 rounded-lg border border-primary/10">
+                    <Activity size={12} className="inline mr-1" /> {doc.details}
+                  </p>
+                )}
+              </div>
             </div>
-            <button onClick={() => openChat()} className="text-primary/70 text-xs font-bold hover:text-primary transition-colors flex items-center gap-1">
-              এই ডাক্তার দেখালে মোট খরচ কত হতে পারে? <Info size={14} />
+
+            <button 
+              onClick={() => openChat(`আমি ${doc.name} কে দেখাতে চাই। ${doc.details ? `উনার চেম্বার ও সিরিয়াল সম্পর্কে জানুন: ${doc.details}` : 'উনার সিরিয়াল বা খরচ সম্পর্কে বিস্তারিত বলুন।'}`)} 
+              className="w-full py-3 rounded-xl bg-primary/5 text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2"
+            >
+              খরচ ও সিরিয়াল জানুন <ArrowRight size={14} />
             </button>
           </div>
         ))}
@@ -465,6 +554,38 @@ const FinalCTA = () => (
   </section>
 );
 
+const Testimonials = () => (
+  <section className="py-20 px-4 bg-primary/5 rounded-[3rem] mb-16 border border-primary/10">
+    <div className="text-center mb-16 space-y-4">
+      <h2 className="text-3xl md:text-4xl font-bold">ব্যবহারকারীদের অভিজ্ঞতা</h2>
+      <p className="text-on-surface-variant max-w-xl mx-auto">হাজারো মানুষ প্রতিদিন "ডাক্তার আছেন" ব্যবহার করে সঠিক সিদ্ধান্ত নিচ্ছেন</p>
+    </div>
+    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {[
+        { name: "আব্দুর রহমান", role: "চাকরিজীবী", text: "হঠাৎ রাতে বাচ্চার জ্বর আসায় খুব চিন্তায় ছিলাম। চ্যাটবট ব্যবহার করে জানলাম কী হতে পারে এবং কোন ডাক্তার দেখানো উচিত। অনেক উপকার হয়েছে।" },
+        { name: "সাদিয়া ইসলাম", role: "গৃহিণী", text: "প্রেসক্রিপশনের ওষুধগুলো নিয়ে সবসময় কনফিউশনে থাকতাম। এখন ছবি তুলেই সব বুঝে নিতে পারি। খুব সহজ এবং কাজের।" },
+        { name: "কামরুল হাসান", role: "ব্যবসায়ী", text: "ল্যাব টেস্টের খরচ নিয়ে আগে কোনো ধারণা ছিল না। এখন এলাকা অনুযায়ী খরচ তুলনা করে অনেক টাকা বাঁচাতে পারছি।" }
+      ].map((t, i) => (
+        <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <div className="flex gap-1 text-amber-400 mb-4">
+            {[...Array(5)].map((_, i) => <Activity key={i} size={16} fill="currentColor" />)}
+          </div>
+          <p className="text-on-surface-variant italic mb-6 leading-relaxed">"{t.text}"</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+              {t.name[0]}
+            </div>
+            <div>
+              <h4 className="font-bold text-sm">{t.name}</h4>
+              <p className="text-xs text-outline">{t.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
 const Footer = () => (
   <footer className="py-10 text-center text-on-surface-variant opacity-60 text-sm">
     <p>© ২০২৪ Dakter Achen. সকল স্বত্ব সংরক্ষিত।</p>
@@ -478,9 +599,11 @@ export default function App() {
       <main className="pt-8 pb-10 max-w-7xl mx-auto px-4 sm:px-6">
         <Hero />
         <QuickActionGrid />
+        <HowItWorks />
         <SymptomEntry />
         <DoctorShowcase />
         <CostIntelligenceDashboard />
+        <Testimonials />
         <CostExamples />
         <HealthPackages />
         <TrustSection />
