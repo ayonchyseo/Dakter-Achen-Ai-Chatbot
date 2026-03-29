@@ -64,7 +64,7 @@ const Hero = () => (
       </p>
     </div>
     
-    <div className="w-full max-w-3xl bg-white p-2 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_20px_60px_-15px_rgba(0,103,103,0.15)] border border-primary/10 flex flex-col md:flex-row gap-2 md:gap-3">
+    <div className="w-full max-w-3xl bg-white p-1.5 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_20px_60px_-15px_rgba(0,103,103,0.15)] border border-primary/10 flex flex-col md:flex-row gap-1.5 md:gap-3">
       <div className="flex-1 flex items-center px-4 md:px-6 gap-3 md:gap-4">
         <Search className="text-primary/40 shrink-0" size={20} />
         <input 
@@ -82,10 +82,10 @@ const Hero = () => (
       </button>
     </div>
 
-    <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-[10px] md:text-base font-bold text-outline/60 uppercase tracking-widest">
-      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> ১০০% সঠিক তথ্য</span>
-      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> বাংলাদেশের জন্য তৈরি</span>
-      <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary/40" /> সহজ বাংলা ভাষা</span>
+    <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-[10px] md:text-sm font-bold text-outline/60 uppercase tracking-widest">
+      <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-primary/40" /> ১০০% সঠিক তথ্য</span>
+      <span className="flex items-center gap-2"><Globe size={16} className="text-primary/40" /> বাংলাদেশের জন্য তৈরি</span>
+      <span className="flex items-center gap-2"><Languages size={16} className="text-primary/40" /> সহজ বাংলা ভাষা</span>
     </div>
   </section>
 );
@@ -147,56 +147,56 @@ const SymptomEntry = () => {
 };
 
 const QuickActionGrid = () => (
-  <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16 px-4">
+  <section className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-16 px-4">
     <div 
       onClick={() => openChat("ল্যাব টেস্টের খরচ কত হতে পারে?")}
-      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
+      className="bg-white p-5 md:p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100 flex flex-col items-center text-center md:items-start md:text-left"
     >
-      <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <CreditCard className="text-blue-600" size={24} />
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+        <CreditCard className="text-blue-600" size={20} />
       </div>
-      <h3 className="font-bold text-lg mb-1">টেস্টের খরচ</h3>
-      <p className="text-xs text-on-surface-variant leading-relaxed">বিভিন্ন ল্যাবের টেস্টের দামের তুলনা করুন</p>
+      <h3 className="font-bold text-base md:text-lg mb-1">টেস্টের খরচ</h3>
+      <p className="text-[10px] md:text-xs text-on-surface-variant leading-relaxed">বিভিন্ন ল্যাবের টেস্টের দামের তুলনা করুন</p>
     </div>
     <div 
       onClick={() => openChat("আমার কিছু শারীরিক সমস্যা হচ্ছে, আমি কোন ডাক্তার দেখাব?")}
-      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
+      className="bg-white p-5 md:p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100 flex flex-col items-center text-center md:items-start md:text-left"
     >
-      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <Stethoscope className="text-emerald-600" size={24} />
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+        <Stethoscope className="text-emerald-600" size={20} />
       </div>
-      <h3 className="font-bold text-lg mb-1">ডাক্তার গাইড</h3>
-      <p className="text-xs text-on-surface-variant leading-relaxed">লক্ষণ অনুযায়ী সঠিক বিশেষজ্ঞ খুঁজে নিন</p>
+      <h3 className="font-bold text-base md:text-lg mb-1">ডাক্তার গাইড</h3>
+      <p className="text-[10px] md:text-xs text-on-surface-variant leading-relaxed">লক্ষণ অনুযায়ী সঠিক বিশেষজ্ঞ খুঁজে নিন</p>
     </div>
     <div 
       onClick={() => openChat("আমার একটি প্রেসক্রিপশন আছে, এটি আমাকে বুঝিয়ে বলুন।")}
-      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
+      className="bg-white p-5 md:p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100 flex flex-col items-center text-center md:items-start md:text-left"
     >
-      <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <Package className="text-amber-600" size={24} />
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+        <Package className="text-amber-600" size={20} />
       </div>
-      <h3 className="font-bold text-lg mb-1">প্রেসক্রিপশন</h3>
-      <p className="text-xs text-on-surface-variant leading-relaxed">ওষুধের কাজ ও খাওয়ার নিয়ম বুঝে নিন</p>
+      <h3 className="font-bold text-base md:text-lg mb-1">প্রেসক্রিপশন</h3>
+      <p className="text-[10px] md:text-xs text-on-surface-variant leading-relaxed">ওষুধের কাজ ও খাওয়ার নিয়ম বুঝে নিন</p>
     </div>
     <div 
       onClick={() => openChat("আপনাদের হেলথ প্যাকেজগুলো সম্পর্কে জানতে চাই।")}
-      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
+      className="bg-white p-5 md:p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100 flex flex-col items-center text-center md:items-start md:text-left"
     >
-      <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <ShieldCheck className="text-purple-600" size={24} />
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+        <ShieldCheck className="text-purple-600" size={20} />
       </div>
-      <h3 className="font-bold text-lg mb-1">হেলথ প্যাকেজ</h3>
-      <p className="text-xs text-on-surface-variant leading-relaxed">সাশ্রয়ী চেকআপ প্যাকেজগুলো দেখুন</p>
+      <h3 className="font-bold text-base md:text-lg mb-1">হেলথ প্যাকেজ</h3>
+      <p className="text-[10px] md:text-xs text-on-surface-variant leading-relaxed">সাশ্রয়ী চেকআপ প্যাকেজগুলো দেখুন</p>
     </div>
     <div 
       onClick={() => openChat("আমার এলাকায় ভালো ল্যাব বা হাসপাতাল কোথায় আছে?")}
-      className="bg-white p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100"
+      className="bg-white p-5 md:p-6 rounded-3xl hover:shadow-xl transition-all group cursor-pointer border border-slate-100 flex flex-col items-center text-center md:items-start md:text-left col-span-2 md:col-span-1"
     >
-      <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-        <MapPin className="text-rose-600" size={24} />
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-rose-50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+        <MapPin className="text-rose-600" size={20} />
       </div>
-      <h3 className="font-bold text-lg mb-1">হাসপাতাল ম্যাপ</h3>
-      <p className="text-xs text-on-surface-variant leading-relaxed">নিকটস্থ স্বাস্থ্যসেবা কেন্দ্র খুঁজে নিন</p>
+      <h3 className="font-bold text-base md:text-lg mb-1">হাসপাতাল ম্যাপ</h3>
+      <p className="text-[10px] md:text-xs text-on-surface-variant leading-relaxed">নিকটস্থ স্বাস্থ্যসেবা কেন্দ্র খুঁজে নিন</p>
     </div>
   </section>
 );
@@ -591,16 +591,52 @@ const Testimonials = () => (
 );
 
 const Footer = () => (
-  <footer className="py-10 text-center text-on-surface-variant opacity-60 text-sm">
-    <p>© since 2017-2026 present Dakter Achen. সকল স্বত্ব সংরক্ষিত।</p>
+  <footer className="bg-on-primary-fixed text-on-primary-fixed-variant py-12 px-6">
+    <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 mb-12">
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-white p-1.5 rounded-lg flex items-center justify-center">
+            <Stethoscope className="text-primary" size={20} />
+          </div>
+          <h1 className="text-xl font-black text-white tracking-tight">Dakter Achen</h1>
+        </div>
+        <p className="text-sm opacity-70 leading-relaxed">বাংলাদেশের প্রথম হেলথ ডিসিশন প্ল্যাটফর্ম। আমরা আপনাকে সঠিক চিকিৎসা ও খরচের ধারণা দিয়ে সাহায্য করি।</p>
+      </div>
+      <div className="space-y-4">
+        <h4 className="text-white font-bold">সেবাসমূহ</h4>
+        <ul className="space-y-2 text-sm opacity-70">
+          <li><button onClick={() => openChat()} className="hover:text-white transition-colors">ডাক্তার গাইড</button></li>
+          <li><button onClick={() => openChat()} className="hover:text-white transition-colors">টেস্টের খরচ</button></li>
+          <li><button onClick={() => openChat()} className="hover:text-white transition-colors">প্রেসক্রিপশন রিডার</button></li>
+          <li><button onClick={() => openChat()} className="hover:text-white transition-colors">হেলথ প্যাকেজ</button></li>
+        </ul>
+      </div>
+      <div className="space-y-4">
+        <h4 className="text-white font-bold">কোম্পানি</h4>
+        <ul className="space-y-2 text-sm opacity-70">
+          <li><button className="hover:text-white transition-colors">আমাদের সম্পর্কে</button></li>
+          <li><button className="hover:text-white transition-colors">ব্লগ</button></li>
+          <li><button className="hover:text-white transition-colors">যোগাযোগ</button></li>
+          <li><button className="hover:text-white transition-colors">প্রাইভেসি পলিসি</button></li>
+        </ul>
+      </div>
+      <div className="space-y-4">
+        <h4 className="text-white font-bold">যোগাযোগ</h4>
+        <p className="text-sm opacity-70">যেকোনো প্রয়োজনে আমাদের ইমেইল করুন:</p>
+        <p className="text-white font-bold text-sm">support@dakterachen.com</p>
+      </div>
+    </div>
+    <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 text-center text-xs opacity-50">
+      <p>© since 2017-2026 present Dakter Achen. সকল স্বত্ব সংরক্ষিত।</p>
+    </div>
   </footer>
 );
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-surface text-on-surface">
+    <div className="min-h-screen bg-surface text-on-surface flex flex-col">
       <Navbar />
-      <main className="pt-8 pb-10 max-w-7xl mx-auto px-4 sm:px-6">
+      <main className="flex-grow pt-8 pb-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <Hero />
         <QuickActionGrid />
         <HowItWorks />

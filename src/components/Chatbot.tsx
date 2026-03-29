@@ -93,7 +93,7 @@ const Chatbot = () => {
     }
   };
 
-  const toggleRecording = () => {
+  const toggleRecording = async () => {
     if (isRecording) {
       setIsRecording(false);
       return;
@@ -102,8 +102,24 @@ const Chatbot = () => {
     // @ts-ignore
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert("আপনার ব্রাউজার ভয়েস টাইপিং সাপোর্ট করে না।");
+      alert("আপনার ব্রাউজার ভয়েস টাইপিং সাপোর্ট করে না। দয়া করে গুগল ক্রোম ব্যবহার করুন।");
       return;
+    }
+
+    // Check permission status if possible
+    if (navigator.permissions && navigator.permissions.query) {
+      try {
+        const result = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+        if (result.state === 'denied') {
+          setMessages(prev => [...prev, { 
+            role: 'bot', 
+            text: "মাইক্রোফোন পারমিশন ব্লক করা আছে। দয়া করে ব্রাউজার এড্রেস বারের বাম পাশে 'Lock' আইকনে ক্লিক করে মাইক্রোফোন পারমিশন 'Allow' করুন।" 
+          }]);
+          return;
+        }
+      } catch (e) {
+        console.warn("Permissions API not supported for microphone query");
+      }
     }
 
     const recognition = new SpeechRecognition();
@@ -119,22 +135,29 @@ const Chatbot = () => {
     };
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error", event.error);
+      let errorMsg = "দুঃখিত, একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।";
+      
       if (event.error === 'not-allowed') {
-        setMessages(prev => [...prev, { 
-          role: 'bot', 
-          text: "দুঃখিত, মাইক্রোফোন ব্যবহারের অনুমতি পাওয়া যায়নি। দয়া করে ব্রাউজার সেটিংসে গিয়ে মাইক্রোফোন পারমিশন চেক করুন এবং আবার চেষ্টা করুন।" 
-        }]);
+        errorMsg = "মাইক্রোফোন ব্যবহারের অনুমতি পাওয়া যায়নি। দয়া করে ব্রাউজার সেটিংসে গিয়ে মাইক্রোফোন পারমিশন 'Allow' করুন।";
       } else if (event.error === 'network') {
-        setMessages(prev => [...prev, { 
-          role: 'bot', 
-          text: "ইন্টারনেট সংযোগে সমস্যা হচ্ছে। দয়া করে আপনার কানেকশন চেক করুন।" 
-        }]);
+        errorMsg = "ইন্টারনেট সংযোগে সমস্যা হচ্ছে। দয়া করে আপনার কানেকশন চেক করুন।";
+      } else if (event.error === 'no-speech') {
+        errorMsg = "কোনো শব্দ শোনা যায়নি। দয়া করে আবার বলুন।";
+      } else if (event.error === 'service-not-allowed') {
+        errorMsg = "ভয়েস সার্ভিস এই মুহূর্তে কাজ করছে না।";
       }
+      
+      setMessages(prev => [...prev, { role: 'bot', text: errorMsg }]);
       setIsRecording(false);
     };
     recognition.onend = () => setIsRecording(false);
 
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (err) {
+      console.error("Failed to start speech recognition:", err);
+      setIsRecording(false);
+    }
   };
 
   const handleSend = async () => {
