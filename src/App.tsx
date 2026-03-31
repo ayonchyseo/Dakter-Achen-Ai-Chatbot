@@ -237,6 +237,18 @@ const HowItWorks = () => (
 const DoctorShowcase = () => {
   const doctors = [
     { 
+      name: "ডাঃ সৌমিত্র দাশ", 
+      specialty: "মেডিসিন ও ডায়াবেটিস বিশেষজ্ঞ", 
+      degrees: "MBBS, BCS (Health), PGT (Medicine), CCD (BIRDEM)",
+      experience: "বিশেষজ্ঞ চিকিৎসক",
+      location: "চট্টগ্রাম মেডিকেল কলেজ ও কসমোপলিটন হাসপাতাল", 
+      fee: "৫০০ – ৮০০", 
+      tag: "New", 
+      tagColor: "bg-blue-100 text-blue-700", 
+      img: "https://scontent.fcgp3-1.fna.fbcdn.net/v/t1.6435-9/86661808_138812060936433_3993841302016884736_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=53a332&_nc_eui2=AeFkrKh2hLDuK0EPAGKTm2meWQ900zCyeCJZD3TTMLJ4Ihbab6eNV46zOyzYz1OJGeLz8L4L4RmuPjO7zVMryof2&_nc_ohc=uzwhq0fYg7oQ7kNvwEMedEy&_nc_oc=AdodPrENHsFCljQtIgnrooFdS1EsA5XDLQVuy2wLfmDgyKBg5cc1_7yMn2yixpYvzOc&_nc_zt=23&_nc_ht=scontent.fcgp3-1.fna&_nc_gid=G-SZa2UiJZFbwfk2k7BZGA&_nc_ss=7a3a8&oh=00_AfwcW3GVlVVm76DqGerES_HpjWcezF3-GAZ0F5HImiZpUA&oe=69F35B60",
+      details: "চেম্বার ১: মেসার্স গৌরি ফার্মেসী (সন্ধ্যা ৭-১০টা), সিরিয়াল: ০১৮৬৪-০৭০৮৯১ | চেম্বার ২: কসমোপলিটন হাসপাতাল, চট্টগ্রাম"
+    },
+    { 
       name: "ডাঃ আবু সায়েম মোহাম্মদ ওমর ফারুক", 
       specialty: "হৃদরোগ বিশেষজ্ঞ", 
       degrees: "MBBS, BCS (Health), MD (Cardiology)",
