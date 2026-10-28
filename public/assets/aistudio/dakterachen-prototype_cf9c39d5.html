@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dakter Achen — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0E7490;--primary-hover:#155E75;--primary-soft:#ECFEFF;
+  --cta:#047857;--cta-hover:#065F46;--cta-soft:#ECFDF5;
+  --warn:#B45309;--warn-soft:#FFFBEB;--danger:#B91C1C;--danger-soft:#FEF2F2;
+  --bg:#F6F8FA;--surface:#FFFFFF;--ink:#0F172A;--muted:#475569;--border:#E2E8F0;--ring:#0E7490;
+  --r-card:12px;--r-ctl:10px;
+  --font:'Plus Jakarta Sans','Noto Sans Bengali',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+html[lang=bn] body{font-size:17px}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 12px;border-radius:8px;z-index:99}
+.skip:focus{left:8px}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{line-height:1.25;margin:0;text-wrap:balance}
+.muted{color:var(--muted)}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:18px}
+.logo:hover{text-decoration:none}
+.logo .mark{width:36px;height:36px;border-radius:10px;background:var(--primary);color:#fff;display:grid;place-items:center}
+.logo small{display:block;font-size:12px;font-weight:500;color:var(--muted);line-height:1}
+nav.main{display:flex;gap:4px;margin-left:16px}
+nav.main a{color:var(--ink);padding:8px 12px;border-radius:8px;font-weight:500;font-size:15px}
+nav.main a:hover{background:var(--bg);text-decoration:none}
+.spacer{flex:1}
+.lang{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);min-height:32px}
+.lang button[aria-pressed=true]{background:var(--primary);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:var(--r-ctl);border:1px solid transparent;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{text-decoration:none}
+.btn-cta{background:var(--cta);color:#fff}.btn-cta:hover{background:var(--cta-hover)}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover)}
+.btn-ghost{background:var(--surface);border-color:var(--border);color:var(--ink)}.btn-ghost:hover{border-color:#CBD5E1;background:var(--bg)}
+.btn-icon{width:44px;padding:0}
+@media (max-width:900px){nav.main,.hide-sm{display:none}}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--primary-soft),var(--bg));border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#A5F3FC 1px,transparent 1px);background-size:22px 22px;opacity:.5;mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.hero .wrap{position:relative;padding:56px 16px 48px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--primary);background:var(--surface);border:1px solid #A5F3FC;padding:4px 12px;border-radius:999px}
+.hero h1{font-size:clamp(28px,5vw,44px);margin:16px 0 12px;max-width:760px}
+.hero p.sub{font-size:18px;color:var(--muted);max-width:640px;margin:0 0 28px}
+.search{display:flex;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:8px;box-shadow:0 8px 24px -12px rgba(15,23,42,.18);max-width:860px;position:relative}
+.search .field{display:flex;align-items:center;gap:10px;padding:0 12px;flex:1;min-height:52px;border-radius:var(--r-ctl)}
+.search .field:focus-within{background:var(--bg)}
+.search input,.search select{border:0;background:transparent;outline:0;width:100%;font-size:16px;min-height:44px}
+.search .area{flex:0 0 220px;border-left:1px solid var(--border);border-radius:0}
+.search .btn{min-height:52px;padding:0 24px}
+.ac{position:absolute;left:8px;right:8px;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 16px 40px -16px rgba(15,23,42,.25);padding:8px;display:none;z-index:5}
+.ac.open{display:block}
+.ac h4{margin:8px 10px 4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.ac a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;color:var(--ink)}
+.ac a:hover,.ac a.on{background:var(--bg);text-decoration:none}
+@media (max-width:700px){.search{flex-direction:column}.search .area{flex:auto;border-left:0;border-top:1px solid var(--border)}.search .btn{width:100%}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--primary);text-decoration:none}
+.chip[aria-pressed=true]{background:var(--primary-soft);border-color:var(--primary);color:var(--primary-hover)}
+.chip .x{margin-left:2px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:24px;font-size:14px;color:var(--muted)}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+.trust svg{color:var(--cta)}
+
+.emerg{background:var(--danger-soft);border-bottom:1px solid #FECACA;color:#7F1D1D;font-size:14px}
+.emerg .wrap{display:flex;align-items:center;gap:10px;padding:10px 16px;flex-wrap:wrap}
+.emerg a{color:var(--danger);font-weight:700}
+
+section.block{padding:56px 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(22px,3vw,28px)}
+.sec-head p{margin:6px 0 0;color:var(--muted)}
+
+.spec-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+@media (max-width:1024px){.spec-grid{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:640px){.spec-grid{grid-template-columns:repeat(2,1fr)}}
+.spec{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:18px 16px;display:flex;flex-direction:column;gap:10px;color:var(--ink);transition:border-color .15s,box-shadow .15s;cursor:pointer}
+.spec:hover{border-color:var(--primary);box-shadow:0 6px 18px -10px rgba(14,116,144,.45);text-decoration:none}
+.spec .ic{width:44px;height:44px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center}
+.spec b{font-weight:600;font-size:15px;line-height:1.3}
+.spec small{color:var(--muted);font-size:13px}
+.spec.soon{opacity:.7;border-style:dashed}
+
+/* doctor card */
+.cards{display:grid;gap:16px}
+.cards.three{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1024px){.cards.three{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){.cards.three{grid-template-columns:1fr}}
+.doc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .15s,border-color .15s}
+.doc:hover{box-shadow:0 10px 28px -16px rgba(15,23,42,.3);border-color:#CBD5E1}
+.doc .hd{display:flex;gap:14px;align-items:flex-start}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--primary-soft);color:var(--primary-hover);display:grid;place-items:center;font-weight:700;flex:none;border:1px solid #A5F3FC}
+.doc h3{font-size:17px;font-weight:700}
+.doc h3 a{color:var(--ink)}
+.doc .deg{font-size:14px;color:var(--ink);margin-top:2px}
+.doc .pos{font-size:14px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.b-now{background:var(--cta-soft);color:var(--cta)}
+.b-today{background:var(--cta-soft);color:var(--cta)}
+.b-off{background:var(--warn-soft);color:var(--warn)}
+.b-next{background:#F1F5F9;color:var(--muted)}
+.b-old{background:var(--warn-soft);color:var(--warn)}
+.b-ver{background:var(--primary-soft);color:var(--primary-hover)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.b-now .dot{animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(4,120,87,.5)}70%{box-shadow:0 0 0 6px rgba(4,120,87,0)}100%{box-shadow:0 0 0 0 rgba(4,120,87,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.meta{display:grid;gap:8px;border-top:1px solid var(--border);padding-top:14px;font-size:14.5px}
+.meta div{display:flex;gap:10px;align-items:flex-start}
+.meta svg{color:var(--muted);margin-top:2px;width:18px;height:18px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.actions .btn-cta{flex:1 1 260px;white-space:nowrap;padding:0 14px}
+@media (max-width:520px){.actions .btn-cta{flex-basis:100%;font-size:15px}.actions .btn-ghost:not(.btn-icon){flex:1}}
+.doc.compact .meta{font-size:14px}
+
+/* listing layout */
+.crumb{font-size:14px;color:var(--muted);padding:16px 0 0}
+.crumb a{color:var(--muted)}
+.list-head{padding:12px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.list-head h1{font-size:clamp(24px,3.6vw,34px);margin:6px 0}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start;padding-bottom:64px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+aside.filters{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;position:sticky;top:80px}
+aside.filters h3{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 10px}
+aside.filters h3:first-child{margin-top:0}
+aside.filters .chips{margin-top:0}
+aside.filters .chip{min-height:34px;font-size:13.5px;padding:0 12px}
+@media (max-width:900px){
+  aside.filters{position:fixed;inset:auto 0 0 0;top:auto;max-height:82vh;overflow:auto;border-radius:20px 20px 0 0;z-index:40;transform:translateY(105%);visibility:hidden;transition:transform .2s ease-out,visibility .2s;box-shadow:0 -20px 40px -20px rgba(15,23,42,.35)}
+  aside.filters.open{transform:none;visibility:visible}
+  .sheet-handle{width:40px;height:4px;border-radius:4px;background:var(--border);margin:-8px auto 12px}
+}
+@media (min-width:901px){.sheet-only{display:none!important}}
+.scrim{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:39;display:none}
+.scrim.open{display:block}
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar select{min-height:40px;border:1px solid var(--border);border-radius:var(--r-ctl);padding:0 10px;background:var(--surface)}
+.applied{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.empty{background:var(--surface);border:1px dashed #CBD5E1;border-radius:var(--r-card);padding:32px;text-align:center}
+.inline-cta{background:var(--primary-soft);border:1px solid #A5F3FC;border-radius:var(--r-card);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* profile */
+.profile{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;padding:12px 0 96px}
+@media (max-width:900px){.profile{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:24px}
+.p-hd{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.p-hd .avatar{width:76px;height:76px;font-size:24px}
+.p-hd h1{font-size:clamp(22px,3vw,30px)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+.week div{border:1px solid var(--border);border-radius:10px;padding:10px 4px;text-align:center;font-size:12.5px}
+.week div b{display:block;font-size:13px;margin-bottom:4px}
+.week .off{background:#F8FAFC;color:var(--muted)}
+.week .today{border-color:var(--cta);background:var(--cta-soft);color:var(--cta);font-weight:600}
+@media (max-width:520px){.week{grid-template-columns:repeat(4,1fr)}}
+.mbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:none;gap:8px;z-index:30}
+.mbar .btn-cta{flex:1}
+@media (max-width:900px){.mbar.show{display:flex}}
+
+/* misc sections */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:22px}
+.step:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;margin-bottom:12px}
+.step h3{font-size:17px;margin-bottom:6px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.duo{grid-template-columns:1fr}}
+.duo .panel h3{font-size:20px;margin-bottom:6px}
+.contrib{display:flex;flex-wrap:wrap;gap:12px}
+.contrib span{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 14px 6px 6px;font-size:14px}
+.contrib i{width:28px;height:28px;border-radius:50%;background:var(--primary-soft);color:var(--primary-hover);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px}
+footer{background:#0B1220;color:#CBD5E1;padding:48px 0 24px;font-size:14px}
+footer a{color:#E2E8F0}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr 1fr}}
+footer h4{color:#fff;margin:0 0 12px;font-size:15px}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+footer .legal{border-top:1px solid #1E293B;margin-top:32px;padding-top:16px;color:#94A3B8;font-size:13px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:60}
+.toast.show{opacity:1}
+.view{display:none}.view.active{display:block}
+.proto-note{background:#FEF9C3;color:#713F12;font-size:13px;text-align:center;padding:6px 16px}
+.proto-note a{color:#713F12;font-weight:700;text-decoration:underline;margin:0 4px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="proto-note">Prototype views: <a href="#home">Home</a> · <a href="#list">Specialty listing</a> · <a href="#doctor/dr-ma-yusuf-chowdhury">Doctor profile</a></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></symbol>
+  <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="steth" viewBox="0 0 24 24"><path d="M5 3v6a5 5 0 0 0 10 0V3"/><path d="M10 14v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="12" r="2"/></symbol>
+  <symbol id="activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+  <symbol id="pulse" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12H9l1-2 2 4 1-2h7.8"/></symbol>
+  <symbol id="baby" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M10 8h.01M14 8h.01M10.5 10.5c.8.6 2.2.6 3 0"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="ear" viewBox="0 0 24 24"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></symbol>
+  <symbol id="bone" viewBox="0 0 24 24"><path d="M17 10c.7-.7 1.7-.7 2.5 0a2.5 2.5 0 0 0 0-5 .5.5 0 0 1-.5-.5 2.5 2.5 0 0 0-5 0c0 .8 0 1.8-.7 2.5l-6.5 6.5c-.7.7-1.7.7-2.5 0a2.5 2.5 0 0 0 0 5c.3 0 .5.2.5.5a2.5 2.5 0 1 0 5 0c0-.8 0-1.8.7-2.5Z"/></symbol>
+  <symbol id="skin" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol>
+  <symbol id="tooth" viewBox="0 0 24 24"><path d="M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7 .4 2.5 1 6.5 3 6.5s2-4 4-4 2 4 4 4 2.6-4 3-6.5c.5-3 2-4 2-7C21 5 19.5 3 17 3c-2 0-3 1-5 1S9 3 7 3Z"/></symbol>
+  <symbol id="brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-6 .1 4 4 0 0 0-2.5 5.8A4 4 0 0 0 6 18a4 4 0 0 0 6 1.9V5Z"/><path d="M12 5a3 3 0 1 1 6 .1 4 4 0 0 1 2.5 5.8A4 4 0 0 1 18 18a4 4 0 0 1-6 1.9"/></symbol>
+  <symbol id="zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></symbol>
+  <symbol id="drop" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 5 12 2.5C11.5 5 10 7.4 8 9.5S5 13 5 15a7 7 0 0 0 7 7Z"/></symbol>
+  <symbol id="filter" viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></symbol>
+  <symbol id="share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="hosp" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M12 9v6M9 12h6"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="Dakter Achen home">
+      <span class="mark"><svg class="i"><use href="#steth"/></svg></span>
+      <span><span data-t="brand">ডাক্তার আছেন</span><small>dakterachen.com</small></span>
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="#list" data-t="nav1">ডাক্তার খুঁজুন</a>
+      <a href="#home-spec" data-t="nav2">বিশেষজ্ঞ বিভাগ</a>
+      <a href="#home" data-t="nav3">হাসপাতাল</a>
+      <a href="#home-area" data-t="nav4">এলাকা</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button aria-pressed="true" data-lang="bn">বাং</button>
+      <button aria-pressed="false" data-lang="en">EN</button>
+    </div>
+    <a class="btn btn-primary hide-sm" href="#home-add"><svg class="i"><use href="#plus"/></svg><span data-t="add">ডাক্তার যোগ করুন</span></a>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ HOME ============ -->
+<div class="view" id="v-home">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><svg class="i" style="width:16px;height:16px"><use href="#pin"/></svg><span data-t="eyebrow">চট্টগ্রাম · ৫০০+ ডাক্তার</span></span>
+      <h1 data-t="h1">চট্টগ্রামের বিশেষজ্ঞ ডাক্তার খুঁজুন — সিরিয়াল নম্বরসহ</h1>
+      <p class="sub" data-t="sub">চেম্বারের ঠিকানা, বসার সময়, বন্ধের দিন আর সিরিয়ালের ফোন নম্বর — এক জায়গায়, কমিউনিটির যাচাই করা তথ্য।</p>
+      <form class="search" role="search" onsubmit="event.preventDefault();location.hash='list'">
+        <label class="field"><svg class="i muted"><use href="#search"/></svg>
+          <span class="sr" style="position:absolute;left:-999px" data-t="q-label">Search</span>
+          <input id="q" autocomplete="off" aria-autocomplete="list" aria-controls="ac" data-tp="q" placeholder="ডাক্তার, বিভাগ, হাসপাতাল বা সমস্যা (যেমন: ডায়াবেটিস, চোখ)">
+        </label>
+        <label class="field area"><svg class="i muted"><use href="#pin"/></svg>
+          <select aria-label="Area"><option data-t="allarea">সব এলাকা</option><option>Panchlaish</option><option>O.R. Nizam Road</option><option>Chawkbazar</option><option>GEC Circle</option><option>Mehedibag</option><option>Agrabad</option><option>Momin Road</option><option>Jamal Khan</option></select>
+        </label>
+        <button class="btn btn-cta" type="submit"><svg class="i"><use href="#search"/></svg><span data-t="go">খুঁজুন</span></button>
+        <div class="ac" id="ac" role="listbox">
+          <h4 data-t="ac1">বিভাগ</h4>
+          <a href="#list" role="option"><svg class="i" style="color:var(--primary)"><use href="#activity"/></svg> Medicine &amp; Diabetes · মেডিসিন ও ডায়াবেটিস <span class="muted num" style="margin-left:auto">3</span></a>
+          <h4 data-t="ac2">ডাক্তার</h4>
+          <a href="#doctor/dr-nur-nahar-begum" role="option"><span class="avatar" style="width:28px;height:28px;font-size:11px">NB</span> Dr. Nur Nahar Begum <span class="muted" style="margin-left:auto;font-size:13px">Diabetes</span></a>
+          <h4 data-t="ac3">হাসপাতাল</h4>
+          <a href="#list" role="option"><svg class="i muted"><use href="#hosp"/></svg> Chittagong Metropolitan Hospital</a>
+        </div>
+      </form>
+      <div class="chips" aria-label="Popular specialties">
+        <a class="chip" href="#list">মেডিসিন</a><a class="chip" href="#list">গাইনি</a><a class="chip" href="#list">শিশু</a><a class="chip" href="#list">চক্ষু</a><a class="chip" href="#list">নাক-কান-গলা</a><a class="chip" href="#list">হৃদরোগ</a><a class="chip" href="#list">হাড়</a><a class="chip" href="#list">চর্ম</a>
+      </div>
+      <div class="trust">
+        <span><svg class="i"><use href="#shield"/></svg><span data-t="t1">কমিউনিটি যাচাইকৃত তথ্য</span></span>
+        <span><svg class="i"><use href="#check"/></svg><span data-t="t2">নিয়মিত আপডেট</span></span>
+        <span><svg class="i"><use href="#check"/></svg><span data-t="t3">সম্পূর্ণ ফ্রি — কোনো বুকিং ফি নেই</span></span>
+      </div>
+    </div>
+  </section>
+  <div class="emerg" role="note"><div class="wrap"><svg class="i"><use href="#phone"/></svg><span data-t="em">জরুরি অবস্থায় এই সাইট নয় — এখনই কল করুন</span> <a href="tel:999">999</a></div></div>
+
+  <section class="block" id="home-spec">
+    <div class="wrap">
+      <div class="sec-head"><div><h2 data-t="s1">বিভাগ অনুযায়ী ডাক্তার</h2><p data-t="s1p">আপনার সমস্যার বিশেষজ্ঞ বেছে নিন</p></div><a href="#list" data-t="all">সব বিভাগ →</a></div>
+      <div class="spec-grid" id="specGrid"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><div><h2 data-t="s2">আজ চেম্বারে বসছেন</h2><p id="todayLabel" class="num"></p></div><a href="#list" data-t="seeall">সব দেখুন →</a></div>
+      <div class="cards three" id="todayCards"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0" id="home-area">
+    <div class="wrap">
+      <div class="sec-head"><div><h2 data-t="s3">এলাকা অনুযায়ী</h2></div></div>
+      <div class="chips">
+        <a class="chip" href="#list">Panchlaish <span class="muted num">84</span></a><a class="chip" href="#list">O.R. Nizam Road <span class="muted num">121</span></a><a class="chip" href="#list">Chawkbazar <span class="muted num">67</span></a><a class="chip" href="#list">GEC Circle <span class="muted num">39</span></a><a class="chip" href="#list">Mehedibag <span class="muted num">45</span></a><a class="chip" href="#list">Agrabad <span class="muted num">28</span></a><a class="chip" href="#list">Momin Road <span class="muted num">22</span></a><a class="chip" href="#list">Jamal Khan <span class="muted num">19</span></a><a class="chip" href="#list">Halishahar <span class="muted num">12</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-t="s4">কীভাবে কাজ করে</h2></div>
+      <div class="steps">
+        <div class="step"><h3 data-t="st1">বিভাগ বা ডাক্তার খুঁজুন</h3><p class="muted" style="margin:0" data-t="st1p">সমস্যার নাম লিখলেও সঠিক বিশেষজ্ঞ দেখাবে।</p></div>
+        <div class="step"><h3 data-t="st2">সময় ও চেম্বার দেখুন</h3><p class="muted" style="margin:0" data-t="st2p">আজ কে বসছেন, কোন দিন বন্ধ — এক নজরে।</p></div>
+        <div class="step"><h3 data-t="st3">সিরিয়ালের জন্য কল করুন</h3><p class="muted" style="margin:0" data-t="st3p">এক ট্যাপে সরাসরি চেম্বারে ফোন।</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0" id="home-add">
+    <div class="wrap duo">
+      <div class="panel"><h3 data-t="d1">আপনি কি ডাক্তার বা চেম্বার স্টাফ?</h3><p class="muted" data-t="d1p">ফ্রিতে আপনার প্রোফাইল যোগ করুন বা আপডেট করুন, যাতে রোগীরা সঠিক সময় জানতে পারেন।</p><a class="btn btn-primary" href="#home-add"><svg class="i"><use href="#plus"/></svg><span data-t="d1b">প্রোফাইল যোগ করুন</span></a></div>
+      <div class="panel"><h3 data-t="d2">কোনো তথ্য ভুল দেখছেন?</h3><p class="muted" data-t="d2p">সময় বা নম্বর বদলে গেলে জানান — অন্য রোগীদের উপকার হবে।</p><a class="btn btn-ghost" href="#home-add"><svg class="i"><use href="#edit"/></svg><span data-t="d2b">ভুল জানান</span></a></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-t="s5">আমাদের কন্ট্রিবিউটর</h2></div>
+      <div class="contrib"><span><i>RH</i>Rakib H.</span><span><i>TS</i>Tania S.</span><span><i>MA</i>Mahmud A.</span><span><i>NI</i>Nusrat I.</span><span><i>+</i><a href="#home-add" data-t="join">আপনিও যুক্ত হন</a></span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ LISTING ============ -->
+<div class="view" id="v-list">
+  <div class="wrap">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="#home" data-t="home">হোম</a> › <a href="#home-spec" data-t="nav2">বিশেষজ্ঞ বিভাগ</a> › <span>Medicine &amp; Diabetes</span></nav>
+    <div class="list-head">
+      <span class="badge b-ver"><svg class="i" style="width:14px;height:14px"><use href="#activity"/></svg>মেডিসিন ও ডায়াবেটিস</span>
+      <h1 data-t="lh1">চট্টগ্রামের মেডিসিন ও ডায়াবেটিস বিশেষজ্ঞ ডাক্তার</h1>
+      <p class="muted" style="margin:0"><span class="num" id="countTxt"></span> · <span data-t="upd">সর্বশেষ আপডেট: ১ সেপ্টেম্বর ২০২৬</span></p>
+    </div>
+    <div class="layout">
+      <div class="scrim" id="scrim"></div>
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="sheet-handle sheet-only"></div>
+        <div class="sheet-only" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b data-t="flt">ফিল্টার</b><button class="btn btn-ghost btn-icon" id="closeF" aria-label="Close filters"><svg class="i"><use href="#x"/></svg></button></div>
+        <h3 data-t="f-day">দিন</h3>
+        <div class="chips" data-group="day"></div>
+        <h3 data-t="f-time">সময়</h3>
+        <div class="chips" data-group="time"></div>
+        <h3 data-t="f-area">এলাকা</h3>
+        <div class="chips" data-group="area"></div>
+        <h3 data-t="f-gender">ডাক্তার</h3>
+        <div class="chips" data-group="gender"></div>
+        <button class="btn btn-cta sheet-only" style="width:100%;margin-top:20px" id="applyF"><span data-t="show">ফলাফল দেখুন</span></button>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <button class="btn btn-ghost sheet-only" id="openF"><svg class="i"><use href="#filter"/></svg><span data-t="flt">ফিল্টার</span> <span id="fCount" class="num"></span></button>
+          <span class="muted num" aria-live="polite" id="resTxt"></span>
+          <span class="spacer"></span>
+          <label class="muted" style="font-size:14px"><span data-t="sort">সাজান</span>
+            <select id="sort"><option value="today">আজ বসছেন আগে</option><option value="senior">সিনিয়র আগে</option><option value="az">নাম A–Z</option></select>
+          </label>
+        </div>
+        <div class="applied" id="applied"></div>
+        <div class="cards" id="listCards"></div>
+        <div class="inline-cta" style="margin-top:16px"><div><b data-t="ic">তালিকায় নেই এমন ডাক্তার চেনেন?</b><div class="muted" style="font-size:14px" data-t="icp">যোগ করুন — ২৪–৪৮ ঘণ্টার মধ্যে রিভিউ করা হয়।</div></div><a class="btn btn-primary" href="#home-add"><svg class="i"><use href="#plus"/></svg><span data-t="d1b">প্রোফাইল যোগ করুন</span></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PROFILE ============ -->
+<div class="view" id="v-doctor">
+  <div class="wrap" id="profileWrap"></div>
+  <div class="mbar" id="mbar"></div>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h4>ডাক্তার আছেন · Dakter Achen</h4><p style="margin:0;max-width:340px">চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের চেম্বার, সময় ও সিরিয়াল নম্বরের ফ্রি ডিরেক্টরি।</p></div>
+      <div><h4>Specialties</h4><ul><li><a href="#list">Medicine &amp; Diabetes</a></li><li><a href="#list">Gynae</a></li><li><a href="#list">Child</a></li><li><a href="#list">Eye</a></li></ul></div>
+      <div><h4>Areas</h4><ul><li><a href="#list">Panchlaish</a></li><li><a href="#list">O.R. Nizam Road</a></li><li><a href="#list">Chawkbazar</a></li><li><a href="#list">GEC</a></li></ul></div>
+      <div><h4>Dakter Achen</h4><ul><li><a href="#home-add">Add a doctor</a></li><li><a href="#home-add">Report wrong info</a></li><li><a href="#home">About</a></li><li><a href="#home">Contact</a></li></ul></div>
+    </div>
+    <div class="legal">This directory is for information only and is not medical advice. Chamber times change — always confirm by phone before visiting. In an emergency call 999. © 2026 dakterachen.com</div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WEEK=['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
+const BN_DAY={Sat:'শনি',Sun:'রবি',Mon:'সোম',Tue:'মঙ্গল',Wed:'বুধ',Thu:'বৃহঃ',Fri:'শুক্র'};
+const doctors=[
+ {slug:'dr-ma-yusuf-chowdhury',name:'Dr. MA Yusuf Chowdhury',ini:'MY',g:'M',rank:3,degrees:'MBBS, MD (Internal Medicine), Fellow in Diabetology',designation:'Assistant Professor, Medicine Department',institution:'Chittagong Medical College & Hospital',
+  ch:[{name:'Chittagong Metropolitan Hospital Ltd.',address:'O.R. Nizam Road, Chattogram',area:'O.R. Nizam Road',days:['Sat','Sun','Mon','Wed','Thu'],start:'20:00',end:'22:00',serial:['01838-054081']}],verified:'2026-09-01'},
+ {slug:'dr-abdullah-abu-sayeed',name:'Dr. Abdullah Abu Sayeed',ini:'AS',g:'M',rank:2,degrees:'MBBS, MD (Internal Medicine), BCS (Health)',designation:'Medicine Specialist',institution:'Chittagong Medical College & Hospital',
+  ch:[{name:'CSCR',address:'1675/A, Room-405, Nizam Road, Chattogram',area:'O.R. Nizam Road',days:['Sun','Wed'],start:'17:00',end:'19:00',serial:['01755-019576','01744-589950']}],verified:'2026-09-01'},
+ {slug:'dr-nur-nahar-begum',name:'Dr. Nur Nahar Begum',ini:'NB',g:'F',rank:1,degrees:'MBBS, PGT (BARDEM), CCD (Open University, UK)',designation:'Senior Medical Officer',institution:'Chittagong Diabetic Hospital',
+  ch:[{name:'Magnum Diagnostic Ltd.',address:'39 Momin Road, Kadam Mobarak, Chattogram',area:'Momin Road',days:['Sat','Sun','Mon','Tue','Wed','Thu'],start:'18:00',end:'21:00',serial:['01819-625381']}],verified:'2026-05-10'}
+];
+const specs=[['activity','মেডিসিন ও ডায়াবেটিস','Medicine & Diabetes',3],['heart','গাইনি ও প্রসূতি','Gynae & Obstetrics',0],['baby','শিশু বিশেষজ্ঞ','Child Specialist',0],['eye','চক্ষু','Eye',0],['ear','নাক-কান-গলা','ENT',0],['pulse','হৃদরোগ','Heart',0],['bone','হাড় ও জোড়া','Bone & Joint',0],['skin','চর্ম ও যৌন','Skin & Sex',0],['tooth','দন্ত','Dental',0],['brain','মানসিক রোগ','Psychiatry',0],['zap','নিউরোলজি','Neurology',0],['drop','কিডনি','Kidney',0]];
+
+let lang='bn';
+const L={en:{brand:'Dakter Achen',nav1:'Find doctors',nav2:'Specialties',nav3:'Hospitals',nav4:'Areas',add:'Add a doctor',eyebrow:'Chattogram · 500+ doctors',h1:'Find a specialist doctor in Chattogram — with serial numbers',sub:'Chamber address, sitting hours, off days and serial phone numbers in one place, checked by the community.',q:'Doctor, specialty, hospital or problem (e.g. diabetes, eye)',allarea:'All areas',go:'Search',ac1:'Specialties',ac2:'Doctors',ac3:'Hospitals',t1:'Community-verified info',t2:'Updated regularly',t3:'Free — no booking fee',em:'Not for emergencies — call now',s1:'Find doctors by specialty',s1p:'Pick the specialist for your problem',all:'All specialties →',s2:'Sitting in chamber today',seeall:'See all →',s3:'Browse by area',s4:'How it works',st1:'Search a specialty or doctor',st1p:'Type a problem and we suggest the right specialist.',st2:'Check time & chamber',st2p:'Who sits today and which days are off — at a glance.',st3:'Call for a serial',st3p:'One tap to call the chamber directly.',d1:'Are you a doctor or chamber staff?',d1p:'Add or update your profile for free so patients get the right times.',d1b:'Add a profile',d2:'Spotted wrong info?',d2p:'Tell us if a time or number changed — it helps other patients.',d2b:'Report it',s5:'Our contributors',join:'Join them',home:'Home',lh1:'Medicine & Diabetes Specialists in Chattogram',upd:'Last updated: 1 Sep 2026',flt:'Filters','f-day':'Day','f-time':'Time','f-area':'Area','f-gender':'Doctor',show:'Show results',sort:'Sort',ic:'Know a doctor who isn’t listed?',icp:'Add them — reviewed within 24–48 hours.'}};
+const BN={};document.querySelectorAll('[data-t]').forEach(e=>BN[e.dataset.t]=BN[e.dataset.t]||e.textContent);BN.q=document.getElementById('q').placeholder;
+function t(k){return lang==='en'?(L.en[k]||BN[k]):BN[k]}
+const S={bn:{now:'এখন বসছেন',today:'আজ বসছেন',off:'আজ বন্ধ',next:'পরের দিন',call:'সিরিয়ালের জন্য কল',copy:'নম্বর কপি',prof:'প্রোফাইল',off2:'বন্ধ',more:'আরও চেম্বার',res:'জন ডাক্তার পাওয়া গেছে',none:'এই ফিল্টারে কোনো ডাক্তার নেই',relax:'ফিল্টার মুছুন',copied:'নম্বর কপি হয়েছে',ver:'যাচাই',old:'তথ্য পুরোনো হতে পারে',sched:'সাপ্তাহিক সময়সূচি',chambers:'চেম্বার',maps:'Google Maps-এ দেখুন',wrong:'তথ্য ভুল? জানান',disc:'সময় বদলাতে পারে — যাওয়ার আগে ফোন করে নিশ্চিত হোন।',share:'শেয়ার',sim:'একই বিভাগের অন্যান্য ডাক্তার',morn:'সকাল',aft:'দুপুর',eve:'সন্ধ্যা',night:'রাত',todayD:'আজ',male:'পুরুষ',female:'মহিলা',todayLbl:'আজ'},
+ en:{now:'Sitting now',today:'Sitting today',off:'Off today',next:'Next',call:'Call for serial',copy:'Copy number',prof:'Profile',off2:'Off',more:'more chamber',res:'doctors found',none:'No doctor matches these filters',relax:'Clear filters',copied:'Number copied',ver:'Verified',old:'Info may be outdated',sched:'Weekly schedule',chambers:'Chambers',maps:'Open in Google Maps',wrong:'Wrong info? Report it',disc:'Times can change — always call to confirm before you go.',share:'Share',sim:'Other doctors in this specialty',morn:'Morning',aft:'Afternoon',eve:'Evening',night:'Night',todayD:'Today',male:'Male',female:'Female',todayLbl:'Today'}};
+const s=k=>S[lang][k];
+
+// time in Asia/Dhaka
+function dhakaNow(){const p=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const o={};p.forEach(x=>o[x.type]=x.value);return{day:o.weekday,min:(+o.hour%24)*60+ +o.minute}}
+const toMin=h=>{const[a,b]=h.split(':');return +a*60+ +b};
+function fmt(h){let[a,b]=h.split(':').map(Number);const ap=a>=12?'PM':'AM';a=a%12||12;return `${a}:${String(b).padStart(2,'0')} ${ap}`}
+function status(c){const n=dhakaNow();if(c.days.includes(n.day)){if(n.min>=toMin(c.start)&&n.min<toMin(c.end))return['now',s('now')];if(n.min<toMin(c.end))return['today',`${s('today')} · ${fmt(c.start)}`];}
+ const i=WEEK.indexOf(n.day);for(let k=1;k<=7;k++){const d=WEEK[(i+k)%7];if(c.days.includes(d))return[c.days.includes(n.day)?'next':'off',(c.days.includes(n.day)?'':s('off')+' · ')+`${s('next')}: ${lang==='bn'?BN_DAY[d]:d}`]}return['off',s('off')]}
+const offDays=c=>WEEK.filter(d=>!c.days.includes(d)).map(d=>lang==='bn'?BN_DAY[d]:d).join(', ');
+const tel=n=>'tel:+88'+n.replace(/\D/g,'');
+const ic=(id,st='')=>`<svg class="i" ${st}><use href="#${id}"/></svg>`;
+
+function card(d,compact){const c=d.ch[0];const[st,lbl]=status(c);
+ return `<article class="doc${compact?' compact':''}">
+  <div class="hd"><span class="avatar" aria-hidden="true">${d.ini}</span><div style="flex:1;min-width:0">
+   <div style="display:flex;gap:8px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap"><h3><a href="#doctor/${d.slug}">${d.name}</a></h3><span class="badge b-${st}"><span class="dot"></span>${lbl}</span></div>
+   <div class="deg">${d.degrees}</div>${compact?'':`<div class="pos">${d.designation} · ${d.institution}</div>`}</div></div>
+  <div class="meta"><div>${ic('pin')}<span>${c.name}, ${c.address}</span></div>
+   <div class="num">${ic('clock')}<span>${fmt(c.start)} – ${fmt(c.end)} &nbsp;·&nbsp; ${s('off2')}: ${offDays(c)}</span></div></div>
+  <div class="actions"><a class="btn btn-cta num" href="${tel(c.serial[0])}">${ic('phone')}${s('call')} · ${c.serial[0]}</a>
+   <button class="btn btn-ghost btn-icon" aria-label="${s('copy')}" onclick="copyNum('${c.serial[0]}')">${ic('copy')}</button>
+   ${compact?'':`<a class="btn btn-ghost" href="#doctor/${d.slug}">${s('prof')}${ic('chev')}</a>`}</div></article>`}
+
+function copyNum(n){navigator.clipboard&&navigator.clipboard.writeText(n).catch(()=>{});const tt=document.getElementById('toast');tt.textContent=s('copied')+': '+n;tt.classList.add('show');setTimeout(()=>tt.classList.remove('show'),1800)}
+
+// home
+function renderHome(){
+ document.getElementById('specGrid').innerHTML=specs.map(([i,bn,en,n])=>`<a class="spec${n?'':' soon'}" href="#list"><span class="ic">${ic(i,'style="width:22px;height:22px"')}</span><b>${lang==='bn'?bn:en}</b><small>${n?`${n} ${lang==='bn'?'জন ডাক্তার':'doctors'}`:(lang==='bn'?'শীঘ্রই — যোগ করুন':'Coming soon — help add')}</small></a>`).join('');
+ const n=dhakaNow();document.getElementById('todayLabel').textContent=(lang==='bn'?BN_DAY[n.day]+'বার':n.day)+' · '+(lang==='bn'?'চট্টগ্রাম সময়':'Chattogram time');
+ const today=doctors.filter(d=>d.ch.some(c=>c.days.includes(n.day)));
+ document.getElementById('todayCards').innerHTML=(today.length?today:doctors).map(d=>card(d,true)).join('');
+}
+
+// listing + filters
+const F={day:new Set(),time:new Set(),area:new Set(),gender:new Set()};
+function opts(){const n=dhakaNow();return{day:[['today',s('todayD')],...WEEK.map(d=>[d,lang==='bn'?BN_DAY[d]:d])],time:[['morn',s('morn')],['aft',s('aft')],['eve',s('eve')],['night',s('night')]],area:[...new Set(doctors.flatMap(d=>d.ch.map(c=>c.area)))].map(a=>[a,a]),gender:[['M',s('male')],['F',s('female')]]}}
+function slot(h){const m=toMin(h);return m<720?'morn':m<1020?'aft':m<1200?'eve':'night'}
+function match(d){const n=dhakaNow();return d.ch.some(c=>{
+ if(F.day.size&&![...F.day].some(x=>c.days.includes(x==='today'?n.day:x)))return false;
+ if(F.time.size&&!F.time.has(slot(c.start)))return false;
+ if(F.area.size&&!F.area.has(c.area))return false;return true})&&(!F.gender.size||F.gender.has(d.g))}
+function renderList(){
+ const o=opts();document.querySelectorAll('[data-group]').forEach(g=>{const k=g.dataset.group;g.innerHTML=o[k].map(([v,l])=>`<button type="button" class="chip" aria-pressed="${F[k].has(v)}" data-k="${k}" data-v="${v}">${l}</button>`).join('')});
+ let r=doctors.filter(match);const so=document.getElementById('sort').value;
+ const rank=d=>({now:0,today:1,next:3,off:4})[status(d.ch[0])[0]];
+ r.sort(so==='az'?(a,b)=>a.name.localeCompare(b.name):so==='senior'?(a,b)=>b.rank-a.rank:(a,b)=>rank(a)-rank(b));
+ const total=Object.values(F).reduce((a,b)=>a+b.size,0);
+ document.getElementById('fCount').textContent=total?`(${total})`:'';
+ document.getElementById('countTxt').textContent=`${doctors.length} ${lang==='bn'?'জন ডাক্তার':'doctors'}`;
+ document.getElementById('resTxt').textContent=`${r.length} ${s('res')}`;
+ document.getElementById('applied').innerHTML=total?Object.entries(F).flatMap(([k,set])=>[...set].map(v=>{const l=(o[k].find(x=>x[0]===v)||[v,v])[1];return `<button class="chip" aria-pressed="true" data-k="${k}" data-v="${v}" aria-label="Remove ${l}">${l}<svg class="i x" style="width:14px;height:14px"><use href="#x"/></svg></button>`})).join('')+`<button class="chip" id="clr">${s('relax')}</button>`:'';
+ document.getElementById('listCards').innerHTML=r.length?r.map(d=>card(d)).join(''):`<div class="empty"><b>${s('none')}</b><p class="muted">${lang==='bn'?'দিন বা এলাকার ফিল্টার কমিয়ে দেখুন।':'Try removing a day or area filter.'}</p><button class="btn btn-primary" onclick="clearF()">${s('relax')}</button></div>`;
+}
+function clearF(){Object.values(F).forEach(x=>x.clear());renderList()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){const set=F[b.dataset.k];set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);renderList()}if(e.target.closest('#clr'))clearF()});
+document.getElementById('sort').onchange=renderList;
+const fp=document.getElementById('filters'),sc=document.getElementById('scrim');
+const openF=v=>{fp.classList.toggle('open',v);sc.classList.toggle('open',v)};
+document.getElementById('openF').onclick=()=>openF(true);[sc,document.getElementById('closeF'),document.getElementById('applyF')].forEach(x=>x.onclick=()=>openF(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')openF(false)});
+
+// profile
+function renderProfile(slug){const d=doctors.find(x=>x.slug===slug)||doctors[0];const n=dhakaNow();
+ const old=(Date.now()-new Date(d.verified))/864e5>150;
+ const chs=d.ch.map(c=>{const[st,lbl]=status(c);return `<div class="panel" style="margin-top:16px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><h3 style="font-size:18px">${ic('hosp','style="vertical-align:-4px;color:var(--primary)"')} ${c.name}</h3><span class="badge b-${st}"><span class="dot"></span>${lbl}</span></div>
+  <p class="muted" style="margin:6px 0 4px">${c.address} · <span class="badge b-next">${c.area}</span></p><a href="https://maps.google.com/?q=${encodeURIComponent(c.name+' '+c.address)}" target="_blank" rel="noopener">${s('maps')} ↗</a>
+  <h4 style="margin:18px 0 0;font-size:14px" class="muted">${s('sched')}</h4>
+  <div class="week num">${WEEK.map(w=>{const on=c.days.includes(w);return `<div class="${on?'':'off'} ${w===n.day?'today':''}"><b>${lang==='bn'?BN_DAY[w]:w}</b>${on?fmt(c.start)+'<br>–'+fmt(c.end):s('off2')}</div>`}).join('')}</div>
+  <div class="actions" style="margin-top:18px">${c.serial.map(x=>`<a class="btn btn-cta num" href="${tel(x)}">${ic('phone')}${x}</a><button class="btn btn-ghost btn-icon" aria-label="${s('copy')} ${x}" onclick="copyNum('${x}')">${ic('copy')}</button>`).join('')}</div></div>`}).join('');
+ const sim=doctors.filter(x=>x!==d).map(x=>`<a href="#doctor/${x.slug}" style="display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--border);color:var(--ink)"><span class="avatar" style="width:36px;height:36px;font-size:12px">${x.ini}</span><span style="flex:1"><b style="font-size:14.5px">${x.name}</b><br><span class="muted" style="font-size:13px">${x.ch[0].area}</span></span>${ic('chev','style="color:var(--muted)"')}</a>`).join('');
+ document.getElementById('profileWrap').innerHTML=`<nav class="crumb" aria-label="Breadcrumb"><a href="#home">${t('home')}</a> › <a href="#list">Medicine &amp; Diabetes</a> › <span>${d.name}</span></nav>
+ <div class="profile"><div>
+  <div class="panel"><div class="p-hd"><span class="avatar" aria-hidden="true">${d.ini}</span><div style="flex:1;min-width:220px">
+   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"><span class="badge b-ver">${ic('activity','style="width:14px;height:14px"')}Medicine &amp; Diabetes</span>${old?`<span class="badge b-old">${s('old')}</span>`:`<span class="badge b-ver">${ic('check','style="width:14px;height:14px"')}${s('ver')}: ${d.verified}</span>`}</div>
+   <h1>${d.name}</h1><p style="margin:6px 0 2px">${d.degrees}</p><p class="muted" style="margin:0">${d.designation} · ${d.institution}</p></div></div>
+   <div class="actions hide-sm" style="margin-top:20px"><a class="btn btn-cta num" href="${tel(d.ch[0].serial[0])}">${ic('phone')}${s('call')} · ${d.ch[0].serial[0]}</a><button class="btn btn-ghost" onclick="copyNum('${d.ch[0].serial[0]}')">${ic('copy')}${s('copy')}</button><button class="btn btn-ghost">${ic('share')}${s('share')}</button></div></div>
+  <h2 style="font-size:20px;margin:28px 0 0">${s('chambers')}</h2>${chs}
+  <p class="muted" style="font-size:14px;margin-top:16px">${ic('shield','style="width:16px;height:16px;vertical-align:-3px"')} ${s('disc')} <a href="#home-add">${s('wrong')}</a></p>
+ </div><aside><div class="panel"><h3 style="font-size:16px;margin-bottom:6px">${s('sim')}</h3>${sim}</div>
+  <div class="panel" style="margin-top:16px;background:var(--danger-soft);border-color:#FECACA;color:#7F1D1D"><b>${lang==='bn'?'জরুরি অবস্থা?':'Emergency?'}</b><p style="margin:4px 0 10px;font-size:14px">${lang==='bn'?'অপেক্ষা করবেন না — এখনই কল করুন।':'Don’t wait — call now.'}</p><a class="btn" style="background:var(--danger);color:#fff" href="tel:999">${ic('phone')}999</a></div></aside></div>`;
+ const mb=document.getElementById('mbar');mb.innerHTML=`<a class="btn btn-cta num" href="${tel(d.ch[0].serial[0])}">${ic('phone')}${s('call')}</a><button class="btn btn-ghost btn-icon" aria-label="${s('copy')}" onclick="copyNum('${d.ch[0].serial[0]}')">${ic('copy')}</button><button class="btn btn-ghost btn-icon" aria-label="${s('share')}">${ic('share')}</button>`;
+}
+
+// router
+function route(){const h=location.hash.slice(1)||'home';const [v,arg]=h.split('/');
+ const map={home:'home','home-spec':'home','home-area':'home','home-add':'home',list:'list',doctor:'doctor'};const view=map[v]||'home';
+ document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='v-'+view));
+ document.getElementById('mbar').classList.toggle('show',view==='doctor');
+ if(view==='home'){renderHome();if(v!=='home'){const el=document.getElementById(v);el&&el.scrollIntoView()}else scrollTo(0,0)}
+ if(view==='list'){renderList();scrollTo(0,0)}if(view==='doctor'){renderProfile(arg);scrollTo(0,0)}}
+addEventListener('hashchange',route);
+
+// language
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.documentElement.lang=lang;
+ document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+ document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t(e.dataset.t));document.getElementById('q').placeholder=t('q');
+ const so=document.getElementById('sort');so.options[0].text=lang==='bn'?'আজ বসছেন আগে':'Sitting today first';so.options[1].text=lang==='bn'?'সিনিয়র আগে':'Senior first';so.options[2].text=lang==='bn'?'নাম A–Z':'Name A–Z';
+ try{localStorage.setItem('lang',lang)}catch(e){}route()});
+
+// autocomplete demo
+const q=document.getElementById('q'),ac=document.getElementById('ac');
+q.addEventListener('input',()=>ac.classList.toggle('open',q.value.trim().length>0));
+q.addEventListener('blur',()=>setTimeout(()=>ac.classList.remove('open'),150));
+try{if(localStorage.getItem('lang')==='en')document.querySelector('[data-lang=en]').click();else route()}catch(e){route()}
+</script>
+</body>
+</html>
