@@ -156,7 +156,7 @@ const INITIAL_DOCTORS: Doctor[] = [
   },
   {
     slug: 'dr-ma-yusuf-chowdhury',
-    name: 'Dr. MA Yusuf Chowdhury',
+    name: 'ডাঃ এম. এ. ইউসুফ চৌধুরী',
     nameEn: 'Dr. MA Yusuf Chowdhury',
     ini: 'MY',
     g: 'M',
@@ -165,12 +165,12 @@ const INITIAL_DOCTORS: Doctor[] = [
     specialtyEn: 'Medicine & Diabetes',
     specialtyKey: 'medicine',
     degrees: 'MBBS, MD (Internal Medicine), Fellow in Diabetology',
-    designation: 'Assistant Professor, Medicine Department',
-    institution: 'Chittagong Medical College & Hospital',
+    designation: 'সহকারী অধ্যাপক, মেডিসিন বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
     ch: [
       {
-        name: 'Chittagong Metropolitan Hospital Ltd.',
-        address: 'O.R. Nizam Road, Chattogram',
+        name: 'চট্টগ্রাম মেট্রোপলিটন হাসপাতাল',
+        address: '৬৯৮/বি ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম',
         area: 'O.R. Nizam Road',
         days: ['Sat', 'Sun', 'Mon', 'Wed', 'Thu'],
         start: '20:00',
@@ -183,7 +183,7 @@ const INITIAL_DOCTORS: Doctor[] = [
   },
   {
     slug: 'dr-abdullah-abu-sayeed',
-    name: 'Dr. Abdullah Abu Sayeed',
+    name: 'ডাঃ আব্দুল্লাহ আবু সাঈদ',
     nameEn: 'Dr. Abdullah Abu Sayeed',
     ini: 'AS',
     g: 'M',
@@ -192,12 +192,12 @@ const INITIAL_DOCTORS: Doctor[] = [
     specialtyEn: 'Medicine Specialist',
     specialtyKey: 'medicine',
     degrees: 'MBBS, MD (Internal Medicine), BCS (Health)',
-    designation: 'Medicine Specialist',
-    institution: 'Chittagong Medical College & Hospital',
+    designation: 'মেডিসিন বিশেষজ্ঞ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
     ch: [
       {
-        name: 'CSCR Hospital',
-        address: '1675/A, Room-405, O.R. Nizam Road, Chattogram',
+        name: 'সিএসসিআর (CSCR) হাসপাতাল',
+        address: '১৬৭৫/এ, রুম-৪০৫, ও.আর. নিজাম রোড, চট্টগ্রাম',
         area: 'O.R. Nizam Road',
         days: ['Sun', 'Wed'],
         start: '17:00',
@@ -210,7 +210,7 @@ const INITIAL_DOCTORS: Doctor[] = [
   },
   {
     slug: 'dr-nur-nahar-begum',
-    name: 'Dr. Nur Nahar Begum',
+    name: 'ডাঃ নূর নাহার বেগম',
     nameEn: 'Dr. Nur Nahar Begum',
     ini: 'NB',
     g: 'F',
@@ -219,12 +219,12 @@ const INITIAL_DOCTORS: Doctor[] = [
     specialtyEn: 'Diabetes Specialist',
     specialtyKey: 'medicine',
     degrees: 'MBBS, PGT (BARDEM), CCD (Open University, UK)',
-    designation: 'Senior Medical Officer',
-    institution: 'Chittagong Diabetic Hospital',
+    designation: 'সিনিয়র মেডিকেল অফিসার',
+    institution: 'চট্টগ্রাম ডায়াবেটিক হাসপাতাল',
     ch: [
       {
-        name: 'Magnum Diagnostic Ltd.',
-        address: '39 Momin Road, Kadam Mobarak, Chattogram',
+        name: 'ম্যাগনাম ডায়াগনস্টিক লিমিটেড',
+        address: '৩৯ মোমিন রোড, কদম মোবারক, চট্টগ্রাম',
         area: 'Momin Road',
         days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'],
         start: '18:00',
@@ -288,6 +288,438 @@ const INITIAL_DOCTORS: Doctor[] = [
       }
     ],
     verified: '2026-07-20'
+  },
+  {
+    slug: 'dr-mahmud-chowdhury-arju',
+    name: 'অধ্যাপক ডাঃ মাহমুদ এ চৌধুরী (আরজু)',
+    nameEn: 'Prof. Dr. Mahmud A. Chowdhury (Arju)',
+    ini: 'MA',
+    g: 'M',
+    rank: 5,
+    specialtyBn: 'শিশু বিশেষজ্ঞ ও পেডিয়াট্রিকস',
+    specialtyEn: 'Child Specialist & Pediatrics',
+    specialtyKey: 'child',
+    degrees: 'MBBS, FCPS (Pediatrics), MD (Child Health), Fellow WHO',
+    designation: 'অধ্যাপক ও সাবেক বিভাগীয় প্রধান, শিশু স্বাস্থ্য বিভাগ',
+    institution: 'চট্টগ্রাম মা ও শিশু হাসপাতাল মেডিকেল কলেজ',
+    ch: [
+      {
+        name: 'সিএসসিআর (CSCR) হাসপাতাল',
+        address: '১৬৭৫/এ ও.আর. নিজাম রোড, প্রবর্তক মোড়, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed'],
+        start: '17:00',
+        end: '21:00',
+        serial: ['01711-828822', '01844-001122'],
+        fee: '১০০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-09-10'
+  },
+  {
+    slug: 'dr-syeda-fouzia-maknoon',
+    name: 'ডাঃ সৈয়দা ফৌজিয়া মাকনুন',
+    nameEn: 'Dr. Syeda Fouzia Maknoon',
+    ini: 'FM',
+    g: 'F',
+    rank: 3,
+    specialtyBn: 'নবজাতক ও শিশু বিশেষজ্ঞ',
+    specialtyEn: 'Neonatal & Child Specialist',
+    specialtyKey: 'child',
+    degrees: 'MBBS, DCH (BSMMU), FCPS (Pediatrics)',
+    designation: 'কনসালটেন্ট, নবজাতক ও শিশু রোগ বিভাগ',
+    institution: 'পার্কভিউ হাসপাতাল, চট্টগ্রাম',
+    ch: [
+      {
+        name: 'পার্কভিউ হাসপাতাল',
+        address: '৯৪/১০৩ কাতালগঞ্জ রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'Panchlaish',
+        days: ['Sat', 'Mon', 'Wed', 'Thu'],
+        start: '16:30',
+        end: '19:30',
+        serial: ['01976-022333', '01886-554433'],
+        fee: '৮০০ – ১২০০ টাকা'
+      }
+    ],
+    verified: '2026-08-25'
+  },
+  {
+    slug: 'dr-sheikh-morshed-zaman',
+    name: 'ডাঃ শেখ মোর্শেদ জামান',
+    nameEn: 'Dr. Sheikh Morshed Zaman',
+    ini: 'MZ',
+    g: 'M',
+    rank: 4,
+    specialtyBn: 'চক্ষু রোগ ও ফ্যাকো সার্জন',
+    specialtyEn: 'Eye Specialist & Phaco Surgeon',
+    specialtyKey: 'eye',
+    degrees: 'MBBS, DO (DU), FCPS (Ophthalmology), Fellow Phaco & Retina (India)',
+    designation: 'সিনিয়র কনসালটেন্ট ও চক্ষু সার্জন',
+    institution: 'লায়ন্স চক্ষু হাসপাতাল ও ইনস্টিটিউট, চট্টগ্রাম',
+    ch: [
+      {
+        name: 'শেভরন ক্লিনিক্যাল ল্যাবরেটরি',
+        address: '১২/১২ ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Thu'],
+        start: '17:00',
+        end: '20:30',
+        serial: ['01711-789654', '01841-235689'],
+        fee: '৮০০ – ১২০০ টাকা'
+      }
+    ],
+    verified: '2026-09-12'
+  },
+  {
+    slug: 'dr-nasreen-akhter',
+    name: 'ডাঃ নাসরীন আক্তার',
+    nameEn: 'Dr. Nasreen Akhter',
+    ini: 'NA',
+    g: 'F',
+    rank: 3,
+    specialtyBn: 'চক্ষু রোগ ও গ্লকোমা বিশেষজ্ঞ',
+    specialtyEn: 'Eye Specialist & Glaucoma',
+    specialtyKey: 'eye',
+    degrees: 'MBBS, MCPS, FCPS (Eye), FICO (UK)',
+    designation: 'সহকারী অধ্যাপক, চক্ষু বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
+    ch: [
+      {
+        name: 'চট্টগ্রাম মেট্রোপলিটন হাসপাতাল',
+        address: '৬৯৮/বি ও.আর. নিজাম রোড, গোলপাহাড় মোড়, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Sun', 'Tue', 'Wed'],
+        start: '18:00',
+        end: '21:00',
+        serial: ['01819-334455'],
+        fee: '৭০০ – ১০০০ টাকা'
+      }
+    ],
+    verified: '2026-08-18'
+  },
+  {
+    slug: 'dr-md-jashim-uddin',
+    name: 'অধ্যাপক ডাঃ মোহাম্মদ জসীম উদ্দিন',
+    nameEn: 'Prof. Dr. Md. Jashim Uddin',
+    ini: 'JU',
+    g: 'M',
+    rank: 5,
+    specialtyBn: 'নাক, কান ও গলা বিশেষজ্ঞ',
+    specialtyEn: 'ENT & Head-Neck Specialist',
+    specialtyKey: 'ent',
+    degrees: 'MBBS, DLO, MS (ENT), FACS (USA)',
+    designation: 'অধ্যাপক ও বিভাগীয় প্রধান, ইএনটি বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
+    ch: [
+      {
+        name: 'সিএসসিআর (CSCR) হাসপাতাল',
+        address: '১৬৭৫/এ প্রবর্তক মোড়, ও.আর. নিজাম রোড, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed'],
+        start: '17:30',
+        end: '21:00',
+        serial: ['01711-395724', '031-656565'],
+        fee: '১০০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-09-05'
+  },
+  {
+    slug: 'dr-md-mizanur-rahman',
+    name: 'ডাঃ মোঃ মিজানুর রহমান',
+    nameEn: 'Dr. Md. Mizanur Rahman',
+    ini: 'MR',
+    g: 'M',
+    rank: 4,
+    specialtyBn: 'অর্থোপেডিক ও ট্রমা সার্জন',
+    specialtyEn: 'Orthopedic & Trauma Surgeon',
+    specialtyKey: 'ortho',
+    degrees: 'MBBS, MS (Orthopedic Surgery), AO Trauma Fellow (Switzerland)',
+    designation: 'সহযোগী অধ্যাপক, অর্থোপেডিক সার্জারি বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল',
+    ch: [
+      {
+        name: 'এপিক হেলথ কেয়ার লিমিটেড',
+        address: '১৯ কে.বি. ফজলুল কাদের রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'Panchlaish',
+        days: ['Sat', 'Sun', 'Mon', 'Wed', 'Thu'],
+        start: '18:00',
+        end: '21:30',
+        serial: ['01711-345678', '01978-009988'],
+        fee: '৮০০ – ১২০০ টাকা'
+      }
+    ],
+    verified: '2026-08-30'
+  },
+  {
+    slug: 'dr-chandan-kumar-sarker',
+    name: 'ডাঃ চন্দন কুমার সরকার',
+    nameEn: 'Dr. Chandan Kumar Sarker',
+    ini: 'CS',
+    g: 'M',
+    rank: 3,
+    specialtyBn: 'হাড়-জোড়া, স্পাইন ও অর্থোপেডিক',
+    specialtyEn: 'Bone, Joint & Spine Specialist',
+    specialtyKey: 'ortho',
+    degrees: 'MBBS, D-Ortho (BSMMU), MS (Ortho)',
+    designation: 'স্পাইন, বাতব্যথা ও অর্থোপেডিক সার্জন',
+    institution: 'পার্কভিউ হাসপাতাল, চট্টগ্রাম',
+    ch: [
+      {
+        name: 'পার্কভিউ হাসপাতাল',
+        address: '৯৪/১০৩ কাতালগঞ্জ রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'Panchlaish',
+        days: ['Sat', 'Mon', 'Tue', 'Thu'],
+        start: '17:00',
+        end: '20:00',
+        serial: ['01976-022333'],
+        fee: '৮০০ – ১০০০ টাকা'
+      }
+    ],
+    verified: '2026-07-15'
+  },
+  {
+    slug: 'dr-mansur-ahmed-chowdhury',
+    name: 'ডাঃ মনসুর আহমেদ চৌধুরী',
+    nameEn: 'Dr. Mansur Ahmed Chowdhury',
+    ini: 'MC',
+    g: 'M',
+    rank: 4,
+    specialtyBn: 'চর্ম, এলার্জি ও যৌন রোগ বিশেষজ্ঞ',
+    specialtyEn: 'Dermatology, Allergy & Venereology',
+    specialtyKey: 'skin',
+    degrees: 'MBBS, DDV (DU), FCPS (Dermatology), Fellow Laser Surgery (Bangkok)',
+    designation: 'চর্ম, এলার্জি ও লেজার কসমেটোলজি বিশেষজ্ঞ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
+    ch: [
+      {
+        name: 'ন্যাশনাল হাসপাতাল চট্টগ্রাম',
+        address: '১৪/১৫ মেহেদীবাগ রোড, চট্টগ্রাম',
+        area: 'Mehedibag',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'],
+        start: '18:00',
+        end: '21:00',
+        serial: ['01822-998877', '01715-667788'],
+        fee: '৭০০ – ১০০০ টাকা'
+      }
+    ],
+    verified: '2026-09-02'
+  },
+  {
+    slug: 'dr-subrata-roy',
+    name: 'ডাঃ সুব্রত রায়',
+    nameEn: 'Dr. Subrata Roy',
+    ini: 'SR',
+    g: 'M',
+    rank: 3,
+    specialtyBn: 'চর্ম ও যৌন রোগ বিশেষজ্ঞ',
+    specialtyEn: 'Skin & Sexual Diseases Specialist',
+    specialtyKey: 'skin',
+    degrees: 'MBBS (CMC), BCS (Health), DDV (BSMMU), MACP (USA)',
+    designation: 'কনসালটেন্ট, চর্ম ও যৌন রোগ বিভাগ',
+    institution: 'কসমোপলিটন হাসপাতাল ও পার্কভিউ',
+    ch: [
+      {
+        name: 'কসমোপলিটন হাসপাতাল',
+        address: 'চট্টেশ্বরী মোড়, চকবাজার, চট্টগ্রাম',
+        area: 'Chawkbazar',
+        days: ['Sat', 'Sun', 'Tue', 'Thu'],
+        start: '17:30',
+        end: '20:30',
+        serial: ['01819-445566'],
+        fee: '৬০০ – ১০০০ টাকা'
+      }
+    ],
+    verified: '2026-08-10'
+  },
+  {
+    slug: 'dr-maruf-bin-habib',
+    name: 'ডাঃ মারুফ বিন হাবিব',
+    nameEn: 'Dr. Maruf Bin Habib',
+    ini: 'MH',
+    g: 'M',
+    rank: 3,
+    specialtyBn: 'দন্ত চিকিৎসা ও মুখগহ্বর সার্জন',
+    specialtyEn: 'Dental Surgery & Implantology',
+    specialtyKey: 'dental',
+    degrees: 'BDS (DU), PGT (Oral Surgery), Advanced Implantology (Korea)',
+    designation: 'চিফ ডেন্টাল সার্জন ও ইমপ্ল্যান্টোলজিস্ট',
+    institution: 'শেভরন ডেন্টাল সেন্টার, চট্টগ্রাম',
+    ch: [
+      {
+        name: 'শেভরন ক্লিনিক্যাল ল্যাবরেটরি (ডেন্টাল ইউনিট)',
+        address: '১২/১২ ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'],
+        start: '16:00',
+        end: '21:00',
+        serial: ['01841-889900', '01712-445566'],
+        fee: '৫০০ – ৮০০ টাকা'
+      }
+    ],
+    verified: '2026-09-08'
+  },
+  {
+    slug: 'dr-hasanuzzaman',
+    name: 'অধ্যাপক ডাঃ হাসানুজ্জামান',
+    nameEn: 'Prof. Dr. Hasanuzzaman',
+    ini: 'HZ',
+    g: 'M',
+    rank: 5,
+    specialtyBn: 'নিউরো মেডিসিন ও ব্রেন বিশেষজ্ঞ',
+    specialtyEn: 'Neuromedicine Specialist',
+    specialtyKey: 'neuro',
+    degrees: 'MBBS, MD (Neurology), FCPS (Medicine), Fellow Stroke Management (Singapore)',
+    designation: 'অধ্যাপক ও বিভাগীয় প্রধান, নিউরোলজি বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল',
+    ch: [
+      {
+        name: 'পপুলার ডায়াগনস্টিক সেন্টার লিমিটেড',
+        address: '২০/বি কে.বি. ফজলুল কাদের রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'Panchlaish',
+        days: ['Sat', 'Sun', 'Mon', 'Wed', 'Thu'],
+        start: '18:00',
+        end: '22:00',
+        serial: ['09613-787810', '01844-010203'],
+        fee: '১২০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-09-14'
+  },
+  {
+    slug: 'dr-shiuli-mazumder',
+    name: 'ডাঃ শিউলি মজুমদার',
+    nameEn: 'Dr. Shiuli Mazumder',
+    ini: 'SM',
+    g: 'F',
+    rank: 3,
+    specialtyBn: 'নিউরো মেডিসিন ও ব্রেন বিশেষজ্ঞ',
+    specialtyEn: 'Neurology & Stroke Specialist',
+    specialtyKey: 'neuro',
+    degrees: 'MBBS, BCS (Health), MD (Neurology), MACP (USA)',
+    designation: 'কনসালটেন্ট ও নিউরোলজিস্ট',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল',
+    ch: [
+      {
+        name: 'সিএসসিআর (CSCR) হাসপাতাল',
+        address: '১৬৭৫/এ ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sun', 'Tue', 'Thu'],
+        start: '17:00',
+        end: '20:00',
+        serial: ['01755-019576'],
+        fee: '১০০০ – ১২০০ টাকা'
+      }
+    ],
+    verified: '2026-08-20'
+  },
+  {
+    slug: 'dr-pradip-kumar-dutta',
+    name: 'অধ্যাপক ডাঃ প্রদীপ কুমার দত্ত',
+    nameEn: 'Prof. Dr. Pradip Kumar Dutta',
+    ini: 'PD',
+    g: 'M',
+    rank: 5,
+    specialtyBn: 'কিডনি রোগ ও নেফ্রোলজি বিশেষজ্ঞ',
+    specialtyEn: 'Nephrology & Kidney Specialist',
+    specialtyKey: 'kidney',
+    degrees: 'MBBS, MD (Nephrology), FCPS (Medicine)',
+    designation: 'অধ্যাপক ও সিনিয়র কিডনি রোগ বিশেষজ্ঞ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল',
+    ch: [
+      {
+        name: 'ম্যাক্স হসপিটাল অ্যান্ড ডায়াগনস্টিক',
+        address: '৩৫ এস.এস. খালেদ রোড, জামাল খান, চট্টগ্রাম',
+        area: 'Jamal Khan',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed'],
+        start: '18:00',
+        end: '21:00',
+        serial: ['01713-998811', '01819-776655'],
+        fee: '১০০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-09-04'
+  },
+  {
+    slug: 'dr-sm-tareq',
+    name: 'অধ্যাপক ডাঃ এস. এম. তারেক',
+    nameEn: 'Prof. Dr. S. M. Tareq',
+    ini: 'ST',
+    g: 'M',
+    rank: 5,
+    specialtyBn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জন',
+    specialtyEn: 'General & Laparoscopic Surgeon',
+    specialtyKey: 'surgery',
+    degrees: 'MBBS, FCPS (Surgery), MS (General Surgery), FMAS',
+    designation: 'অধ্যাপক, জেনারেল ও ল্যাপারোস্কোপিক সার্জারি বিভাগ',
+    institution: 'চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল',
+    ch: [
+      {
+        name: 'শেভরন ক্লিনিক্যাল ল্যাবরেটরি',
+        address: '১২/১২ ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম',
+        area: 'O.R. Nizam Road',
+        days: ['Sat', 'Mon', 'Wed', 'Thu'],
+        start: '17:30',
+        end: '20:30',
+        serial: ['01711-554433', '01841-112233'],
+        fee: '১০০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-08-28'
+  },
+  {
+    slug: 'dr-shahana-akhter',
+    name: 'অধ্যাপক ডাঃ শাহানা আক্তার',
+    nameEn: 'Prof. Dr. Shahana Akhter',
+    ini: 'SA',
+    g: 'F',
+    rank: 5,
+    specialtyBn: 'গাইনি, প্রসূতি ও বন্ধ্যাত্ব বিশেষজ্ঞ',
+    specialtyEn: 'Gynae, Obs & Infertility Specialist',
+    specialtyKey: 'gynae',
+    degrees: 'MBBS, DGO, FCPS (Gynae & Obs), Fellow Infertility & IVF',
+    designation: 'অধ্যাপক ও বিভাগীয় প্রধান, স্ত্রীরোগ ও প্রসূতি বিভাগ',
+    institution: 'চট্টগ্রাম মা ও শিশু হাসপাতাল মেডিকেল কলেজ',
+    ch: [
+      {
+        name: 'অ্যাপোলো ইমপেরিয়াল হসপিটালস',
+        address: 'জাকির হোসেন রোড, পাহাড়তলী, চট্টগ্রাম',
+        area: 'Pahartali',
+        days: ['Sat', 'Sun', 'Tue', 'Wed'],
+        start: '15:00',
+        end: '18:30',
+        serial: ['09610847847', '01844-332211'],
+        fee: '১০০০ – ১৫০০ টাকা'
+      }
+    ],
+    verified: '2026-09-11'
+  },
+  {
+    slug: 'dr-rezwanul-karim',
+    name: 'ডাঃ রেজওয়ানুল করিম',
+    nameEn: 'Dr. Rezwanul Karim',
+    ini: 'RK',
+    g: 'M',
+    rank: 3,
+    specialtyBn: 'বক্ষব্যাধি, অ্যাজমা ও মেডিসিন',
+    specialtyEn: 'Chest Diseases, Asthma & Medicine',
+    specialtyKey: 'medicine',
+    degrees: 'MBBS, DTCD, MD (Chest Diseases), FCCP (USA)',
+    designation: 'বক্ষব্যাধি, অ্যাজমা, যক্ষ্মা ও মেডিসিন বিশেষজ্ঞ',
+    institution: 'চট্টগ্রাম বক্ষব্যাধি হাসপাতাল',
+    ch: [
+      {
+        name: 'বেলভিউ ডায়াগনস্টিক সেন্টার',
+        address: 'ও.আর. নিজাম রোড, গোলপাহাড় মোড়, চট্টগ্রাম',
+        area: 'Mehedibag',
+        days: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed'],
+        start: '17:00',
+        end: '20:00',
+        serial: ['01711-223344', '01819-556677'],
+        fee: '৮০০ – ১২০০ টাকা'
+      }
+    ],
+    verified: '2026-08-14'
   }
 ];
 
@@ -408,7 +840,20 @@ export default function App() {
   const [doctorsList, setDoctorsList] = useState<Doctor[]>(() => {
     try {
       const saved = localStorage.getItem('dakterachen_doctors');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed: Doctor[] = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const existingSlugs = new Set(parsed.map(d => d.slug));
+          const newFromInitial = INITIAL_DOCTORS.filter(d => !existingSlugs.has(d.slug));
+          const updated = parsed.map(p => {
+            const match = INITIAL_DOCTORS.find(d => d.slug === p.slug);
+            return match ? { ...match, ...p, name: match.name, degrees: match.degrees, ch: match.ch, img: match.img || p.img } : p;
+          });
+          const merged = [...updated, ...newFromInitial];
+          localStorage.setItem('dakterachen_doctors', JSON.stringify(merged));
+          return merged;
+        }
+      }
     } catch {}
     return INITIAL_DOCTORS;
   });
