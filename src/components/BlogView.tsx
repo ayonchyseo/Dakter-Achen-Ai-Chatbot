@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   X,
   Stethoscope,
-  ChevronLeft
+  ChevronLeft,
+  Download
 } from 'lucide-react';
 import { BlogPost, BlogCategoryKey } from '../types/blog';
 import { BLOG_POSTS, BLOG_CATEGORIES } from '../data/blogData';
@@ -120,9 +121,20 @@ export default function BlogView({
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Heading and Search */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/80 border border-cyan-200 text-cyan-900 text-xs sm:text-sm font-bold">
-              <BookOpen className="w-4 h-4 text-cyan-700" />
-              <span>{lang === 'bn' ? 'স্বাস্থ্য সচেতনতা ও তথ্য ব্লগ' : 'Health Blog & Medical Guides'}</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/80 border border-cyan-200 text-cyan-900 text-xs sm:text-sm font-bold">
+                <BookOpen className="w-4 h-4 text-cyan-700" />
+                <span>{lang === 'bn' ? '১০৬+ স্বাস্থ্য সচেতনতা প্রবন্ধ ও গাইড' : '106+ Medical Guides & Tips'}</span>
+              </div>
+              <a
+                href="/dakterachen-wordpress-import.xml"
+                download="dakterachen-wordpress-import.xml"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 text-xs font-bold transition-all shadow-2xs"
+                title="Download all 106+ articles for WordPress"
+              >
+                <Download className="w-3.5 h-3.5 text-amber-700" />
+                <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট' : 'WordPress XML Export'}</span>
+              </a>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.2]">

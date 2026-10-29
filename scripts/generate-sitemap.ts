@@ -9,6 +9,7 @@ import {
   generateUsersSitemapXml,
   generateSitemapXml,
 } from '../src/lib/sitemapGenerator';
+import { generateWordPressWxrXml } from '../src/lib/wordpressExportGenerator';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,15 +46,19 @@ fs.writeFileSync(path.join(publicDir, 'wp-sitemap-users-1.xml'), usersXml, 'utf-
 const fullXml = generateSitemapXml(baseUrl);
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), fullXml, 'utf-8');
 
-// 7. robots.txt
+// 7. WordPress WXR Import File for dakterachen.com
+const wpExportXml = generateWordPressWxrXml('https://dakterachen.com');
+fs.writeFileSync(path.join(publicDir, 'dakterachen-wordpress-import.xml'), wpExportXml, 'utf-8');
+
+// 8. robots.txt
 const cleanBase = baseUrl.replace(/\/+$/, '');
 const robotsTxt = `User-agent: *
 Allow: /
 
-# WordPress & Standard Sitemaps
-Sitemap: ${cleanBase}/wp-sitemap.xml
+# Primary Sitemaps
 Sitemap: ${cleanBase}/sitemap.xml
+Sitemap: ${cleanBase}/wp-sitemap.xml
 `;
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsTxt, 'utf-8');
 
-console.log('✅ Generated all XML sitemaps and robots.txt in /public');
+console.log('✅ Generated all XML sitemaps, robots.txt, and WordPress import XML in /public');

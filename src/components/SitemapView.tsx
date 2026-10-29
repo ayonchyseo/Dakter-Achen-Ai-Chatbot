@@ -8,7 +8,9 @@ import {
   Search,
   CheckCircle,
   FolderTree,
-  ArrowRight
+  ArrowRight,
+  Download,
+  HelpCircle
 } from 'lucide-react';
 import { INITIAL_DOCTORS } from '../data/doctors';
 import { BLOG_POSTS } from '../data/blogData';
@@ -81,29 +83,60 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
               : 'Complete index of 500+ specialist doctors, 106+ medical articles, 12 specialties, and 14 Chittagong healthcare hubs.'}
           </p>
 
-          <div className="pt-2 flex flex-wrap items-center gap-3">
+          <div className="pt-2 flex flex-wrap items-center gap-2.5">
             <a
               href="/sitemap.xml"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-[#0E7490] hover:bg-cyan-50 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
+              className="inline-flex items-center gap-2 bg-white text-[#0E7490] hover:bg-cyan-50 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
               <FileText size={15} />
-              <span>{lang === 'bn' ? 'এক্সএমএল সাইটম্যাপ ফাইল দেখুন (sitemap.xml)' : 'View XML Sitemap File'}</span>
+              <span>{lang === 'bn' ? 'সরাসরি সাইটম্যাপ (sitemap.xml)' : 'Combined Sitemap'}</span>
               <ExternalLink size={13} />
             </a>
 
             <a
-              href="/robots.txt"
+              href="/wp-sitemap.xml"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all"
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all"
             >
-              <span>robots.txt</span>
+              <FolderTree size={15} />
+              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস ইনডেক্স (wp-sitemap.xml)' : 'WP Sitemap Index'}</span>
               <ExternalLink size={13} />
+            </a>
+
+            <a
+              href="/dakterachen-wordpress-import.xml"
+              download="dakterachen-wordpress-import.xml"
+              className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
+            >
+              <Download size={15} />
+              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট ডাউনলোড (১০৬+ পোস্ট)' : 'Download WP XML (106+ Posts)'}</span>
             </a>
           </div>
         </div>
+      </div>
+
+      {/* WordPress & Domain Migration Info Banner */}
+      <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 text-amber-950 text-xs sm:text-sm space-y-2 shadow-xs">
+        <div className="flex items-center gap-2 font-bold text-amber-900 text-sm sm:text-base">
+          <HelpCircle size={18} className="text-amber-700 shrink-0" />
+          <span>{lang === 'bn' ? 'dakterachen.com ডোমেইনে পোস্ট ও সাইটম্যাপ যুক্ত করার উপায়:' : 'How to show posts & sitemap on dakterachen.com:'}</span>
+        </div>
+        <p className="leading-relaxed text-slate-700">
+          {lang === 'bn' ? (
+            <>
+              ১. <strong>এই আধুনিক অ্যাপে:</strong> সমস্ত <strong>১০৬+ স্বাস্থ্য প্রবন্ধ</strong> ও <strong>২৬০+ ডাক্তার প্রোফাইল</strong> ইতিমধ্যেই লাইভ এবং উপরের <strong>&quot;স্বাস্থ্য ব্লগ&quot;</strong> ও <strong>&quot;ডাক্তার খুঁজুন&quot;</strong> বাটনে ক্লিক করলেই পড়তে পারবেন।<br />
+              ২. <strong>আপনার dakterachen.com সাইটে:</strong> যদি আপনার লাইভ ডোমেইনে ওয়ার্ডপ্রেস চলমান থাকে, তবে উপরের হলুদ বাটনে ক্লিক করে <code>dakterachen-wordpress-import.xml</code> ডাউনলোড করুন। এরপর আপনার ওয়ার্ডপ্রেস অ্যাডমিনে গিয়ে <strong>Tools &gt; Import &gt; WordPress</strong> এ আপলোড করলেই সাথে সাথে ১০৬টি নতুন পোস্ট আপনার ওয়ার্ডপ্রেস সাইট ও sitemap-এ যুক্ত হয়ে যাবে!
+            </>
+          ) : (
+            <>
+              1. <strong>In this app:</strong> All 106+ articles and 260+ doctors are already live under the &quot;Health Blog&quot; and &quot;Find Doctors&quot; sections.<br />
+              2. <strong>For dakterachen.com:</strong> If your live domain is running WordPress, click the yellow button above to download the <code>dakterachen-wordpress-import.xml</code> file, then go to <strong>Tools &gt; Import &gt; WordPress</strong> in your WordPress dashboard to import all 106+ posts instantly.
+            </>
+          )}
+        </p>
       </div>
 
       {/* Search & Filter Nav */}
