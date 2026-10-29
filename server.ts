@@ -4,6 +4,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
+import {
+  generateSitemapIndexXml,
+  generatePagesSitemapXml,
+  generatePostsSitemapXml,
+  generateTaxonomiesSitemapXml,
+  generateUsersSitemapXml,
+  generateSitemapXml,
+  renderHumanFriendlySitemapHtml,
+  SPECIALTIES,
+  CHATTOGRAM_AREAS,
+} from './src/lib/sitemapGenerator';
+import { INITIAL_DOCTORS } from './src/data/doctors';
+import { BLOG_POSTS } from './src/data/blogData';
 
 dotenv.config();
 
@@ -56,6 +69,220 @@ async function startServer() {
       timestamp: new Date().toISOString(),
       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
     });
+  });
+
+  // Helper to determine if the client wants human-readable HTML (in browser) vs raw XML
+  const shouldServeHtml = (req: express.Request) => {
+    if (req.query.format === 'xml') return false;
+    const accept = req.headers['accept'] || '';
+    return accept.includes('text/html');
+  };
+
+  const getBaseUrl = (req: express.Request) => {
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const host = req.get('host') || 'ais-pre-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app';
+    return process.env.APP_URL || `${protocol}://${host}`;
+  };
+
+  // 1. WordPress style Sitemap Index (/wp-sitemap.xml & /sitemap_index.xml)
+  app.get(['/wp-sitemap.xml', '/sitemap_index.xml'], (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'XML Sitemap Index (wp-sitemap.xml)',
+        description: 'এটি ডাক্তার আছেন প্ল্যাটফর্মের মূল এক্সএমএল সাইটম্যাপ ইনডেক্স। ব্রাউজারের কোনো লাল XSLT ওয়ার্নিং ছাড়াই সম্পূর্ণ নিরাপদ ও দ্রুত লোড হয়।',
+        isIndex: true,
+        rawXmlUrl: `${cleanBase}/wp-sitemap.xml?format=xml`,
+        items: [
+          { loc: `${cleanBase}/wp-sitemap-posts-page-1.xml`, lastmod: today, title: 'প্রধান পেজ ও ২৬০+ বিশেষজ্ঞ ডাক্তার প্রোফাইল' },
+          { loc: `${cleanBase}/wp-sitemap-posts-post-1.xml`, lastmod: today, title: '১০৬+ স্বাস্থ্য ও সচেতনতা গাইড প্রবন্ধ' },
+          { loc: `${cleanBase}/wp-sitemap-taxonomies-category-1.xml`, lastmod: today, title: '১২টি বিশেষজ্ঞ চিকিৎসা ক্যাটাগরি' },
+          { loc: `${cleanBase}/wp-sitemap-users-1.xml`, lastmod: today, title: 'চট্টগ্রামের ১৪টি প্রধান স্বাস্থ্যসেবা এলাকা হাব' },
+          { loc: `${cleanBase}/sitemap.xml`, lastmod: today, title: 'সম্পূর্ণ কম্বাইন্ড সাইটম্যাপ (৪০২টি ইউআরএল)' },
+        ],
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generateSitemapIndexXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 2. Pages & Doctors Sub-Sitemap (/wp-sitemap-posts-page-1.xml)
+  app.get('/wp-sitemap-posts-page-1.xml', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const items = [
+        { loc: `${cleanBase}/`, lastmod: today, changefreq: 'daily', priority: '1.0', title: 'হোমপেজ' },
+        { loc: `${cleanBase}/#list`, lastmod: today, changefreq: 'daily', priority: '0.9', title: 'ডাক্তার ডিরেক্টরি' },
+        { loc: `${cleanBase}/#blog`, lastmod: today, changefreq: 'daily', priority: '0.9', title: 'স্বাস্থ্য ব্লগ ও টিপস' },
+        { loc: `${cleanBase}/#sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7', title: 'ভিজুয়াল সাইটম্যাপ' },
+        ...INITIAL_DOCTORS.map((d) => ({
+          loc: `${cleanBase}/#doctor/${d.slug}`,
+          lastmod: today,
+          changefreq: 'weekly',
+          priority: '0.85',
+          title: `${d.name} (${d.specialtyBn})`,
+        })),
+      ];
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'Pages & Doctors XML Sitemap',
+        description: 'প্রধান পেজসমূহ এবং ২৬০+ বিশেষজ্ঞ চিকিৎসকের প্রোফাইল লিংক।',
+        items,
+        rawXmlUrl: `${cleanBase}/wp-sitemap-posts-page-1.xml?format=xml`,
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generatePagesSitemapXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 3. Blog Posts Sub-Sitemap (/wp-sitemap-posts-post-1.xml)
+  app.get('/wp-sitemap-posts-post-1.xml', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const items = BLOG_POSTS.map((b) => ({
+        loc: `${cleanBase}/#blog/${b.slug}`,
+        lastmod: b.publishedDate || today,
+        changefreq: 'monthly',
+        priority: '0.8',
+        title: b.titleBn,
+      }));
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'Health Blog Posts XML Sitemap',
+        description: '১০৬+ চিকিৎসা সচেতনতা, পুষ্টি ও স্বাস্থ্য পরামর্শ প্রবন্ধের তালিকা।',
+        items,
+        rawXmlUrl: `${cleanBase}/wp-sitemap-posts-post-1.xml?format=xml`,
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generatePostsSitemapXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 4. Taxonomies Sub-Sitemap (/wp-sitemap-taxonomies-category-1.xml)
+  app.get('/wp-sitemap-taxonomies-category-1.xml', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const items = SPECIALTIES.map((spec) => ({
+        loc: `${cleanBase}/#list?specialty=${spec}`,
+        lastmod: today,
+        changefreq: 'weekly',
+        priority: '0.8',
+        title: `স্পেশালিটি বিভাগ: ${spec}`,
+      }));
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'Specialty Categories XML Sitemap',
+        description: '১২টি বিশেষজ্ঞ চিকিৎসা বিভাগের আর্কাইভ ইউআরএল।',
+        items,
+        rawXmlUrl: `${cleanBase}/wp-sitemap-taxonomies-category-1.xml?format=xml`,
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generateTaxonomiesSitemapXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 5. Areas Sub-Sitemap (/wp-sitemap-users-1.xml)
+  app.get('/wp-sitemap-users-1.xml', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const items = CHATTOGRAM_AREAS.map((area) => ({
+        loc: `${cleanBase}/#list?area=${encodeURIComponent(area)}`,
+        lastmod: today,
+        changefreq: 'weekly',
+        priority: '0.8',
+        title: `চট্টগ্রাম এলাকা: ${area}`,
+      }));
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'Area Hubs XML Sitemap',
+        description: 'চট্টগ্রামের ১৪টি প্রধান স্বাস্থ্যসেবা কেন্দ্র ও এলাকা।',
+        items,
+        rawXmlUrl: `${cleanBase}/wp-sitemap-users-1.xml?format=xml`,
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generateUsersSitemapXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 6. Full Combined XML Sitemap (/sitemap.xml)
+  app.get('/sitemap.xml', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (shouldServeHtml(req)) {
+      const items = [
+        { loc: `${cleanBase}/`, lastmod: today, changefreq: 'daily', priority: '1.0', title: 'হোমপেজ' },
+        { loc: `${cleanBase}/#list`, lastmod: today, changefreq: 'daily', priority: '0.9', title: 'ডাক্তার ডিরেক্টরি' },
+        { loc: `${cleanBase}/#blog`, lastmod: today, changefreq: 'daily', priority: '0.9', title: 'স্বাস্থ্য ব্লগ ও টিপস' },
+        { loc: `${cleanBase}/#sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7', title: 'ভিজুয়াল সাইটম্যাপ' },
+        ...INITIAL_DOCTORS.map((d) => ({
+          loc: `${cleanBase}/#doctor/${d.slug}`,
+          lastmod: today,
+          changefreq: 'weekly',
+          priority: '0.85',
+          title: `ডাঃ ${d.name} (${d.specialtyBn})`,
+        })),
+        ...BLOG_POSTS.map((b) => ({
+          loc: `${cleanBase}/#blog/${b.slug}`,
+          lastmod: b.publishedDate || today,
+          changefreq: 'monthly',
+          priority: '0.8',
+          title: b.titleBn,
+        })),
+      ];
+      const html = renderHumanFriendlySitemapHtml({
+        title: 'Dakter Achen Complete XML Sitemap',
+        description: 'চট্টগ্রামের স্বাস্থ্যসেবা প্ল্যাটফর্মের সম্পূর্ণ ৪০২টি ইউআরএলের পূর্ণাঙ্গ সূচিপত্র।',
+        items,
+        rawXmlUrl: `${cleanBase}/sitemap.xml?format=xml`,
+      });
+      res.header('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    const xml = generateSitemapXml(baseUrl);
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+  });
+
+  // 7. Dynamic robots.txt
+  app.get('/robots.txt', (req, res) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    res.header('Content-Type', 'text/plain; charset=utf-8');
+    res.send(`User-agent: *\nAllow: /\n\nSitemap: ${cleanBase}/wp-sitemap.xml\nSitemap: ${cleanBase}/sitemap.xml\n`);
   });
 
   // Server-side Gemini Chat API with Maps Grounding

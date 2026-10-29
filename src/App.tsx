@@ -36,6 +36,7 @@ import DoctorRatingSection from './components/DoctorRatingSection';
 import BlogView from './components/BlogView';
 import ArticleDetailView from './components/ArticleDetailView';
 import DailyTipCard from './components/DailyTipCard';
+import SitemapView from './components/SitemapView';
 import { INITIAL_DOCTORS } from './data/doctors';
 import { BLOG_POSTS } from './data/blogData';
 import type { BlogPost } from './types/blog';
@@ -199,7 +200,7 @@ export default function App() {
   });
 
   // Routing
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor' | 'blog' | 'article'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor' | 'blog' | 'article' | 'sitemap'>('home');
   const [selectedDoctorSlug, setSelectedDoctorSlug] = useState<string>('dr-soumitra-das');
   const [selectedArticleSlug, setSelectedArticleSlug] = useState<string>('dengue-fever-warning-signs-chattogram');
 
@@ -264,6 +265,9 @@ export default function App() {
         window.scrollTo(0, 0);
       } else if (route === 'blog' || route === 'tips') {
         setCurrentRoute('blog');
+        window.scrollTo(0, 0);
+      } else if (route === 'sitemap') {
+        setCurrentRoute('sitemap');
         window.scrollTo(0, 0);
       } else if (route === 'list') {
         setCurrentRoute('list');
@@ -2120,6 +2124,22 @@ export default function App() {
             onToast={showToast}
           />
         )}
+
+        {/* ======================= SITEMAP VIEW ======================= */}
+        {currentRoute === 'sitemap' && (
+          <SitemapView
+            lang={lang}
+            onSelectDoctor={(slug) => {
+              setSelectedDoctorSlug(slug);
+              navigateTo(`doctor/${slug}`);
+            }}
+            onSelectArticle={(slug) => {
+              setSelectedArticleSlug(slug);
+              navigateTo(`blog/${slug}`);
+            }}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
       </main>
 
       {/* Footer */}
@@ -2234,6 +2254,17 @@ export default function App() {
                 <button onClick={() => openChat()} className="hover:text-white transition-colors text-cyan-400 font-semibold">
                   {lang === 'bn' ? 'AI স্বাস্থ্য পরামর্শক' : 'Ask AI Health Assistant'}
                 </button>
+              </li>
+              <li>
+                <button onClick={() => navigateTo('sitemap')} className="hover:text-cyan-300 transition-colors text-slate-300 font-medium">
+                  {lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (HTML)' : 'HTML Sitemap'}
+                </button>
+              </li>
+              <li>
+                <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-slate-400 inline-flex items-center gap-1">
+                  <span>sitemap.xml</span>
+                  <ExternalLink className="w-3 h-3 text-slate-500" />
+                </a>
               </li>
             </ul>
           </div>
