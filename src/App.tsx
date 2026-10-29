@@ -26,10 +26,14 @@ import {
   AlertTriangle,
   ArrowRight,
   ExternalLink,
-  MessageSquare
+  MessageSquare,
+  Star
 } from 'lucide-react';
 import Chatbot from './components/Chatbot';
+import DoctorRatingSection from './components/DoctorRatingSection';
 import { INITIAL_DOCTORS } from './data/doctors';
+import { loadAllRatings, saveDoctorRating, getDoctorRating } from './lib/ratings';
+import type { DoctorRatingData } from './lib/ratings';
 
 export type { Chamber, Doctor } from './types/doctor';
 import type { Chamber, Doctor } from './types/doctor';
@@ -199,8 +203,17 @@ export default function App() {
   const [filterTime, setFilterTime] = useState<Set<string>>(new Set());
   const [filterArea, setFilterArea] = useState<Set<string>>(new Set());
   const [filterGender, setFilterGender] = useState<Set<string>>(new Set());
-  const [sortBy, setSortBy] = useState<'today' | 'senior' | 'az'>('today');
+  const [sortBy, setSortBy] = useState<'today' | 'rating' | 'senior' | 'az'>('today');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // Ratings state
+  const [ratingsStore, setRatingsStore] = useState<Record<string, DoctorRatingData>>(() => loadAllRatings());
+
+  const handleDoctorRate = (slug: string, rating: number, rank: number = 5, comment?: string, tags?: string[]) => {
+    const { updatedStore } = saveDoctorRating(ratingsStore, slug, rating, rank, comment, tags);
+    setRatingsStore(updatedStore);
+    showToast(lang === 'bn' ? `আপনার ${rating}★ রেটিং সংরক্ষিত হয়েছে!` : `Your ${rating}★ rating has been saved!`);
+  };
 
   // Modals
   const [addDoctorModalOpen, setAddDoctorModalOpen] = useState(false);
@@ -334,6 +347,12 @@ export default function App() {
 
       return hasMatchingChamber;
     }).sort((a, b) => {
+      if (sortBy === 'rating') {
+        const aRating = getDoctorRating(ratingsStore, a.slug, a.rank).avg;
+        const bRating = getDoctorRating(ratingsStore, b.slug, b.rank).avg;
+        if (bRating !== aRating) return bRating - aRating;
+        return b.rank - a.rank;
+      }
       if (sortBy === 'az') return a.nameEn.localeCompare(b.nameEn);
       if (sortBy === 'senior') return b.rank - a.rank;
       // Default: sitting today first
@@ -342,7 +361,7 @@ export default function App() {
       const weight: Record<string, number> = { now: 0, today: 1, next: 2, off: 3 };
       return (weight[aStatus] ?? 4) - (weight[bStatus] ?? 4);
     });
-  }, [doctorsList, searchQuery, selectedSpecialty, selectedArea, filterDay, filterTime, filterArea, filterGender, sortBy, lang, dhakaNow.day]);
+  }, [doctorsList, searchQuery, selectedSpecialty, selectedArea, filterDay, filterTime, filterArea, filterGender, sortBy, lang, dhakaNow.day, ratingsStore]);
 
   // Doctors sitting today for Homepage
   const todayDoctors = useMemo(() => {
@@ -354,6 +373,11 @@ export default function App() {
   const activeDoctor = useMemo(() => {
     return doctorsList.find(d => d.slug === selectedDoctorSlug) || doctorsList[0];
   }, [doctorsList, selectedDoctorSlug]);
+
+  // Active Doctor Rating stats
+  const activeDoctorRating = useMemo(() => {
+    return getDoctorRating(ratingsStore, activeDoctor.slug, activeDoctor.rank);
+  }, [ratingsStore, activeDoctor]);
 
   // Autocomplete live matches
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
@@ -678,7 +702,13 @@ export default function App() {
                                 {doc.ini}
                               </span>
                               <div className="flex-1 min-w-0">
-                                <p className="font-bold text-slate-900 truncate">{doc.name}</p>
+                                <div className="flex items-center gap-2">
+                                  <p className="font-bold text-slate-900 truncate">{doc.name}</p>
+                                  <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 num shrink-0">
+                                    <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
+                                    <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
+                                  </span>
+                                </div>
                                 <p className="text-xs text-slate-500 truncate">{doc.specialtyBn} · {doc.ch[0]?.name}</p>
                               </div>
                               <span className="text-xs text-cyan-700 font-semibold">{lang === 'bn' ? 'সিরিয়াল দেখুন →' : 'View →'}</span>
@@ -845,15 +875,21 @@ export default function App() {
 
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start justify-between gap-2 flex-wrap">
-                                <h3 className="font-bold text-base sm:text-lg text-slate-900 leading-snug">
-                                  <a
-                                    href={`#doctor/${doc.slug}`}
-                                    onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
-                                    className="hover:text-cyan-700"
-                                  >
-                                    {doc.name}
-                                  </a>
-                                </h3>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h3 className="font-bold text-base sm:text-lg text-slate-900 leading-snug">
+                                    <a
+                                      href={`#doctor/${doc.slug}`}
+                                      onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
+                                      className="hover:text-cyan-700"
+                                    >
+                                      {doc.name}
+                                    </a>
+                                  </h3>
+                                  <span className="inline-flex items-center gap-0.5 text-xs font-bold text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 num shrink-0">
+                                    <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+                                    <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
+                                  </span>
+                                </div>
                               </div>
                               <p className="text-xs font-semibold text-cyan-700 mt-0.5">{doc.specialtyBn}</p>
                               <p className="text-xs text-slate-500 font-medium line-clamp-1 mt-0.5">{doc.degrees}</p>
@@ -1145,6 +1181,7 @@ export default function App() {
                     className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none cursor-pointer"
                   >
                     <option value="today">{lang === 'bn' ? 'আজ বসছেন আগে' : 'Sitting today first'}</option>
+                    <option value="rating">{lang === 'bn' ? 'সর্বোচ্চ রেটিং আগে' : 'Highest Rated'}</option>
                     <option value="senior">{lang === 'bn' ? 'অভিজ্ঞতা অনুযায়ী' : 'Seniority'}</option>
                     <option value="az">{lang === 'bn' ? 'নাম A–Z' : 'Name A–Z'}</option>
                   </select>
@@ -1422,15 +1459,22 @@ export default function App() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-3 flex-wrap">
                               <div>
-                                <h3 className="font-bold text-lg sm:text-xl text-slate-900 leading-snug">
-                                  <a
-                                    href={`#doctor/${doc.slug}`}
-                                    onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
-                                    className="hover:text-cyan-700"
-                                  >
-                                    {doc.name}
-                                  </a>
-                                </h3>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h3 className="font-bold text-lg sm:text-xl text-slate-900 leading-snug">
+                                    <a
+                                      href={`#doctor/${doc.slug}`}
+                                      onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
+                                      className="hover:text-cyan-700"
+                                    >
+                                      {doc.name}
+                                    </a>
+                                  </h3>
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold num">
+                                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                                    <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
+                                    <span className="text-amber-800/70 font-normal">({getDoctorRating(ratingsStore, doc.slug, doc.rank).count})</span>
+                                  </span>
+                                </div>
                                 <p className="text-sm font-semibold text-cyan-700 mt-0.5">{doc.specialtyBn}</p>
                               </div>
 
@@ -1593,9 +1637,24 @@ export default function App() {
                         </span>
                       </div>
 
-                      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
-                        {activeDoctor.name}
-                      </h1>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+                          {activeDoctor.name}
+                        </h1>
+                        <a
+                          href="#ratings-section"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById('ratings-section')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 shadow-2xs transition-all cursor-pointer"
+                          title={lang === 'bn' ? 'রোগীদের রেটিং ও মতামত দেখুন' : 'View Ratings & Reviews'}
+                        >
+                          <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+                          <span className="font-extrabold text-sm sm:text-base num">{activeDoctorRating.avg.toFixed(1)}</span>
+                          <span className="text-xs text-amber-800 font-semibold num">({activeDoctorRating.count} {lang === 'bn' ? 'রিভিউ' : 'reviews'})</span>
+                        </a>
+                      </div>
                       <p className="text-sm sm:text-base font-semibold text-slate-700 mt-1.5 leading-relaxed">
                         {activeDoctor.degrees}
                       </p>
@@ -1780,6 +1839,18 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+
+                {/* Patient Ratings and Reviews Section */}
+                <div id="ratings-section">
+                  <DoctorRatingSection
+                    doctorSlug={activeDoctor.slug}
+                    doctorName={activeDoctor.name}
+                    doctorRank={activeDoctor.rank}
+                    stats={activeDoctorRating}
+                    lang={lang}
+                    onRate={(rating, comment, tags) => handleDoctorRate(activeDoctor.slug, rating, activeDoctor.rank, comment, tags)}
+                  />
+                </div>
               </div>
 
               {/* Sidebar: Similar Doctors & Emergency */}
@@ -1794,25 +1865,34 @@ export default function App() {
                     {doctorsList
                       .filter(d => d.slug !== activeDoctor.slug)
                       .slice(0, 4)
-                      .map(sDoc => (
-                        <a
-                          key={sDoc.slug}
-                          href={`#doctor/${sDoc.slug}`}
-                          onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${sDoc.slug}`); }}
-                          className="py-3 flex items-center gap-3 group text-left"
-                        >
-                          <DoctorAvatar img={sDoc.img} name={sDoc.name} ini={sDoc.ini} className="w-9 h-9 rounded-xl text-xs" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-slate-900 group-hover:text-cyan-700 truncate">
-                              {sDoc.name}
-                            </p>
-                            <p className="text-xs text-slate-500 truncate">
-                              {sDoc.ch[0]?.name} · {sDoc.ch[0]?.area}
-                            </p>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-700" />
-                        </a>
-                      ))}
+                      .map(sDoc => {
+                        const sRating = getDoctorRating(ratingsStore, sDoc.slug, sDoc.rank);
+                        return (
+                          <a
+                            key={sDoc.slug}
+                            href={`#doctor/${sDoc.slug}`}
+                            onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${sDoc.slug}`); }}
+                            className="py-3 flex items-center gap-3 group text-left"
+                          >
+                            <DoctorAvatar img={sDoc.img} name={sDoc.name} ini={sDoc.ini} className="w-9 h-9 rounded-xl text-xs" />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-1">
+                                <p className="text-sm font-bold text-slate-900 group-hover:text-cyan-700 truncate">
+                                  {sDoc.name}
+                                </p>
+                                <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 num shrink-0">
+                                  <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
+                                  <span>{sRating.avg.toFixed(1)}</span>
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-500 truncate">
+                                {sDoc.ch[0]?.name} · {sDoc.ch[0]?.area}
+                              </p>
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-700" />
+                          </a>
+                        );
+                      })}
                   </div>
                 </div>
 
