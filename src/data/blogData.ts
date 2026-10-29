@@ -1,4 +1,9 @@
 import { BlogPost, DailyHealthTip, BlogCategoryKey } from '../types/blog';
+import { BLOGS_BATCH_1 } from './blogsBatch1';
+import { BLOGS_BATCH_2 } from './blogsBatch2';
+import { BLOGS_BATCH_3 } from './blogsBatch3';
+import { BLOGS_BATCH_4 } from './blogsBatch4';
+import { BLOGS_BATCH_5 } from './blogsBatch5';
 
 export const BLOG_CATEGORIES: Array<{ key: BlogCategoryKey | 'all'; bn: string; en: string }> = [
   { key: 'all', bn: 'সকল নিবন্ধ', en: 'All Articles' },
@@ -118,7 +123,7 @@ export const DAILY_HEALTH_TIPS: DailyHealthTip[] = [
   }
 ];
 
-export const BLOG_POSTS: BlogPost[] = [
+const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
     slug: 'dengue-fever-warning-signs-chattogram',
     titleBn: 'ডেঙ্গু জ্বর: কখন তাৎক্ষণিক হাসপাতালে ভর্তি করাবেন? বিপদচিহ্ন ও যত্ন',
@@ -663,4 +668,13 @@ export const BLOG_POSTS: BlogPost[] = [
       }
     ]
   }
+];
+
+export const BLOG_POSTS: BlogPost[] = [
+  ...INITIAL_BLOG_POSTS,
+  ...BLOGS_BATCH_1,
+  ...BLOGS_BATCH_2,
+  ...BLOGS_BATCH_3,
+  ...BLOGS_BATCH_4,
+  ...BLOGS_BATCH_5
 ];

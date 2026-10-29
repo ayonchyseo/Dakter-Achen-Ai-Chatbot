@@ -9,7 +9,8 @@ import {
   ChevronRight,
   ShieldCheck,
   X,
-  Stethoscope
+  Stethoscope,
+  ChevronLeft
 } from 'lucide-react';
 import { BlogPost, BlogCategoryKey } from '../types/blog';
 import { BLOG_POSTS, BLOG_CATEGORIES } from '../data/blogData';
@@ -30,6 +31,19 @@ export default function BlogView({
 }: BlogViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<BlogCategoryKey | 'all' | 'saved'>('all');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const POSTS_PER_PAGE = 12;
+
+  const handleCategorySelect = (category: BlogCategoryKey | 'all' | 'saved') => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   const [bookmarkedArticles, setBookmarkedArticles] = useState<string[]>(() => {
     try {
@@ -80,6 +94,12 @@ export default function BlogView({
     });
   }, [selectedCategory, searchQuery, bookmarkedArticles]);
 
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PER_PAGE));
+  const paginatedPosts = useMemo(() => {
+    const start = (currentPage - 1) * POSTS_PER_PAGE;
+    return filteredPosts.slice(start, start + POSTS_PER_PAGE);
+  }, [filteredPosts, currentPage]);
+
   const featuredPost = useMemo(() => {
     return BLOG_POSTS.find(p => p.featured) || BLOG_POSTS[0];
   }, []);
@@ -123,14 +143,14 @@ export default function BlogView({
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   placeholder={lang === 'bn' ? 'নিবন্ধ খুঁজুন (যেমন: ডেঙ্গু, ডায়াবেটিস, প্রেসার, মা ও শিশু)...' : 'Search guides (e.g., dengue, diet, blood pressure)...'}
                   className="w-full bg-transparent text-sm sm:text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none"
                 />
                 {searchQuery && (
                   <button
                     type="button"
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => handleSearchChange('')}
                     className="text-slate-400 hover:text-slate-600 p-1"
                   >
                     <X className="w-4 h-4" />
@@ -155,7 +175,7 @@ export default function BlogView({
             <button
               key={cat.key}
               type="button"
-              onClick={() => setSelectedCategory(cat.key)}
+              onClick={() => handleCategorySelect(cat.key)}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#0E7490] text-white shadow-2xs'
@@ -170,7 +190,7 @@ export default function BlogView({
         {/* Bookmarks Tab */}
         <button
           type="button"
-          onClick={() => setSelectedCategory('saved')}
+          onClick={() => handleCategorySelect('saved')}
           className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap inline-flex items-center gap-1.5 transition-all cursor-pointer ${
             selectedCategory === 'saved'
               ? 'bg-amber-600 text-white shadow-2xs'
@@ -294,79 +314,157 @@ export default function BlogView({
         </div>
 
         {filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPosts.map(post => {
-              const isSaved = bookmarkedArticles.includes(post.slug);
-              return (
-                <article
-                  key={post.slug}
-                  onClick={() => onSelectArticle(post.slug)}
-                  className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Cover Image Container */}
-                    <div className="relative h-48 overflow-hidden bg-slate-100">
-                      <img
-                        src={post.coverImage}
-                        alt={lang === 'bn' ? post.titleBn : post.titleEn}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-3 left-3">
-                        <span className="px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold">
-                          {lang === 'bn' ? post.categoryBn : post.categoryEn}
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => toggleBookmark(e, post.slug)}
-                        title="Save article"
-                        className="absolute top-3 right-3 p-2 rounded-xl bg-white/90 backdrop-blur-xs text-slate-600 hover:text-amber-600 shadow-2xs transition-all"
-                      >
-                        <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-amber-600 text-amber-600' : ''}`} />
-                      </button>
-                    </div>
-
-                    {/* Card Content */}
-                    <div className="p-5 space-y-2.5">
-                      {/* Zero-pill metadata */}
-                      <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-slate-400" />
-                          <span>{post.readTimeMin} {lang === 'bn' ? 'মিনিট' : 'min'}</span>
-                        </span>
-                        <span>·</span>
-                        <span>{post.publishedDate}</span>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedPosts.map(post => {
+                const isSaved = bookmarkedArticles.includes(post.slug);
+                return (
+                  <article
+                    key={post.slug}
+                    onClick={() => onSelectArticle(post.slug)}
+                    className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Cover Image Container */}
+                      <div className="relative h-48 overflow-hidden bg-slate-100">
+                        <img
+                          src={post.coverImage}
+                          alt={lang === 'bn' ? post.titleBn : post.titleEn}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-3 left-3">
+                          <span className="px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold">
+                            {lang === 'bn' ? post.categoryBn : post.categoryEn}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => toggleBookmark(e, post.slug)}
+                          title="Save article"
+                          className="absolute top-3 right-3 p-2 rounded-xl bg-white/90 backdrop-blur-xs text-slate-600 hover:text-amber-600 shadow-2xs transition-all"
+                        >
+                          <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-amber-600 text-amber-600' : ''}`} />
+                        </button>
                       </div>
 
-                      <h3 className="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-[#0E7490] transition-colors leading-snug line-clamp-2">
-                        {lang === 'bn' ? post.titleBn : post.titleEn}
-                      </h3>
+                      {/* Card Content */}
+                      <div className="p-5 space-y-2.5">
+                        {/* Zero-pill metadata */}
+                        <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                          <span className="inline-flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            <span>{post.readTimeMin} {lang === 'bn' ? 'মিনিট' : 'min'}</span>
+                          </span>
+                          <span>·</span>
+                          <span>{post.publishedDate}</span>
+                        </div>
 
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal line-clamp-2">
-                        {lang === 'bn' ? post.excerptBn : post.excerptEn}
-                      </p>
+                        <h3 className="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-[#0E7490] transition-colors leading-snug line-clamp-2">
+                          {lang === 'bn' ? post.titleBn : post.titleEn}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal line-clamp-2">
+                          {lang === 'bn' ? post.excerptBn : post.excerptEn}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Card Footer */}
-                  <div className="p-5 pt-0 mt-2 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-1.5 text-slate-500">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span className="truncate max-w-[150px] font-medium">
-                        {lang === 'bn' ? post.reviewedBy.nameBn : post.reviewedBy.nameEn}
+                    {/* Card Footer */}
+                    <div className="p-5 pt-0 mt-2 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-1.5 text-slate-500">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="truncate max-w-[150px] font-medium">
+                          {lang === 'bn' ? post.reviewedBy.nameBn : post.reviewedBy.nameEn}
+                        </span>
+                      </div>
+
+                      <span className="font-bold text-[#0E7490] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5 shrink-0">
+                        <span>{lang === 'bn' ? 'পড়ুন' : 'Read'}</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
+                  </article>
+                );
+              })}
+            </div>
 
-                    <span className="font-bold text-[#0E7490] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5 shrink-0">
-                      <span>{lang === 'bn' ? 'পড়ুন' : 'Read'}</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </span>
+            {/* Pagination Controls */}
+            {filteredPosts.length > POSTS_PER_PAGE && (
+              <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-xs font-semibold text-slate-500">
+                  {lang === 'bn' ? (
+                    <>মোট <span className="font-bold text-slate-900 num">{filteredPosts.length}</span> টি নিবন্ধের মধ্যে <span className="font-bold text-slate-900 num">{(currentPage - 1) * POSTS_PER_PAGE + 1} - {Math.min(currentPage * POSTS_PER_PAGE, filteredPosts.length)}</span> দেখাচ্ছে</>
+                  ) : (
+                    <>Showing <span className="font-bold text-slate-900">{(currentPage - 1) * POSTS_PER_PAGE + 1} - {Math.min(currentPage * POSTS_PER_PAGE, filteredPosts.length)}</span> of <span className="font-bold text-slate-900">{filteredPosts.length}</span> articles</>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentPage(p => Math.max(1, p - 1));
+                      window.scrollTo({ top: 350, behavior: 'smooth' });
+                    }}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span>{lang === 'bn' ? 'আগের পাতা' : 'Previous'}</span>
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                      if (
+                        page === 1 ||
+                        page === totalPages ||
+                        Math.abs(page - currentPage) <= 1
+                      ) {
+                        return (
+                          <button
+                            key={page}
+                            type="button"
+                            onClick={() => {
+                              setCurrentPage(page);
+                              window.scrollTo({ top: 350, behavior: 'smooth' });
+                            }}
+                            className={`w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              currentPage === page
+                                ? 'bg-[#0E7490] text-white shadow-xs'
+                                : 'text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      }
+                      if (page === 2 && currentPage > 3) {
+                        return <span key="ellipsis-1" className="px-1 text-slate-400">…</span>;
+                      }
+                      if (page === totalPages - 1 && currentPage < totalPages - 2) {
+                        return <span key="ellipsis-2" className="px-1 text-slate-400">…</span>;
+                      }
+                      return null;
+                    })}
                   </div>
-                </article>
-              );
-            })}
-          </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentPage(p => Math.min(totalPages, p + 1));
+                      window.scrollTo({ top: 350, behavior: 'smooth' });
+                    }}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>{lang === 'bn' ? 'পরের পাতা' : 'Next'}</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-12 text-center space-y-3">
             <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
