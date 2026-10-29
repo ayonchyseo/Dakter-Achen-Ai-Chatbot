@@ -27,11 +27,18 @@ import {
   ArrowRight,
   ExternalLink,
   MessageSquare,
-  Star
+  Star,
+  BookOpen,
+  HeartPulse
 } from 'lucide-react';
 import Chatbot from './components/Chatbot';
 import DoctorRatingSection from './components/DoctorRatingSection';
+import BlogView from './components/BlogView';
+import ArticleDetailView from './components/ArticleDetailView';
+import DailyTipCard from './components/DailyTipCard';
 import { INITIAL_DOCTORS } from './data/doctors';
+import { BLOG_POSTS } from './data/blogData';
+import type { BlogPost } from './types/blog';
 import { loadAllRatings, saveDoctorRating, getDoctorRating } from './lib/ratings';
 import type { DoctorRatingData } from './lib/ratings';
 
@@ -192,8 +199,9 @@ export default function App() {
   });
 
   // Routing
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor' | 'blog' | 'article'>('home');
   const [selectedDoctorSlug, setSelectedDoctorSlug] = useState<string>('dr-soumitra-das');
+  const [selectedArticleSlug, setSelectedArticleSlug] = useState<string>('dengue-fever-warning-signs-chattogram');
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -249,6 +257,13 @@ export default function App() {
       if (route === 'doctor' && param) {
         setCurrentRoute('doctor');
         setSelectedDoctorSlug(param);
+        window.scrollTo(0, 0);
+      } else if (route === 'blog' && param) {
+        setCurrentRoute('article');
+        setSelectedArticleSlug(param);
+        window.scrollTo(0, 0);
+      } else if (route === 'blog' || route === 'tips') {
+        setCurrentRoute('blog');
         window.scrollTo(0, 0);
       } else if (route === 'list') {
         setCurrentRoute('list');
@@ -373,6 +388,11 @@ export default function App() {
   const activeDoctor = useMemo(() => {
     return doctorsList.find(d => d.slug === selectedDoctorSlug) || doctorsList[0];
   }, [doctorsList, selectedDoctorSlug]);
+
+  // Selected article for Article view
+  const activeArticle = useMemo(() => {
+    return BLOG_POSTS.find(p => p.slug === selectedArticleSlug) || BLOG_POSTS[0];
+  }, [selectedArticleSlug]);
 
   // Active Doctor Rating stats
   const activeDoctorRating = useMemo(() => {
@@ -500,9 +520,16 @@ export default function App() {
           <nav className="hidden md:flex items-center gap-1">
             <button
               onClick={() => navigateTo('list')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors ${currentRoute === 'list' ? 'text-[#0E7490] bg-cyan-50' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors ${currentRoute === 'list' ? 'text-[#0E7490] bg-cyan-50 font-bold' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               {lang === 'bn' ? 'ডাক্তার খুঁজুন' : 'Find Doctors'}
+            </button>
+            <button
+              onClick={() => navigateTo('blog')}
+              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5 ${currentRoute === 'blog' || currentRoute === 'article' ? 'text-[#0E7490] bg-cyan-50 font-bold' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <BookOpen className="w-4 h-4 text-cyan-700" />
+              <span>{lang === 'bn' ? 'স্বাস্থ্য ব্লগ ও টিপস' : 'Health Blog & Tips'}</span>
             </button>
             <button
               onClick={() => { navigateTo('home-spec'); }}
@@ -526,7 +553,22 @@ export default function App() {
           </nav>
 
           {/* Right actions: Lang & Add Doctor */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
+            {/* Mobile Blog shortcut */}
+            <button
+              type="button"
+              onClick={() => navigateTo('blog')}
+              title={lang === 'bn' ? 'স্বাস্থ্য ব্লগ ও টিপস' : 'Health Blog'}
+              className={`md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-colors ${
+                currentRoute === 'blog' || currentRoute === 'article'
+                  ? 'bg-cyan-50 border-cyan-300 text-[#0E7490]'
+                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5 text-cyan-600" />
+              <span>{lang === 'bn' ? 'ব্লগ' : 'Blog'}</span>
+            </button>
+
             {/* Language toggle pill */}
             <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200 text-xs font-bold" role="group" aria-label="Language">
               <button
@@ -960,6 +1002,101 @@ export default function App() {
                       </article>
                     );
                   })}
+                </div>
+              </div>
+            </section>
+
+            {/* Daily Health Tip & Medical Blog Section */}
+            <section className="py-12 sm:py-16 px-4 bg-gradient-to-b from-[#F6F8FA] via-cyan-50/40 to-[#F6F8FA] border-y border-slate-200/80">
+              <div className="max-w-7xl mx-auto space-y-8">
+                {/* Section Header */}
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-100/80 text-cyan-900 text-xs font-bold mb-2">
+                      <BookOpen className="w-3.5 h-3.5 text-cyan-700" />
+                      <span>{lang === 'bn' ? 'দৈনিক সুস্থতা ও স্বাস্থ্য ব্লগ' : 'Daily Wellness & Medical Blog'}</span>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                      {lang === 'bn' ? 'স্বাস্থ্য সচেতনতা ও চিকিৎসকদের নির্দেশিকা' : 'Health Guidance & Daily Tips'}
+                    </h2>
+                    <p className="text-sm sm:text-base text-slate-500 mt-1 max-w-xl">
+                      {lang === 'bn'
+                        ? 'প্রতিদিনের সুস্থ থাকার নিয়ম এবং ডেঙ্গু, ডায়াবেটিস, প্রেসার ও জরুরি ফার্স্ট এইডের প্রামাণ্য তথ্য।'
+                        : 'Daily verified habits and essential guides on seasonal diseases, chronic conditions, and first aid.'}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => navigateTo('blog')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-cyan-500 text-slate-800 font-bold text-xs sm:text-sm shadow-2xs hover:shadow-xs transition-all cursor-pointer self-start sm:self-auto"
+                  >
+                    <span>{lang === 'bn' ? 'সকল ব্লগ ও টিপস দেখুন' : 'Explore All Articles'}</span>
+                    <ArrowRight className="w-4 h-4 text-cyan-600" />
+                  </button>
+                </div>
+
+                {/* Grid: Daily Tip Card + 2 Top Featured Articles */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                  {/* Daily Tip Interactive Card */}
+                  <div className="lg:col-span-5 flex flex-col">
+                    <DailyTipCard lang={lang} onToast={showToast} className="h-full flex flex-col justify-between" />
+                  </div>
+
+                  {/* 2 Featured Health Blog Articles */}
+                  <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {BLOG_POSTS.slice(0, 2).map((post) => (
+                      <div
+                        key={post.slug}
+                        onClick={() => navigateTo(`blog/${post.slug}`)}
+                        className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="h-40 overflow-hidden bg-slate-100 relative">
+                            <img
+                              src={post.coverImage}
+                              alt={lang === 'bn' ? post.titleBn : post.titleEn}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                            />
+                            <div className="absolute top-2.5 left-2.5">
+                              <span className="px-2.5 py-0.5 rounded-md bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold">
+                                {lang === 'bn' ? post.categoryBn : post.categoryEn}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="p-4 space-y-2">
+                            <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                              <span className="inline-flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-slate-400" />
+                                <span>{post.readTimeMin} {lang === 'bn' ? 'মিনিট' : 'min'}</span>
+                              </span>
+                              <span>·</span>
+                              <span>{post.publishedDate}</span>
+                            </div>
+
+                            <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#0E7490] transition-colors leading-snug line-clamp-2">
+                              {lang === 'bn' ? post.titleBn : post.titleEn}
+                            </h3>
+
+                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                              {lang === 'bn' ? post.excerptBn : post.excerptEn}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                          <span className="text-slate-500 font-medium truncate max-w-[140px]">
+                            {lang === 'bn' ? post.reviewedBy.nameBn : post.reviewedBy.nameEn}
+                          </span>
+                          <span className="font-bold text-[#0E7490] flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+                            {lang === 'bn' ? 'পড়ুন' : 'Read'} →
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>
@@ -1938,12 +2075,46 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* ======================= BLOG VIEW ======================= */}
+        {currentRoute === 'blog' && (
+          <BlogView
+            lang={lang}
+            onSelectArticle={(slug) => {
+              setSelectedArticleSlug(slug);
+              navigateTo(`blog/${slug}`);
+            }}
+            onNavigateToSpecialty={(specKey) => {
+              setSelectedSpecialty(specKey);
+              navigateTo('list');
+            }}
+            onToast={showToast}
+          />
+        )}
+
+        {/* ======================= ARTICLE DETAIL VIEW ======================= */}
+        {currentRoute === 'article' && activeArticle && (
+          <ArticleDetailView
+            article={activeArticle}
+            lang={lang}
+            onBack={() => navigateTo('blog')}
+            onNavigateToSpecialty={(specKey) => {
+              setSelectedSpecialty(specKey);
+              navigateTo('list');
+            }}
+            onSelectArticle={(slug) => {
+              setSelectedArticleSlug(slug);
+              navigateTo(`blog/${slug}`);
+            }}
+            onToast={showToast}
+          />
+        )}
       </main>
 
       {/* Footer */}
       <footer className="bg-[#0B1220] text-slate-300 py-12 sm:py-16 px-4 sm:px-6 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
+          <div className="space-y-3 sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-[#0E7490] text-white flex items-center justify-center">
                 <Stethoscope className="w-4 h-4" />
@@ -1955,6 +2126,39 @@ export default function App() {
                 ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের চেম্বার, সময়সূচি ও অফিসিয়াল সিরিয়াল নম্বরের ফ্রি ডিরেক্টরি প্ল্যাটফর্ম।'
                 : 'Free open directory of specialist doctors, sitting hours and serial contact numbers in Chattogram.'}
             </p>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold text-sm mb-3">
+              {lang === 'bn' ? 'স্বাস্থ্য ব্লগ ও টিপস' : 'Health Blog & Tips'}
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
+              <li>
+                <button onClick={() => navigateTo('blog')} className="hover:text-cyan-400 transition-colors font-semibold text-cyan-300 text-left">
+                  {lang === 'bn' ? 'সকল স্বাস্থ্য নিবন্ধ →' : 'All Health Guides →'}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigateTo('blog/dengue-fever-warning-signs-chattogram')} className="hover:text-white transition-colors text-left line-clamp-1">
+                  {lang === 'bn' ? 'ডেঙ্গু জ্বর ও বিপদচিহ্ন' : 'Dengue Warning Signs'}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigateTo('blog/diabetes-diet-and-exercise-bangladesh')} className="hover:text-white transition-colors text-left line-clamp-1">
+                  {lang === 'bn' ? 'ডায়াবেটিস নিয়ন্ত্রণ ও খাদ্য' : 'Diabetes Diet Guide'}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigateTo('blog/heart-attack-emergency-first-aid-response')} className="hover:text-white transition-colors text-left line-clamp-1">
+                  {lang === 'bn' ? 'হার্ট অ্যাটাক ফার্স্ট এইড' : 'Heart Attack First Aid'}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigateTo('blog/pregnancy-first-trimester-care-nutrition-bangladesh')} className="hover:text-white transition-colors text-left line-clamp-1">
+                  {lang === 'bn' ? 'গর্ভাবস্থায় প্রথম ৩ মাসের যত্ন' : 'Pregnancy 1st Trimester'}
+                </button>
+              </li>
+            </ul>
           </div>
 
           <div>
