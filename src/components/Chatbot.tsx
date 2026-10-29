@@ -1,87 +1,126 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Loader2, Bot, User, AlertTriangle, Image as ImageIcon, Mic, MicOff, MapPin } from 'lucide-react';
+import {
+  MessageSquare,
+  X,
+  Send,
+  Loader2,
+  Bot,
+  User,
+  AlertTriangle,
+  Image as ImageIcon,
+  Mic,
+  MicOff,
+  MapPin,
+  ExternalLink,
+  Navigation,
+  RefreshCw,
+  Copy,
+  Check,
+  Compass,
+  Sparkles,
+  Info
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { withRotation, SYSTEM_INSTRUCTION } from "../lib/gemini";
 import Markdown from 'react-markdown';
+import { sendChatMessage, ChatMessage, GroundedPlace } from '../lib/gemini';
 
-interface Message {
-  role: 'user' | 'bot';
-  text: string;
-  image?: string;
-}
+const QUICK_PROMPTS = [
+  { label: '📍 পাঁচলাইশ ও প্রবর্তকে ডায়াগনস্টিক সেন্টার', query: 'পাঁচলাইশ ও প্রবর্তক মোড়ে ভালো ডায়াগনস্টিক সেন্টার ও হাসপাতালের তালিকা ম্যাপসহ দিন।' },
+  { label: '🩺 বুকে চিনচিন ব্যথা ও শ্বাসকষ্ট', query: 'বুকে চিনচিন ব্যথা ও হঠাৎ শ্বাসকষ্ট হচ্ছে। এটি কি হার্টের সমস্যা? আমার কোন বিশেষজ্ঞ দেখানো উচিত?' },
+  { label: '👶 শিশু বিশেষজ্ঞ চেম্বার ও সময়সূচি', query: 'চট্টগ্রামে অভিজ্ঞ শিশু বিশেষজ্ঞ ডাক্তারের চেম্বার ও দেখানোর সময়সূচি কোথায় পাবো?' },
+  { label: '💊 প্রেসক্রিপশনের নিয়ম বুঝতে চাই', query: 'প্রেসক্রিপশনে অ্যান্টিবায়োটিক ও গ্যাসের ওষুধ কীভাবে খাওয়া উচিত?' },
+  { label: '🏥 চমেক (CMCH) জরুরি সেবা', query: 'চট্টগ্রাম মেডিকেল কলেজ হাসপাতালের জরুরি ও ওপিডি সেবার সময় ও ফি কত?' },
+];
 
-const Chatbot = () => {
+const INITIAL_MESSAGES: ChatMessage[] = [
+  {
+    role: 'bot',
+    text: 'নমস্কার / আদাব! আমি **ডাক্তার আছেন AI সহকারী (Health & Clinic Advisor)**। \n\nআমি আপনাকে যেভাবে সাহায্য করতে পারি:\n- 🩺 আপনার লক্ষণ অনুযায়ী সঠিক বিশেষজ্ঞ ডাক্তার নির্বাচন\n- 📍 চট্টগ্রামের যেকোনো এলাকায় চেম্বার, হাসপাতাল ও ল্যাব খুঁজে বের করা (গুগল ম্যাপস লোকেশনসহ)\n- 💊 প্রেসক্রিপশনের ওষুধ ও খাওয়ার নিয়ম বোঝা\n- 🏥 আনুমানিক চিকিৎসা খরচের স্বচ্ছ ধারণা\n\nআজ আপনাকে কীভাবে সাহায্য করতে পারি?',
+    timestamp: 'এখন'
+  }
+];
+
+const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: 'আদাব! আমি ডাক্তার আছেন-এর এআই অ্যাসিস্ট্যান্ট। আমি আপনাকে কীভাবে সাহায্য করতে পারি?' }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    try {
+      const saved = sessionStorage.getItem('dakterachen_chat_history');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return INITIAL_MESSAGES;
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
-  
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [locationName, setLocationName] = useState<string>('চট্টগ্রাম (Chittagong)');
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Listen for external open-chat events
+  // Sync to session storage
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('dakterachen_chat_history', JSON.stringify(messages));
+    } catch {}
+  }, [messages]);
+
+  // Request user location on mount if permitted
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setUserLocation({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+          setLocationName('আমার বর্তমান লোকেশন');
+        },
+        () => {
+          // Default fallback to Chittagong Center
+          setUserLocation({ latitude: 22.356851, longitude: 91.783182 });
+        },
+        { timeout: 8000 }
+      );
+    }
+  }, []);
+
+  // External event listener (e.g. from doctor cards or blog articles)
   useEffect(() => {
     const handleOpenChat = (e: any) => {
       setIsOpen(true);
       if (e.detail?.message) {
-        // We need to wait a tiny bit for the component to be fully ready if it was just opened
         setTimeout(() => {
-          autoSendMessage(e.detail.message);
-        }, 300);
+          handleDirectSend(e.detail.message);
+        }, 350);
       }
     };
     window.addEventListener('open-chat', handleOpenChat);
     return () => window.removeEventListener('open-chat', handleOpenChat);
-  }, []);
-
-  const autoSendMessage = async (text: string) => {
-    if (isLoading) return;
-    
-    setMessages(prev => [...prev, { role: 'user', text }]);
-    setIsLoading(true);
-
-    try {
-      const response = await withRotation(async (ai) => {
-        const chat = ai.chats.create({
-          model: "gemini-3-flash-preview",
-          config: { systemInstruction: SYSTEM_INSTRUCTION },
-        });
-        return await chat.sendMessage({ message: text });
-      });
-      
-      const botText = response.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না।";
-      setMessages(prev => [...prev, { role: 'bot', text: botText }]);
-    } catch (error) {
-      console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "দুঃখিত, একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।" }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // We'll manage history manually to support key rotation
-  const getChatHistory = (msgs: Message[]) => {
-    return msgs.slice(1).map(m => ({
-      role: m.role === 'user' ? 'user' : 'model',
-      parts: [{ text: m.text }]
-    }));
-  };
+  }, [messages, isLoading, userLocation]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isOpen, isLoading]);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 8 * 1024 * 1024) {
+        alert('ছবির আকার সর্বোচ্চ ৮ মেগাবাইট হতে হবে।');
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result as string);
@@ -93,33 +132,17 @@ const Chatbot = () => {
     }
   };
 
-  const toggleRecording = async () => {
+  const toggleRecording = () => {
     if (isRecording) {
       setIsRecording(false);
       return;
     }
-    
+
     // @ts-ignore
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert("আপনার ব্রাউজার ভয়েস টাইপিং সাপোর্ট করে না। দয়া করে গুগল ক্রোম ব্যবহার করুন।");
+      alert('আপনার ব্রাউজার ভয়েস টাইপিং সাপোর্ট করে না। দয়া করে গুগল ক্রোম বা এজ ব্যবহার করুন।');
       return;
-    }
-
-    // Check permission status if possible
-    if (navigator.permissions && navigator.permissions.query) {
-      try {
-        const result = await navigator.permissions.query({ name: 'microphone' as PermissionName });
-        if (result.state === 'denied') {
-          setMessages(prev => [...prev, { 
-            role: 'bot', 
-            text: "মাইক্রোফোন পারমিশন ব্লক করা আছে। দয়া করে ব্রাউজার এড্রেস বারের বাম পাশে 'Lock' আইকনে ক্লিক করে মাইক্রোফোন পারমিশন 'Allow' করুন।" 
-          }]);
-          return;
-        }
-      } catch (e) {
-        console.warn("Permissions API not supported for microphone query");
-      }
     }
 
     const recognition = new SpeechRecognition();
@@ -130,137 +153,131 @@ const Chatbot = () => {
     recognition.onstart = () => setIsRecording(true);
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
-      setInput(prev => prev + (prev ? ' ' : '') + transcript);
+      setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
       setIsRecording(false);
     };
     recognition.onerror = (event: any) => {
-      console.error("Speech recognition error", event.error);
-      let errorMsg = "দুঃখিত, একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।";
-      
-      if (event.error === 'not-allowed') {
-        errorMsg = "মাইক্রোফোন ব্যবহারের অনুমতি পাওয়া যায়নি। দয়া করে ব্রাউজার সেটিংসে গিয়ে মাইক্রোফোন পারমিশন 'Allow' করুন।";
-      } else if (event.error === 'network') {
-        errorMsg = "ইন্টারনেট সংযোগে সমস্যা হচ্ছে। দয়া করে আপনার কানেকশন চেক করুন।";
-      } else if (event.error === 'no-speech') {
-        errorMsg = "কোনো শব্দ শোনা যায়নি। দয়া করে আবার বলুন।";
-      } else if (event.error === 'service-not-allowed') {
-        errorMsg = "ভয়েস সার্ভিস এই মুহূর্তে কাজ করছে না।";
-      }
-      
-      setMessages(prev => [...prev, { role: 'bot', text: errorMsg }]);
+      console.warn('Speech recognition error:', event.error);
       setIsRecording(false);
     };
     recognition.onend = () => setIsRecording(false);
 
     try {
       recognition.start();
-    } catch (err) {
-      console.error("Failed to start speech recognition:", err);
+    } catch {
       setIsRecording(false);
+    }
+  };
+
+  const handleDirectSend = async (userText: string) => {
+    if (!userText.trim() || isLoading) return;
+
+    const timeStr = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+    const userMsg: ChatMessage = {
+      role: 'user',
+      text: userText.trim(),
+      timestamp: timeStr,
+    };
+
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
+    setIsLoading(true);
+
+    try {
+      const res = await sendChatMessage({
+        messages: nextMessages,
+        newMessage: userText.trim(),
+        location: userLocation,
+      });
+
+      const botMsg: ChatMessage = {
+        role: 'bot',
+        text: res.text || 'দুঃখিত, কোনো উত্তর পাওয়া যায়নি।',
+        places: res.places,
+        usedMaps: res.usedMaps,
+        timestamp: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (err: any) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          text: `⚠️ একটি ত্রুটি হয়েছে: ${err?.message || 'পুনরায় চেষ্টা করুন।'}`,
+          timestamp: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSend = async () => {
     if ((!input.trim() && !selectedImage) || isLoading) return;
 
-    const userMessage = input.trim();
+    const userText = input.trim();
     const imageToSend = selectedImage;
-    
+
     setInput('');
     setSelectedImage(null);
-    setMessages(prev => [...prev, { role: 'user', text: userMessage, image: imageToSend }]);
+
+    const timeStr = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+    const userMsg: ChatMessage = {
+      role: 'user',
+      text: userText,
+      image: imageToSend || undefined,
+      timestamp: timeStr,
+    };
+
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
     setIsLoading(true);
 
     try {
-      let messagePayload: any = userMessage;
-      
-      if (imageToSend) {
-        const base64Data = imageToSend.split(',')[1];
-        const mimeType = imageToSend.split(';')[0].split(':')[1];
-        
-        messagePayload = [
-          { text: userMessage || "এই ছবিটি সম্পর্কে বলুন" },
-          { inlineData: { data: base64Data, mimeType } }
-        ];
-      }
-
-      const response = await withRotation(async (ai) => {
-        const chat = ai.chats.create({
-          model: "gemini-3-flash-preview",
-          config: { systemInstruction: SYSTEM_INSTRUCTION },
-          history: getChatHistory(messages)
-        });
-        return await chat.sendMessage({ message: messagePayload });
+      const res = await sendChatMessage({
+        messages: nextMessages,
+        newMessage: userText,
+        image: imageToSend,
+        location: userLocation,
       });
-      
-      const botText = response.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না।";
-      
-      setMessages(prev => [...prev, { role: 'bot', text: botText }]);
-    } catch (error) {
-      console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "দুঃখিত, একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।" }]);
+
+      const botMsg: ChatMessage = {
+        role: 'bot',
+        text: res.text || 'দুঃখিত, কোনো উত্তর পাওয়া যায়নি।',
+        places: res.places,
+        usedMaps: res.usedMaps,
+        timestamp: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (err: any) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          text: `⚠️ ত্রুটি হয়েছে: ${err?.message || 'পুনরায় চেষ্টা করুন।'}`,
+          timestamp: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const renderBotMessage = (text: string) => {
-    try {
-      // Try to find JSON in the text (sometimes it's wrapped in markdown code blocks)
-      const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const jsonStr = jsonMatch[1] || jsonMatch[0];
-        const data = JSON.parse(jsonStr);
-        if (data.facilities && Array.isArray(data.facilities)) {
-          return (
-            <div className="space-y-4 my-2">
-              <div className="prose prose-sm max-w-none text-on-surface-variant mb-4">
-                <Markdown>{text.replace(jsonMatch[0], '')}</Markdown>
-              </div>
-              <div className="grid gap-3">
-                {data.facilities.map((f: any, i: number) => (
-                  <div key={i} className="bg-white p-4 rounded-2xl border border-primary/10 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-bold text-primary text-lg">{f.name}</h4>
-                      <span className="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider">
-                        {f.type}
-                      </span>
-                    </div>
-                    <div className="space-y-2 text-sm text-on-surface-variant">
-                      <div className="flex items-start gap-2">
-                        <MapPin size={16} className="mt-0.5 shrink-0 text-primary/60" />
-                        <p>{f.address}</p>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {f.specialties?.map((s: string, j: number) => (
-                          <span key={j} className="bg-slate-100 px-2 py-1 rounded-lg text-[11px] font-medium">
-                            {s}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="pt-3 mt-3 border-t border-slate-100 flex justify-between items-center">
-                        <span className="font-bold text-primary">ফি: {f.approx_fee || f.estimated_fee}</span>
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(`${f.name}, ${f.address}`);
-                          }}
-                          className="text-xs font-bold text-primary/60 hover:text-primary transition-colors flex items-center gap-1"
-                        >
-                          ঠিকানা কপি করুন
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        }
-      }
-    } catch (e) {
-      // Not JSON or invalid, fall back to markdown
+  const clearChat = () => {
+    if (confirm('আপনি কি পূর্বের কথোপকথন মুছে নতুন চ্যাট শুরু করতে চান?')) {
+      setMessages(INITIAL_MESSAGES);
+      sessionStorage.removeItem('dakterachen_chat_history');
     }
-    return <Markdown>{text}</Markdown>;
+  };
+
+  const copyText = (text: string, idx: number) => {
+    try {
+      navigator.clipboard.writeText(text);
+      setCopiedIndex(idx);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch {}
   };
 
   return (
@@ -268,130 +285,273 @@ const Chatbot = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-white md:rounded-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.3)] w-full h-full md:w-[450px] md:h-[650px] fixed inset-0 md:relative md:inset-auto flex flex-col overflow-hidden border border-gray-200 md:mb-4 ring-1 ring-black/5 z-[70] md:z-auto"
+            exit={{ opacity: 0, scale: 0.94, y: 20 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white md:rounded-3xl shadow-[0_12px_50px_-10px_rgba(14,116,144,0.35)] w-full h-full md:w-[480px] md:h-[680px] fixed inset-0 md:relative md:inset-auto flex flex-col overflow-hidden border border-slate-200/90 ring-1 ring-black/5 z-[70] md:z-auto"
           >
             {/* Header */}
-            <div className="hero-gradient p-5 flex justify-between items-center text-white shrink-0">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md">
-                  <Bot size={24} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-base md:text-lg">Dakter Achen AI</h3>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <p className="text-xs opacity-80">Online | Always here to help</p>
+            <div className="bg-gradient-to-r from-[#0E7490] via-[#0891B2] to-[#0284C7] p-4 text-white shrink-0 shadow-md">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                    <Bot size={22} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-base tracking-tight">ডাক্তার আছেন এআই</h3>
+                      <span className="bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+                        অনলাইন
+                      </span>
+                    </div>
+                    <p className="text-xs text-white/80 font-medium">
+                      Gemini 3.8 Flash • গুগল ম্যাপস কানেক্টেড
+                    </p>
                   </div>
                 </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={clearChat}
+                    title="নতুন চ্যাট শুরু করুন"
+                    className="p-2 hover:bg-white/20 text-white/80 hover:text-white rounded-xl transition-colors"
+                  >
+                    <RefreshCw size={17} />
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 hover:bg-white/20 text-white/90 hover:text-white rounded-xl transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="hover:bg-white/20 p-2 rounded-full transition-all"
-              >
-                <X size={24} />
-              </button>
+
+              {/* Location Strip */}
+              <div className="mt-3 pt-2 border-t border-white/15 flex items-center justify-between text-[11px] text-white/90">
+                <div className="flex items-center gap-1.5 truncate">
+                  <Compass size={13} className="text-cyan-200 shrink-0" />
+                  <span className="truncate">সার্চ জোন: <strong className="text-white">{locationName}</strong></span>
+                </div>
+                <span className="bg-black/20 px-2 py-0.5 rounded text-[10px] shrink-0 font-medium text-cyan-100">
+                  Maps Grounding Active
+                </span>
+              </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
-              {/* Disclaimer Banner */}
-              <div className="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex gap-2 items-start shadow-sm mb-6">
-                <AlertTriangle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                <p>
-                  <strong>সতর্কতা:</strong> এটি একটি এআই অ্যাসিস্ট্যান্ট, কোনো ডাক্তার নয়। গুরুতর স্বাস্থ্য সমস্যার জন্য অবশ্যই একজন বিশেষজ্ঞ চিকিৎসকের পরামর্শ নিন।
-                </p>
+            {/* Chat Body */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/70">
+              {/* Medical Disclaimer Callout */}
+              <div className="bg-amber-50 border border-amber-200/80 text-amber-900 p-3 rounded-2xl text-xs flex gap-2.5 items-start shadow-xs">
+                <AlertTriangle size={17} className="text-amber-600 shrink-0 mt-0.5" />
+                <div className="leading-relaxed">
+                  <strong>জরুরি সতর্কতা:</strong> এটি একটি এআই স্বাস্থ্য নির্দেশিকা, সরাসরি চিকিৎসক নয়। গুরুতর সমস্যা বা বুকে ব্যথায় অবিলম্বে ৯৯৯ নম্বরে বা নিকটস্থ জরুরি বিভাগে যোগাযোগ করুন।
+                </div>
               </div>
 
+              {/* Messages List */}
               {messages.map((msg, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`flex gap-2 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-primary text-white' : 'bg-secondary-container text-primary'}`}>
-                      {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
+                  <div className={`flex gap-2.5 max-w-[88%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 shadow-xs text-xs font-bold ${
+                        msg.role === 'user'
+                          ? 'bg-[#0E7490] text-white'
+                          : 'bg-white text-[#0E7490] border border-slate-200'
+                      }`}
+                    >
+                      {msg.role === 'user' ? <User size={15} /> : <Bot size={15} />}
                     </div>
-                    <div className={`p-3 rounded-2xl text-sm md:text-base ${msg.role === 'user' ? 'bg-primary text-white rounded-tr-none shadow-md' : 'bg-white text-on-surface shadow-md border border-gray-100 rounded-tl-none'}`}>
-                      {msg.image && (
-                        <img 
-                          src={msg.image} 
-                          alt="Uploaded" 
-                          className="max-w-full h-auto rounded-lg mb-2 max-h-48 object-cover"
-                        />
-                      )}
-                      {msg.role === 'user' ? (
-                        msg.text
-                      ) : (
-                        <div className="markdown-body">
-                          {renderBotMessage(msg.text)}
+
+                    <div className="space-y-2">
+                      <div
+                        className={`p-3.5 rounded-2xl text-sm leading-relaxed ${
+                          msg.role === 'user'
+                            ? 'bg-[#0E7490] text-white rounded-tr-none shadow-sm'
+                            : 'bg-white text-slate-800 shadow-sm border border-slate-200/80 rounded-tl-none'
+                        }`}
+                      >
+                        {msg.image && (
+                          <div className="mb-2.5 overflow-hidden rounded-xl border border-white/20">
+                            <img
+                              src={msg.image}
+                              alt="প্রেসক্রিপশন/রিপোর্ট"
+                              className="max-w-full h-auto max-h-52 object-cover rounded-xl"
+                            />
+                          </div>
+                        )}
+
+                        <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-inherit prose-a:text-cyan-600 prose-strong:font-bold">
+                          <Markdown>{msg.text}</Markdown>
+                        </div>
+                      </div>
+
+                      {/* Google Maps Grounded Places Cards */}
+                      {msg.places && msg.places.length > 0 && (
+                        <div className="bg-white rounded-2xl p-3 border border-cyan-200/70 shadow-xs space-y-2.5">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-[#0E7490]">
+                            <MapPin size={14} className="text-cyan-600" />
+                            <span>গুগল ম্যাপস যাচাইকৃত চেম্বার ও ক্লিনিক ({msg.places.length}):</span>
+                          </div>
+
+                          <div className="grid gap-2">
+                            {msg.places.map((place, pIdx) => (
+                              <div
+                                key={pIdx}
+                                className="bg-slate-50 hover:bg-cyan-50/50 p-2.5 rounded-xl border border-slate-200 transition-colors flex items-start justify-between gap-2"
+                              >
+                                <div className="space-y-1">
+                                  <div className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
+                                    {place.title}
+                                  </div>
+                                  {place.reviewSnippets && place.reviewSnippets.length > 0 && (
+                                    <p className="text-[11px] text-slate-600 italic line-clamp-2">
+                                      &quot;{place.reviewSnippets[0]}&quot;
+                                    </p>
+                                  )}
+                                </div>
+
+                                {place.uri && (
+                                  <a
+                                    href={place.uri}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="shrink-0 inline-flex items-center gap-1 bg-[#0E7490] text-white hover:bg-[#0891B2] px-2.5 py-1.5 rounded-lg text-[11px] font-bold shadow-2xs transition-all active:scale-95"
+                                  >
+                                    <Navigation size={11} />
+                                    <span>ম্যাপে দেখুন</span>
+                                    <ExternalLink size={10} />
+                                  </a>
+                                )}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
+
+                      {/* Message Footer */}
+                      <div className={`flex items-center gap-2 text-[10px] text-slate-400 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        {msg.timestamp && <span>{msg.timestamp}</span>}
+                        {msg.role === 'bot' && (
+                          <button
+                            onClick={() => copyText(msg.text, i)}
+                            className="text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                            title="উত্তর কপি করুন"
+                          >
+                            {copiedIndex === i ? (
+                              <>
+                                <Check size={11} className="text-emerald-600" />
+                                <span className="text-emerald-600">কপি হয়েছে</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy size={11} />
+                                <span>কপি</span>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
+
+              {/* Loading Indicator */}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="flex gap-2 max-w-[80%]">
-                    <div className="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center">
-                      <Bot size={16} />
+                  <div className="flex gap-2.5 max-w-[80%] items-center">
+                    <div className="w-7 h-7 rounded-xl bg-cyan-100 text-[#0E7490] flex items-center justify-center shrink-0">
+                      <Bot size={15} />
                     </div>
-                    <div className="bg-white p-3 rounded-2xl shadow-md border border-gray-100 rounded-tl-none">
-                      <Loader2 size={16} className="animate-spin text-primary" />
+                    <div className="bg-white px-4 py-3 rounded-2xl shadow-sm border border-slate-200 rounded-tl-none flex items-center gap-2 text-xs text-slate-600">
+                      <Loader2 size={16} className="animate-spin text-[#0E7490]" />
+                      <span>তথ্য যাচাই ও ম্যাপস বিশ্লেষণ করা হচ্ছে...</span>
                     </div>
                   </div>
                 </div>
               )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t border-outline-variant/10 flex flex-col gap-3 shrink-0 pb-10 md:pb-4">
-              {/* Image Preview */}
+            {/* Quick Prompts Bar */}
+            <div className="bg-white border-t border-slate-100 px-3 py-2 shrink-0 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-slate-500 shrink-0 flex items-center gap-1">
+                  <Sparkles size={12} className="text-cyan-600" /> দ্রুত প্রশ্ন:
+                </span>
+                {QUICK_PROMPTS.map((qp, qIdx) => (
+                  <button
+                    key={qIdx}
+                    onClick={() => handleDirectSend(qp.query)}
+                    disabled={isLoading}
+                    className="shrink-0 bg-slate-100 hover:bg-cyan-50 hover:text-[#0E7490] text-slate-700 border border-slate-200 hover:border-cyan-200 text-xs px-2.5 py-1 rounded-full font-medium transition-all"
+                  >
+                    {qp.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Input Form */}
+            <div className="p-3.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
+              {/* Selected Image Thumbnail */}
               {selectedImage && (
-                <div className="relative self-start mb-1">
-                  <img src={selectedImage} alt="Preview" className="h-16 w-16 md:h-20 md:w-20 object-cover rounded-xl border-2 border-primary/10 shadow-sm" />
-                  <button 
+                <div className="relative self-start">
+                  <img
+                    src={selectedImage}
+                    alt="প্রিভিউ"
+                    className="h-16 w-16 object-cover rounded-xl border border-slate-200 shadow-xs"
+                  />
+                  <button
                     onClick={() => setSelectedImage(null)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow-md transition-colors"
+                    className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white rounded-full p-0.5 hover:bg-rose-600 shadow transition-colors"
                   >
                     <X size={12} />
                   </button>
                 </div>
               )}
-              
-              <form 
-                onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                className="flex gap-2 md:gap-3 items-center"
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSend();
+                }}
+                className="flex items-center gap-2"
               >
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  ref={fileInputRef} 
-                  onChange={handleImageSelect} 
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleImageSelect}
                 />
-                
-                <div className="flex gap-0.5 md:gap-1">
+
+                <div className="flex items-center gap-0.5 text-slate-500">
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-2 text-gray-500 hover:text-primary hover:bg-surface-container rounded-xl transition-all"
-                    title="ছবি আপলোড করুন"
+                    title="প্রেসক্রিপশন বা রিপোর্ট ছবি আপলোড করুন"
+                    className="p-2 hover:text-[#0E7490] hover:bg-cyan-50 rounded-xl transition-colors"
                   >
-                    <ImageIcon size={20} className="md:w-5.5 md:h-5.5" />
+                    <ImageIcon size={19} />
                   </button>
-  
                   <button
                     type="button"
                     onClick={toggleRecording}
-                    className={`p-2 rounded-xl transition-all ${isRecording ? 'text-red-500 bg-red-50 animate-pulse' : 'text-gray-500 hover:text-primary hover:bg-surface-container'}`}
-                    title="ভয়েস টাইপিং"
+                    title="বাংলা ভয়েস টাইপিং"
+                    className={`p-2 rounded-xl transition-colors ${
+                      isRecording ? 'text-rose-600 bg-rose-50 animate-pulse' : 'hover:text-[#0E7490] hover:bg-cyan-50'
+                    }`}
                   >
-                    {isRecording ? <MicOff size={20} className="md:w-5.5 md:h-5.5" /> : <Mic size={20} className="md:w-5.5 md:h-5.5" />}
+                    {isRecording ? <MicOff size={19} /> : <Mic size={19} />}
                   </button>
                 </div>
 
@@ -399,16 +559,16 @@ const Chatbot = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={isRecording ? "শুনছি..." : "প্রশ্ন লিখুন..."}
-                  className="flex-1 bg-surface-container-low border-none rounded-2xl px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base focus:ring-2 focus:ring-primary outline-none transition-all"
+                  placeholder={isRecording ? 'ভয়েস শুনছি... বলুন...' : 'স্বাস্থ্য সমস্যা বা চেম্বারের নাম লিখুন...'}
+                  className="flex-1 bg-slate-100 focus:bg-white border border-slate-200 focus:border-[#0E7490] rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all"
                 />
-                
-                <button 
+
+                <button
                   type="submit"
                   disabled={isLoading || (!input.trim() && !selectedImage)}
-                  className="bg-primary text-white p-2.5 md:p-3 rounded-2xl hover:bg-primary-container transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-95"
+                  className="bg-[#0E7490] hover:bg-[#0891B2] disabled:opacity-40 text-white p-2.5 rounded-xl shadow-xs transition-all active:scale-95 shrink-0"
                 >
-                  <Send size={18} className="md:w-5 md:h-5" />
+                  <Send size={18} />
                 </button>
               </form>
             </div>
@@ -416,13 +576,24 @@ const Chatbot = () => {
         )}
       </AnimatePresence>
 
+      {/* Floating Launcher Button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-primary text-white p-4 rounded-full shadow-[0_8px_30px_rgba(0,103,103,0.4)] hover:bg-primary-container transition-all flex items-center justify-center border-2 border-white"
+        className="bg-gradient-to-r from-[#0E7490] to-[#0284C7] text-white p-4 rounded-full shadow-[0_8px_30px_rgba(14,116,144,0.4)] hover:shadow-cyan-600/50 transition-all flex items-center justify-center border-2 border-white relative group"
+        aria-label="ওপেন ডাক্তার আছেন এআই"
       >
-        {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
+        {isOpen ? (
+          <X size={26} />
+        ) : (
+          <>
+            <MessageSquare size={26} />
+            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full animate-ping" />
+            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full" />
+            <span className="sr-only">ডাক্তার আছেন এআই সহকারী</span>
+          </>
+        )}
       </motion.button>
     </div>
   );

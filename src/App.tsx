@@ -569,6 +569,17 @@ export default function App() {
               <span>{lang === 'bn' ? 'ব্লগ' : 'Blog'}</span>
             </button>
 
+            {/* Mobile AI Chat shortcut */}
+            <button
+              type="button"
+              onClick={() => openChat()}
+              title={lang === 'bn' ? 'AI স্বাস্থ্য সহকারী' : 'AI Assistant'}
+              className="md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-cyan-200 bg-cyan-50/80 text-[#0E7490] text-xs font-bold transition-colors hover:bg-cyan-100/70"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
+              <span>{lang === 'bn' ? 'এআই' : 'AI'}</span>
+            </button>
+
             {/* Language toggle pill */}
             <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200 text-xs font-bold" role="group" aria-label="Language">
               <button
