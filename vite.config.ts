@@ -14,4 +14,20 @@ export default defineConfig({
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
     hmr: process.env.DISABLE_HMR !== 'true',
   },
+  build: {
+    cssCodeSplit: true,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+          if (id.includes('/data/blogData.ts')) {
+            return 'data-blog';
+          }
+        },
+      },
+    },
+  },
 });

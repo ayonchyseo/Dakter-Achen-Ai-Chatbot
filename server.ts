@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
+import compression from 'compression';
 import { generateWordPressWxrXml } from './src/lib/wordpressExportGenerator';
 import { sitemapMiddleware } from './src/middleware/sitemapMiddleware';
 
@@ -45,6 +46,9 @@ const SYSTEM_INSTRUCTION = `আপনি "ডাক্তার আছেন" (D
 
 async function startServer() {
   const app = express();
+
+  // High performance compression (Gzip & Deflate)
+  app.use(compression());
 
   // Middleware
   app.use(express.json({ limit: '20mb' }));
@@ -257,8 +261,24 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
+    app.use(
+      express.static(distPath, {
+        maxAge: '1d',
+        setHeaders: (res, filePath) => {
+          if (filePath.includes('/assets/')) {
+            // Hashed Vite bundles are completely immutable
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          } else if (filePath.endsWith('.html')) {
+            // HTML entry points must revalidate to pick up fresh releases
+            res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+          } else if (filePath.match(/\.(png|jpg|jpeg|svg|webp|ico|xml|txt)$/)) {
+            res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+          }
+        },
+      })
+    );
     app.get('*', (req, res) => {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
       res.sendFile(path.resolve(distPath, 'index.html'));
     });
   }

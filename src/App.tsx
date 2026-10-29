@@ -33,12 +33,13 @@ import {
   Home,
   FolderTree
 } from 'lucide-react';
-import Chatbot from './components/Chatbot';
 import DoctorRatingSection from './components/DoctorRatingSection';
-import BlogView from './components/BlogView';
-import ArticleDetailView from './components/ArticleDetailView';
 import DailyTipCard from './components/DailyTipCard';
-import SitemapView from './components/SitemapView';
+
+const Chatbot = React.lazy(() => import('./components/Chatbot'));
+const BlogView = React.lazy(() => import('./components/BlogView'));
+const ArticleDetailView = React.lazy(() => import('./components/ArticleDetailView'));
+const SitemapView = React.lazy(() => import('./components/SitemapView'));
 import { INITIAL_DOCTORS } from './data/doctors';
 import { BLOG_POSTS } from './data/blogData';
 import type { BlogPost } from './types/blog';
@@ -2099,52 +2100,58 @@ export default function App() {
 
         {/* ======================= BLOG VIEW ======================= */}
         {currentRoute === 'blog' && (
-          <BlogView
-            lang={lang}
-            onSelectArticle={(slug) => {
-              setSelectedArticleSlug(slug);
-              navigateTo(`blog/${slug}`);
-            }}
-            onNavigateToSpecialty={(specKey) => {
-              setSelectedSpecialty(specKey);
-              navigateTo('list');
-            }}
-            onToast={showToast}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-500 font-bold">{lang === 'bn' ? 'ব্লগ লোড হচ্ছে...' : 'Loading blog...'}</div>}>
+            <BlogView
+              lang={lang}
+              onSelectArticle={(slug) => {
+                setSelectedArticleSlug(slug);
+                navigateTo(`blog/${slug}`);
+              }}
+              onNavigateToSpecialty={(specKey) => {
+                setSelectedSpecialty(specKey);
+                navigateTo('list');
+              }}
+              onToast={showToast}
+            />
+          </React.Suspense>
         )}
 
         {/* ======================= ARTICLE DETAIL VIEW ======================= */}
         {currentRoute === 'article' && activeArticle && (
-          <ArticleDetailView
-            article={activeArticle}
-            lang={lang}
-            onBack={() => navigateTo('blog')}
-            onNavigateToSpecialty={(specKey) => {
-              setSelectedSpecialty(specKey);
-              navigateTo('list');
-            }}
-            onSelectArticle={(slug) => {
-              setSelectedArticleSlug(slug);
-              navigateTo(`blog/${slug}`);
-            }}
-            onToast={showToast}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-500 font-bold">{lang === 'bn' ? 'নিবন্ধ লোড হচ্ছে...' : 'Loading article...'}</div>}>
+            <ArticleDetailView
+              article={activeArticle}
+              lang={lang}
+              onBack={() => navigateTo('blog')}
+              onNavigateToSpecialty={(specKey) => {
+                setSelectedSpecialty(specKey);
+                navigateTo('list');
+              }}
+              onSelectArticle={(slug) => {
+                setSelectedArticleSlug(slug);
+                navigateTo(`blog/${slug}`);
+              }}
+              onToast={showToast}
+            />
+          </React.Suspense>
         )}
 
         {/* ======================= SITEMAP VIEW ======================= */}
         {currentRoute === 'sitemap' && (
-          <SitemapView
-            lang={lang}
-            onSelectDoctor={(slug) => {
-              setSelectedDoctorSlug(slug);
-              navigateTo(`doctor/${slug}`);
-            }}
-            onSelectArticle={(slug) => {
-              setSelectedArticleSlug(slug);
-              navigateTo(`blog/${slug}`);
-            }}
-            onNavigateHome={() => navigateTo('home')}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-500 font-bold">{lang === 'bn' ? 'সাইটম্যাপ লোড হচ্ছে...' : 'Loading sitemap...'}</div>}>
+            <SitemapView
+              lang={lang}
+              onSelectDoctor={(slug) => {
+                setSelectedDoctorSlug(slug);
+                navigateTo(`doctor/${slug}`);
+              }}
+              onSelectArticle={(slug) => {
+                setSelectedArticleSlug(slug);
+                navigateTo(`blog/${slug}`);
+              }}
+              onNavigateHome={() => navigateTo('home')}
+            />
+          </React.Suspense>
         )}
       </main>
 
@@ -2612,7 +2619,9 @@ export default function App() {
       </nav>
 
       {/* Floating AI Health Assistant Chatbot */}
-      <Chatbot />
+      <React.Suspense fallback={null}>
+        <Chatbot />
+      </React.Suspense>
     </div>
   );
 }
