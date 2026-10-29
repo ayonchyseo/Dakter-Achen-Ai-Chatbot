@@ -29,7 +29,9 @@ import {
   MessageSquare,
   Star,
   BookOpen,
-  HeartPulse
+  HeartPulse,
+  Home,
+  FolderTree
 } from 'lucide-react';
 import Chatbot from './components/Chatbot';
 import DoctorRatingSection from './components/DoctorRatingSection';
@@ -290,6 +292,10 @@ export default function App() {
 
   const navigateTo = (hash: string) => {
     window.location.hash = hash;
+  };
+
+  const openChat = (message?: string) => {
+    window.dispatchEvent(new CustomEvent('open-chat', { detail: { message } }));
   };
 
   // Calculate distinct areas
@@ -616,12 +622,12 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="flex-1 pb-16 md:pb-0">
         {/* ======================= HOME VIEW ======================= */}
         {currentRoute === 'home' && (
           <div className="space-y-0 animate-fade-in">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-[#ECFEFF] via-[#F6F8FA] to-[#F6F8FA] border-b border-slate-200/70 pt-10 sm:pt-16 pb-12 sm:pb-16 px-4">
+            <section className="relative overflow-hidden bg-gradient-to-b from-[#ECFEFF] via-[#F6F8FA] to-[#F6F8FA] border-b border-slate-200/70 pt-5 sm:pt-16 pb-6 sm:pb-16 px-4">
               {/* Radial dot pattern overlay */}
               <div
                 className="absolute inset-0 pointer-events-none opacity-40"
@@ -634,19 +640,19 @@ export default function App() {
 
               <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center">
                 {/* Eyebrow Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-cyan-200 shadow-xs text-xs sm:text-sm font-bold text-[#0E7490] mb-5">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-cyan-200 shadow-xs text-xs sm:text-sm font-bold text-[#0E7490] mb-4 sm:mb-5">
                   <MapPin className="w-4 h-4 text-cyan-600" />
                   <span>{lang === 'bn' ? 'চট্টগ্রাম · ৫০০+ বিশেষজ্ঞ ডাক্তার' : 'Chattogram · 500+ Specialist Doctors'}</span>
                 </div>
 
                 {/* Main Headline */}
-                <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black tracking-tight text-slate-900 leading-[1.2] max-w-3xl mb-4 text-balance">
+                <h1 className="text-2xl sm:text-5xl lg:text-[52px] font-black tracking-tight text-slate-900 leading-[1.25] sm:leading-[1.2] max-w-3xl mb-3 sm:mb-4 text-balance">
                   {lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তার খুঁজুন — ' : 'Find Specialist Doctors in Chattogram — '}
                   <span className="text-[#0E7490]">{lang === 'bn' ? 'সিরিয়াল নম্বরসহ' : 'With Serial Numbers'}</span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-base sm:text-lg text-slate-600 max-w-2xl font-medium leading-relaxed mb-8">
+                <p className="text-sm sm:text-lg text-slate-600 max-w-2xl font-medium leading-relaxed mb-4 sm:mb-8">
                   {lang === 'bn'
                     ? 'চেম্বারের ঠিকানা, বসার সময়, বন্ধের দিন আর সিরিয়ালের ফোন নম্বর — এক জায়গায়, কমিউনিটির যাচাই করা তথ্য।'
                     : 'Chamber address, sitting hours, off days and direct serial phone numbers in one place, verified by patients.'}
@@ -778,7 +784,7 @@ export default function App() {
                 </div>
 
                 {/* Quick Specialty Chips */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3.5 sm:mt-5">
                   <span className="text-xs font-semibold text-slate-400 mr-1 hidden sm:inline">
                     {lang === 'bn' ? 'জনপ্রিয় বিভাগ:' : 'Popular:'}
                   </span>
@@ -798,7 +804,7 @@ export default function App() {
                         setSelectedSpecialty(chip.key);
                         navigateTo('list');
                       }}
-                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-300 text-slate-700 text-xs sm:text-sm font-semibold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-300 text-slate-700 text-xs sm:text-sm font-semibold transition-all shadow-2xs active:scale-95 cursor-pointer"
                     >
                       {chip.label}
                     </button>
@@ -806,7 +812,7 @@ export default function App() {
                 </div>
 
                 {/* Trust Points */}
-                <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-7 text-xs sm:text-sm font-semibold text-slate-600">
+                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-8 mt-4 sm:mt-7 text-xs sm:text-sm font-semibold text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <Shield className="w-4 h-4 text-[#047857]" />
                     <span>{lang === 'bn' ? 'কমিউনিটি যাচাইকৃত তথ্য' : 'Community verified info'}</span>
@@ -2143,7 +2149,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#0B1220] text-slate-300 py-12 sm:py-16 px-4 sm:px-6 border-t border-slate-800">
+      <footer className="bg-[#0B1220] text-slate-300 pt-12 pb-24 sm:py-16 px-4 sm:px-6 border-t border-slate-800">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div className="space-y-3 sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5">
@@ -2541,6 +2547,69 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-2 py-1.5 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+      >
+        <button
+          type="button"
+          onClick={() => navigateTo('home')}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-colors ${
+            currentRoute === 'home' ? 'text-[#0E7490]' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Home className="w-5 h-5 mb-0.5" />
+          <span>{lang === 'bn' ? 'হোম' : 'Home'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => navigateTo('list')}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-colors ${
+            currentRoute === 'list' ? 'text-[#0E7490]' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Stethoscope className="w-5 h-5 mb-0.5" />
+          <span>{lang === 'bn' ? 'ডাক্তার' : 'Doctors'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => navigateTo('blog')}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-colors ${
+            currentRoute === 'blog' || currentRoute === 'article' ? 'text-[#0E7490]' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <BookOpen className="w-5 h-5 mb-0.5" />
+          <span>{lang === 'bn' ? 'ব্লগ' : 'Blog'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => openChat()}
+          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold text-[#0E7490] hover:text-[#155E75] transition-colors relative"
+        >
+          <span className="relative">
+            <Sparkles className="w-5 h-5 mb-0.5 text-[#0E7490]" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-cyan-500" />
+          </span>
+          <span>{lang === 'bn' ? 'এআই' : 'AI'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => navigateTo('sitemap')}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-colors ${
+            currentRoute === 'sitemap' ? 'text-[#0E7490]' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <FolderTree className="w-5 h-5 mb-0.5" />
+          <span>{lang === 'bn' ? 'সাইটম্যাপ' : 'Sitemap'}</span>
+        </button>
+      </nav>
 
       {/* Floating AI Health Assistant Chatbot */}
       <Chatbot />
