@@ -31,10 +31,25 @@ import {
   BookOpen,
   HeartPulse,
   Home,
-  FolderTree
+  FolderTree,
+  MessageCircle,
+  Pill,
+  ClipboardList,
+  FlaskConical,
+  ThumbsUp,
+  ThumbsDown,
+  Navigation,
+  CheckCircle2,
+  ShieldCheck
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
+import EmergencyView from './components/EmergencyView';
+import { DiagnosticCostModal } from './components/DiagnosticCostModal';
+import { VisitChecklistModal } from './components/VisitChecklistModal';
+import { MedicineReminderModal } from './components/MedicineReminderModal';
+import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
+import { getChamberCoords, calculateDistanceKm } from './lib/geoDistance';
 
 const Chatbot = React.lazy(() => import('./components/Chatbot'));
 const BlogView = React.lazy(() => import('./components/BlogView'));
@@ -203,9 +218,21 @@ export default function App() {
   });
 
   // Routing
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor' | 'blog' | 'article' | 'sitemap'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'list' | 'doctor' | 'blog' | 'article' | 'sitemap' | 'emergency'>('home');
   const [selectedDoctorSlug, setSelectedDoctorSlug] = useState<string>('dr-soumitra-das');
   const [selectedArticleSlug, setSelectedArticleSlug] = useState<string>('dengue-fever-warning-signs-chattogram');
+
+  // New Health Tools Modals
+  const [diagnosticModalOpen, setDiagnosticModalOpen] = useState(false);
+  const [checklistModalOpen, setChecklistModalOpen] = useState(false);
+  const [medicineModalOpen, setMedicineModalOpen] = useState(false);
+
+  // Crowdsourced Presence State
+  const [chamberVotes, setChamberVotes] = useState<Record<string, { present: number; absent: number; lastVotedDate: string; userVote?: 'yes' | 'no' }>>(() => loadChamberVotes());
+
+  // Geolocation / Distance state
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -225,6 +252,53 @@ export default function App() {
     const { updatedStore } = saveDoctorRating(ratingsStore, slug, rating, rank, comment, tags);
     setRatingsStore(updatedStore);
     showToast(lang === 'bn' ? `আপনার ${rating}★ রেটিং সংরক্ষিত হয়েছে!` : `Your ${rating}★ rating has been saved!`);
+  };
+
+  // Crowdsourced Presence Vote handler
+  const handleVoteChamberPresence = (doctorSlug: string, vote: 'yes' | 'no') => {
+    const updated = recordChamberVote(doctorSlug, vote);
+    setChamberVotes({ ...updated });
+    showToast(
+      vote === 'yes'
+        ? (lang === 'bn' ? 'ধন্যবাদ! ডাক্তারের উপস্থিতি ভোট সংরক্ষিত হয়েছে।' : 'Thank you! Presence vote saved.')
+        : (lang === 'bn' ? 'ধন্যবাদ! ডাক্তারের অনুপস্থিতির তথ্য সংরক্ষিত হয়েছে।' : 'Thank you! Absence report saved.')
+    );
+  };
+
+  // 1-Tap WhatsApp Serial URL Formatter
+  const formatWhatsAppSerialUrl = (phone: string, docName: string, chamberName: string) => {
+    const cleanNumber = (phone || '').replace(/\D/g, '');
+    let formattedNumber = cleanNumber;
+    if (formattedNumber.startsWith('01')) {
+      formattedNumber = '88' + formattedNumber;
+    } else if (!formattedNumber.startsWith('880') && formattedNumber.length === 11) {
+      formattedNumber = '88' + formattedNumber;
+    }
+    const message = lang === 'bn'
+      ? `আসসালামু আলাইকুম। আমি "ডাক্তার আছেন" (dakterachen.com) এর মাধ্যমে ${docName} স্যারের চেম্বারে (${chamberName}) সিরিয়ালের জন্য যোগাযোগ করছি। অনুগ্রহ করে পরবর্তী উপলব্ধ সিরিয়াল বা প্রক্রিয়াটি জানাবেন।`
+      : `Hello, I found your serial number on Dakter Achen (dakterachen.com). I would like to book a serial for ${docName} at ${chamberName}. Please let me know the available time.`;
+    return `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+  };
+
+  // GPS Location handler for Nearest Doctor & Chamber
+  const handleRequestLocation = () => {
+    if (!('geolocation' in navigator)) {
+      showToast(lang === 'bn' ? 'আপনার ডিভাইসে লোকেশন ফিচারটি সমর্থিত নয়' : 'Geolocation is not supported by your browser');
+      return;
+    }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setIsLocating(false);
+        showToast(lang === 'bn' ? 'আপনার লোকেশন শনাক্ত হয়েছে! নিকটবর্তী দূরত্ব প্রদর্শিত হচ্ছে।' : 'Location detected! Showing distances.');
+      },
+      (err) => {
+        setIsLocating(false);
+        showToast(lang === 'bn' ? 'লোকেশন অ্যাক্সেস পাওয়া যায়নি, ব্রাউজার পারমিশন চেক করুন।' : 'Location access denied or unavailable.');
+      },
+      { timeout: 8000 }
+    );
   };
 
   // Modals
@@ -258,7 +332,10 @@ export default function App() {
     const handleHash = () => {
       const hash = window.location.hash.slice(1) || 'home';
       const [route, param] = hash.split('/');
-      if (route === 'doctor' && param) {
+      if (route === 'emergency') {
+        setCurrentRoute('emergency');
+        window.scrollTo(0, 0);
+      } else if (route === 'doctor' && param) {
         setCurrentRoute('doctor');
         setSelectedDoctorSlug(param);
         window.scrollTo(0, 0);
@@ -536,6 +613,17 @@ export default function App() {
               {lang === 'bn' ? 'ডাক্তার খুঁজুন' : 'Find Doctors'}
             </button>
             <button
+              onClick={() => navigateTo('emergency')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors inline-flex items-center gap-1.5 ${
+                currentRoute === 'emergency'
+                  ? 'text-red-800 bg-red-100 font-bold border border-red-300'
+                  : 'text-red-700 bg-red-50 hover:bg-red-100/80 border border-red-200'
+              }`}
+            >
+              <Droplet className="w-4 h-4 fill-red-600 text-red-600" />
+              <span>{lang === 'bn' ? 'জরুরি রক্ত ও অ্যাম্বুলেন্স' : 'Emergency & Blood'}</span>
+            </button>
+            <button
               onClick={() => navigateTo('blog')}
               className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5 ${currentRoute === 'blog' || currentRoute === 'article' ? 'text-[#0E7490] bg-cyan-50 font-bold' : 'text-slate-700 hover:bg-slate-100'}`}
             >
@@ -565,6 +653,17 @@ export default function App() {
 
           {/* Right actions: Lang & Add Doctor */}
           <div className="flex items-center gap-2">
+            {/* Mobile Emergency shortcut */}
+            <button
+              type="button"
+              onClick={() => navigateTo('emergency')}
+              title={lang === 'bn' ? 'জরুরি রক্ত ও অ্যাম্বুলেন্স' : 'Emergency Blood & Ambulance'}
+              className="md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-bold transition-colors hover:bg-red-100"
+            >
+              <Droplet className="w-3.5 h-3.5 fill-red-600 text-red-600" />
+              <span>{lang === 'bn' ? 'জরুরি' : 'SOS'}</span>
+            </button>
+
             {/* Mobile Blog shortcut */}
             <button
               type="button"
@@ -836,14 +935,146 @@ export default function App() {
                 <Phone className="w-4 h-4 text-red-600 shrink-0" />
                 <span>
                   {lang === 'bn'
-                    ? 'জরুরি অবস্থায় চেম্বারের অপেক্ষায় থাকবেন না — এখনই কল করুন'
-                    : 'In an emergency do not wait for a chamber — call immediately:'}
+                    ? 'জরুরি অবস্থায় চেম্বারের অপেক্ষায় থাকবেন না — সরাসরি চট্টগ্রামের রক্ত ব্যাংক ও অ্যাম্বুলেন্স পেতে দেখুন:'
+                    : 'In an emergency do not wait for a chamber — find Chattogram blood banks and ambulances:'}
                 </span>
-                <a href="tel:999" className="font-extrabold text-red-700 underline hover:text-red-900 ml-1">
-                  ৯৯৯ (999)
-                </a>
+                <button
+                  type="button"
+                  onClick={() => navigateTo('emergency')}
+                  className="font-extrabold text-red-700 underline hover:text-red-900 ml-1 inline-flex items-center gap-1"
+                >
+                  {lang === 'bn' ? 'জরুরি ডিরেক্টরি খুলুন →' : 'Open Emergency Directory →'}
+                </button>
               </div>
             </div>
+
+            {/* Health Tools & Fast Services Hub */}
+            <section className="pt-6 pb-2 px-4 max-w-7xl mx-auto w-full">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                {/* 1. Emergency Blood & Ambulance */}
+                <button
+                  type="button"
+                  onClick={() => navigateTo('emergency')}
+                  className="bg-gradient-to-br from-red-50 to-rose-100/70 border border-red-200/90 hover:border-red-300 rounded-2xl p-4 sm:p-5 text-left transition-all hover:shadow-md group flex flex-col justify-between"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center shadow-xs">
+                      <Droplet className="w-5 h-5 fill-white" />
+                    </span>
+                    <span className="text-[10px] font-bold text-red-700 bg-red-100/90 px-2 py-0.5 rounded-full uppercase">
+                      24/7 হটলাইন
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-red-700 transition-colors">
+                      {lang === 'bn' ? 'জরুরি রক্ত ও অ্যাম্বুলেন্স' : 'Blood & Ambulance'}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                      {lang === 'bn' ? 'সন্ধানী চমেক, রেড ক্রিসেন্ট, কোয়ান্টাম ও আইসিইউ অ্যাম্বুলেন্স নম্বর' : 'Sandhani CMCH, Red Crescent, ICU ambulances'}
+                    </p>
+                  </div>
+                </button>
+
+                {/* 2. Diagnostic Lab Cost Estimator */}
+                <button
+                  type="button"
+                  onClick={() => setDiagnosticModalOpen(true)}
+                  className="bg-gradient-to-br from-emerald-50 to-teal-100/70 border border-emerald-200/90 hover:border-emerald-300 rounded-2xl p-4 sm:p-5 text-left transition-all hover:shadow-md group flex flex-col justify-between"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                      <FlaskConical className="w-5 h-5" />
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full uppercase">
+                      ল্যাব খরচ
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-emerald-700 transition-colors">
+                      {lang === 'bn' ? 'টেস্টের খরচ এস্টিমেটর' : 'Diagnostic Lab Costs'}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                      {lang === 'bn' ? 'চমেক, শেভরণ, পপুলার ও এভারকেয়ার ল্যাবের আনুমানিক খরচের তুলনা' : 'Compare CMCH vs Private lab test fees'}
+                    </p>
+                  </div>
+                </button>
+
+                {/* 3. Doctor Visit Checklist */}
+                <button
+                  type="button"
+                  onClick={() => setChecklistModalOpen(true)}
+                  className="bg-gradient-to-br from-teal-50 to-cyan-100/70 border border-teal-200/90 hover:border-teal-300 rounded-2xl p-4 sm:p-5 text-left transition-all hover:shadow-md group flex flex-col justify-between"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="w-10 h-10 rounded-xl bg-[#0E7490] text-white flex items-center justify-center shadow-xs">
+                      <ClipboardList className="w-5 h-5" />
+                    </span>
+                    <span className="text-[10px] font-bold text-teal-800 bg-teal-100/90 px-2 py-0.5 rounded-full uppercase">
+                      প্রস্তুতি
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-[#0E7490] transition-colors">
+                      {lang === 'bn' ? 'চেম্বার প্রস্তুতি সহায়িকা' : 'Visit Prep Checklist'}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                      {lang === 'bn' ? 'পূর্বের প্রেসক্রিপশন ও উপসর্গ গুছিয়ে নেওয়ার চেকলিস্ট' : 'Organize reports and key questions beforehand'}
+                    </p>
+                  </div>
+                </button>
+
+                {/* 4. Medicine Reminder Tracker */}
+                <button
+                  type="button"
+                  onClick={() => setMedicineModalOpen(true)}
+                  className="bg-gradient-to-br from-indigo-50 to-blue-100/70 border border-indigo-200/90 hover:border-indigo-300 rounded-2xl p-4 sm:p-5 text-left transition-all hover:shadow-md group flex flex-col justify-between"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+                      <Pill className="w-5 h-5" />
+                    </span>
+                    <span className="text-[10px] font-bold text-indigo-800 bg-indigo-100/90 px-2 py-0.5 rounded-full uppercase">
+                      রিমাইন্ডার
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-indigo-700 transition-colors">
+                      {lang === 'bn' ? 'ওষুধ খাওয়ার রিমাইন্ডার' : 'Daily Pill Tracker'}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                      {lang === 'bn' ? 'প্রেসক্রিপশন অনুযায়ী সঠিক সময়ে ওষুধ খাওয়ার নোটিফিকেশন' : 'Track daily doses and scheduled intake times'}
+                    </p>
+                  </div>
+                </button>
+              </div>
+
+              {/* GPS Near Me Bar */}
+              <div className="mt-3 p-3 bg-white border border-slate-200 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-700">
+                  <Navigation className="w-4 h-4 text-cyan-600 shrink-0" />
+                  <span>
+                    {userCoords
+                      ? (lang === 'bn' ? '📍 আপনার লোকেশন সক্রিয় রয়েছে — চিকিৎসকদের চেম্বার কত কিমি দূরে তা দেখানো হচ্ছে।' : '📍 Location active — showing chamber distance in kilometers.')
+                      : (lang === 'bn' ? 'আপনার নিকটবর্তী ডাক্তার ও চেম্বার খুঁজতে লোকেশন অন করুন।' : 'Enable location to see nearest doctors and chambers.')}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRequestLocation}
+                  disabled={isLocating}
+                  className="px-3.5 py-1.5 bg-cyan-50 hover:bg-cyan-100 text-[#0E7490] border border-cyan-300 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+                >
+                  <Navigation className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin' : ''}`} />
+                  <span>
+                    {isLocating
+                      ? (lang === 'bn' ? 'শনাক্ত হচ্ছে...' : 'Locating...')
+                      : userCoords
+                      ? (lang === 'bn' ? 'লোকেশন আপডেট করুন' : 'Refresh Location')
+                      : (lang === 'bn' ? 'নিকটবর্তী চেম্বার খুঁজুন (GPS)' : 'Find Near Me (GPS)')}
+                  </span>
+                </button>
+              </div>
+            </section>
 
             {/* Specialty Grid Section */}
             <section id="home-spec" className="pt-6 sm:pt-8 pb-10 sm:pb-14 px-4 max-w-7xl mx-auto w-full">
@@ -1606,6 +1837,8 @@ export default function App() {
                   filteredDoctors.map(doc => {
                     const primaryChamber = doc.ch[0];
                     const status = getDoctorStatus(primaryChamber, lang);
+                    const voteData = chamberVotes[doc.slug] || { present: 0, absent: 0, lastVotedDate: '' };
+                    const distKm = userCoords ? calculateDistanceKm(userCoords, getChamberCoords(primaryChamber.area, primaryChamber.name)) : null;
 
                     return (
                       <article
@@ -1633,6 +1866,16 @@ export default function App() {
                                     <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
                                     <span className="text-amber-800/70 font-normal">({getDoctorRating(ratingsStore, doc.slug, doc.rank).count})</span>
                                   </span>
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-semibold">
+                                    <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                                    <span>{lang === 'bn' ? 'BMDC নিবন্ধিত ও যাচাইকৃত' : 'BMDC Verified'}</span>
+                                  </span>
+                                  {distKm !== null && (
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
+                                      <Navigation className="w-3 h-3 text-cyan-600" />
+                                      <span>{distKm.toFixed(1)} {lang === 'bn' ? 'কিমি দূরে' : 'km away'}</span>
+                                    </span>
+                                  )}
                                 </div>
                                 <p className="text-sm font-semibold text-cyan-700 mt-0.5">{doc.specialtyBn}</p>
                               </div>
@@ -1681,17 +1924,84 @@ export default function App() {
                                 </p>
                               </div>
                             </div>
+
+                            {/* Real-Time Crowdsourced Presence Check */}
+                            <div className="mt-3.5 pt-3 border-t border-dashed border-slate-200 flex flex-wrap items-center justify-between gap-2.5 bg-slate-50/70 p-2.5 rounded-xl">
+                              <div className="flex items-center gap-1.5 text-xs text-slate-600">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                <span className="font-medium text-slate-700">
+                                  {lang === 'bn' ? 'আজ চেম্বারে উপস্থিতি:' : 'Sitting today:'}
+                                </span>
+                                {voteData.present > 0 && (
+                                  <span className="font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded text-[11px]">
+                                    {lang === 'bn' ? `${voteData.present} জন উপস্থিত নিশ্চিত করেছেন` : `${voteData.present} confirmed sitting`}
+                                  </span>
+                                )}
+                                {voteData.absent > 0 && (
+                                  <span className="font-bold text-rose-800 bg-rose-100/80 px-2 py-0.5 rounded text-[11px]">
+                                    {lang === 'bn' ? `${voteData.absent} জন অনুপস্থিত রিপোর্ট করেছেন` : `${voteData.absent} reported absent`}
+                                  </span>
+                                )}
+                                {voteData.present === 0 && voteData.absent === 0 && (
+                                  <span className="text-slate-500 text-xs">
+                                    {lang === 'bn' ? 'আজ এখনো কোনো রোগী রিপোর্ট করেননি' : 'No patient report yet today'}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="flex items-center gap-1.5 shrink-0 text-xs">
+                                <span className="text-slate-500 text-[11px]">{lang === 'bn' ? 'আজ চেম্বারে আছেন?' : 'Are they sitting?'}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleVoteChamberPresence(doc.slug, 'yes')}
+                                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                                    voteData.userVote === 'yes'
+                                      ? 'bg-emerald-600 text-white shadow-xs'
+                                      : 'bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                  }`}
+                                  title={lang === 'bn' ? 'হ্যাঁ, আজ ডাক্তার উপস্থিত আছেন' : 'Yes, doctor is present'}
+                                >
+                                  <ThumbsUp className="w-3 h-3" />
+                                  <span>{lang === 'bn' ? 'হ্যাঁ' : 'Yes'} ({voteData.present})</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleVoteChamberPresence(doc.slug, 'no')}
+                                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                                    voteData.userVote === 'no'
+                                      ? 'bg-rose-600 text-white shadow-xs'
+                                      : 'bg-white hover:bg-rose-50 text-rose-800 border border-rose-200'
+                                  }`}
+                                  title={lang === 'bn' ? 'না, আজ ডাক্তার চেম্বারে বসবেন না' : 'No, doctor is absent'}
+                                >
+                                  <ThumbsDown className="w-3 h-3" />
+                                  <span>{lang === 'bn' ? 'না' : 'No'} ({voteData.absent})</span>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
                         {/* Card CTA Bar */}
-                        <div className="mt-5 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2">
                           <a
                             href={`tel:${primaryChamber.serial[0]?.replace(/\D/g, '')}`}
-                            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 min-h-[44px] px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-sm font-bold shadow-xs active:scale-95 num"
+                            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs active:scale-95 num"
                           >
                             <Phone className="w-4 h-4" />
-                            <span>{lang === 'bn' ? 'সিরিয়ালের জন্য কল' : 'Call for Serial'} · {primaryChamber.serial[0]}</span>
+                            <span>{lang === 'bn' ? 'সিরিয়ালে কল' : 'Call'} · {primaryChamber.serial[0]}</span>
+                          </a>
+
+                          {/* 1-Tap WhatsApp Serial Booking Assistant */}
+                          <a
+                            href={formatWhatsAppSerialUrl(primaryChamber.serial[0], doc.name, primaryChamber.name)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-colors shrink-0"
+                            title={lang === 'bn' ? 'হোয়াটসঅ্যাপে সরাসরি সিরিয়ালের বার্তা পাঠান' : 'Book serial via WhatsApp'}
+                          >
+                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                            <span>WhatsApp</span>
                           </a>
 
                           <button
@@ -1791,9 +2101,17 @@ export default function App() {
                           <span>{activeDoctor.specialtyBn}</span>
                         </span>
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                          <Check className="w-3.5 h-3.5" />
-                          <span>{lang === 'bn' ? 'যাচাইকৃত তথ্য' : 'Verified Profile'}</span>
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>{lang === 'bn' ? 'BMDC নিবন্ধিত বিশেষজ্ঞ · যাচাইকৃত' : 'BMDC Verified Specialist'}</span>
                         </span>
+                        {userCoords && activeDoctor.ch[0] && (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200 text-xs font-semibold">
+                            <Navigation className="w-3.5 h-3.5 text-cyan-600" />
+                            <span>
+                              {calculateDistanceKm(userCoords, getChamberCoords(activeDoctor.ch[0].area, activeDoctor.ch[0].name)).toFixed(1)} {lang === 'bn' ? 'কিমি দূরে' : 'km away'}
+                            </span>
+                          </span>
+                        )}
                       </div>
 
                       <div className="flex items-center gap-3 flex-wrap">
@@ -1821,19 +2139,81 @@ export default function App() {
                         {activeDoctor.designation} · {activeDoctor.institution}
                       </p>
 
-                      {/* Desktop Direct Call & Share Bar */}
-                      <div className="hidden sm:flex items-center gap-3 mt-6 pt-5 border-t border-slate-100">
+                      {/* Real-time crowd presence voting banner on profile */}
+                      {(() => {
+                        const profileVote = chamberVotes[activeDoctor.slug] || { present: 0, absent: 0, lastVotedDate: '' };
+                        return (
+                          <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div className="flex items-center gap-1.5 text-slate-700">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <span className="font-semibold">{lang === 'bn' ? 'আজকের উপস্থিতি রিপোর্ট:' : 'Today’s presence:'}</span>
+                              {profileVote.present > 0 && (
+                                <span className="font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px]">
+                                  {lang === 'bn' ? `${profileVote.present} জন উপস্থিত নিশ্চিত করেছেন` : `${profileVote.present} confirmed sitting`}
+                                </span>
+                              )}
+                              {profileVote.absent > 0 && (
+                                <span className="font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded text-[11px]">
+                                  {lang === 'bn' ? `${profileVote.absent} জন অনুপস্থিত বলেছেন` : `${profileVote.absent} reported absent`}
+                                </span>
+                              )}
+                              {profileVote.present === 0 && profileVote.absent === 0 && (
+                                <span className="text-slate-500">{lang === 'bn' ? 'আজ এখনো কোনো ভোট পড়েনি' : 'No votes yet today'}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[11px] text-slate-500">{lang === 'bn' ? 'আজ কি ডাক্তার এসেছেন?' : 'Sitting today?'}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleVoteChamberPresence(activeDoctor.slug, 'yes')}
+                                className={`px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 transition-colors ${
+                                  profileVote.userVote === 'yes' ? 'bg-emerald-600 text-white' : 'bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                }`}
+                              >
+                                <ThumbsUp className="w-3 h-3" />
+                                <span>{lang === 'bn' ? 'হ্যাঁ' : 'Yes'} ({profileVote.present})</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleVoteChamberPresence(activeDoctor.slug, 'no')}
+                                className={`px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 transition-colors ${
+                                  profileVote.userVote === 'no' ? 'bg-rose-600 text-white' : 'bg-white hover:bg-rose-50 text-rose-800 border border-rose-200'
+                                }`}
+                              >
+                                <ThumbsDown className="w-3 h-3" />
+                                <span>{lang === 'bn' ? 'না' : 'No'} ({profileVote.absent})</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* Desktop Direct Call, WhatsApp & Share Bar */}
+                      <div className="hidden sm:flex flex-wrap items-center gap-2.5 mt-5 pt-5 border-t border-slate-100">
                         <a
                           href={`tel:${activeDoctor.ch[0]?.serial[0]?.replace(/\D/g, '')}`}
-                          className="inline-flex items-center gap-2 min-h-[46px] px-6 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-sm font-bold shadow-xs active:scale-95 num"
+                          className="inline-flex items-center gap-2 min-h-[46px] px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-sm font-bold shadow-xs active:scale-95 num"
                         >
                           <Phone className="w-4 h-4" />
                           <span>{lang === 'bn' ? 'সিরিয়ালের জন্য কল' : 'Call for Serial'} · {activeDoctor.ch[0]?.serial[0]}</span>
                         </a>
+
+                        {activeDoctor.ch[0]?.serial[0] && (
+                          <a
+                            href={formatWhatsAppSerialUrl(activeDoctor.ch[0].serial[0], activeDoctor.name, activeDoctor.ch[0].name)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 min-h-[46px] px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-xs"
+                          >
+                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                            <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপ সিরিয়াল' : 'WhatsApp'}</span>
+                          </a>
+                        )}
+
                         <button
                           type="button"
                           onClick={() => copyToClipboard(activeDoctor.ch[0]?.serial[0], lang === 'bn' ? 'সিরিয়াল নম্বর' : 'Phone')}
-                          className="min-h-[46px] px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
+                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
                         >
                           <Copy className="w-4 h-4 text-slate-500" />
                           <span>{lang === 'bn' ? 'নম্বর কপি' : 'Copy'}</span>
@@ -1847,7 +2227,7 @@ export default function App() {
                               copyToClipboard(window.location.href, lang === 'bn' ? 'প্রোফাইল লিংক' : 'Link');
                             }
                           }}
-                          className="min-h-[46px] px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
+                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
                         >
                           <Share2 className="w-4 h-4 text-slate-500" />
                           <span>{lang === 'bn' ? 'শেয়ার' : 'Share'}</span>
@@ -1955,13 +2335,23 @@ export default function App() {
                             </h4>
                             <div className="flex flex-wrap gap-2.5">
                               {chamber.serial.map((ser, sIdx) => (
-                                <div key={sIdx} className="flex items-center gap-1.5">
+                                <div key={sIdx} className="flex flex-wrap items-center gap-1.5">
                                   <a
                                     href={`tel:${ser.replace(/\D/g, '')}`}
                                     className="inline-flex items-center gap-2 min-h-[42px] px-4 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs num"
                                   >
                                     <Phone className="w-3.5 h-3.5" />
                                     <span>{ser}</span>
+                                  </a>
+                                  <a
+                                    href={formatWhatsAppSerialUrl(ser, activeDoctor.name, chamber.name)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 min-h-[42px] px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
+                                    title={lang === 'bn' ? 'হোয়াটসঅ্যাপে সিরিয়াল বার্তা পাঠান' : 'Book on WhatsApp'}
+                                  >
+                                    <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                                    <span>WhatsApp</span>
                                   </a>
                                   <button
                                     type="button"
@@ -2152,6 +2542,15 @@ export default function App() {
               onNavigateHome={() => navigateTo('home')}
             />
           </React.Suspense>
+        )}
+
+        {/* ======================= EMERGENCY VIEW ======================= */}
+        {currentRoute === 'emergency' && (
+          <EmergencyView
+            lang={lang}
+            onToast={showToast}
+            onNavigateHome={() => navigateTo('home')}
+          />
         )}
       </main>
 
@@ -2563,7 +2962,7 @@ export default function App() {
         <button
           type="button"
           onClick={() => navigateTo('home')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[11px] font-bold transition-all ${
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-all ${
             currentRoute === 'home' ? 'text-cyan-400 bg-cyan-950/60 shadow-xs' : 'text-slate-400 hover:text-white'
           }`}
         >
@@ -2574,7 +2973,7 @@ export default function App() {
         <button
           type="button"
           onClick={() => navigateTo('list')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[11px] font-bold transition-all ${
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-all ${
             currentRoute === 'list' ? 'text-cyan-400 bg-cyan-950/60 shadow-xs' : 'text-slate-400 hover:text-white'
           }`}
         >
@@ -2582,10 +2981,26 @@ export default function App() {
           <span>{lang === 'bn' ? 'ডাক্তার' : 'Doctors'}</span>
         </button>
 
+        {/* Emergency Blood & Ambulance 1-tap SOS Tab */}
+        <button
+          type="button"
+          onClick={() => navigateTo('emergency')}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-all relative ${
+            currentRoute === 'emergency' ? 'text-rose-400 bg-rose-950/70 shadow-xs' : 'text-rose-400/90 hover:text-rose-300'
+          }`}
+        >
+          <span className="relative">
+            <Droplet className="w-5 h-5 mb-0.5 fill-rose-500 text-rose-500" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500" />
+          </span>
+          <span>{lang === 'bn' ? 'জরুরি' : 'Emergency'}</span>
+        </button>
+
         <button
           type="button"
           onClick={() => navigateTo('blog')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[11px] font-bold transition-all ${
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold transition-all ${
             currentRoute === 'blog' || currentRoute === 'article' ? 'text-cyan-400 bg-cyan-950/60 shadow-xs' : 'text-slate-400 hover:text-white'
           }`}
         >
@@ -2596,7 +3011,7 @@ export default function App() {
         <button
           type="button"
           onClick={() => openChat()}
-          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[11px] font-bold text-cyan-300 hover:text-cyan-200 transition-all relative"
+          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[11px] font-bold text-cyan-300 hover:text-cyan-200 transition-all relative"
         >
           <span className="relative">
             <Sparkles className="w-5 h-5 mb-0.5 text-cyan-400" />
@@ -2605,23 +3020,31 @@ export default function App() {
           </span>
           <span>{lang === 'bn' ? 'এআই' : 'AI'}</span>
         </button>
-
-        <button
-          type="button"
-          onClick={() => navigateTo('sitemap')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[11px] font-bold transition-all ${
-            currentRoute === 'sitemap' ? 'text-cyan-400 bg-cyan-950/60 shadow-xs' : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <FolderTree className="w-5 h-5 mb-0.5" />
-          <span>{lang === 'bn' ? 'সাইটম্যাপ' : 'Sitemap'}</span>
-        </button>
       </nav>
 
       {/* Floating AI Health Assistant Chatbot */}
       <React.Suspense fallback={null}>
         <Chatbot />
       </React.Suspense>
+
+      {/* Interactive Feature Modals */}
+      <DiagnosticCostModal
+        isOpen={diagnosticModalOpen}
+        onClose={() => setDiagnosticModalOpen(false)}
+        lang={lang}
+      />
+
+      <VisitChecklistModal
+        isOpen={checklistModalOpen}
+        onClose={() => setChecklistModalOpen(false)}
+        lang={lang}
+      />
+
+      <MedicineReminderModal
+        isOpen={medicineModalOpen}
+        onClose={() => setMedicineModalOpen(false)}
+        lang={lang}
+      />
     </div>
   );
 }
