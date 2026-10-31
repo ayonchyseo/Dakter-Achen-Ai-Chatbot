@@ -40,7 +40,8 @@ import {
   ThumbsDown,
   Navigation,
   CheckCircle2,
-  ShieldCheck
+  ShieldCheck,
+  Code2
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
@@ -48,6 +49,8 @@ import EmergencyView from './components/EmergencyView';
 import { DiagnosticCostModal } from './components/DiagnosticCostModal';
 import { VisitChecklistModal } from './components/VisitChecklistModal';
 import { MedicineReminderModal } from './components/MedicineReminderModal';
+import SeoInspectorModal from './components/SeoInspectorModal';
+import { updatePageSeo, generateDoctorSchema, generateBlogArticleSchema, generateEmergencySchema, getActiveOrigin } from './lib/seoManager';
 import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
 import { getChamberCoords, calculateDistanceKm } from './lib/geoDistance';
 
@@ -305,6 +308,7 @@ export default function App() {
   const [addDoctorModalOpen, setAddDoctorModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportingDoctor, setReportingDoctor] = useState<string>('');
+  const [seoInspectorOpen, setSeoInspectorOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -382,6 +386,66 @@ export default function App() {
       window.removeEventListener('popstate', handleRoute);
     };
   }, []);
+
+  // Dynamic SEO & Schema.org sync on route changes
+  useEffect(() => {
+    const origin = getActiveOrigin();
+
+    if (currentRoute === 'doctor') {
+      const doc = doctorsList.find(d => d.slug === selectedDoctorSlug) || doctorsList[0];
+      if (doc) {
+        updatePageSeo({
+          title: `${doc.name} — ${doc.specialtyBn} | ডাক্তার আছেন (Dakter Achen)`,
+          description: `${doc.name} (${doc.specialtyBn}) — ${doc.degrees}। চেম্বার: ${doc.ch.map(c => c.name).join(', ')}। সিরিয়াল নম্বর ও বসার সময়সূচি।`,
+          canonicalUrl: `${origin}/doctor/${doc.slug}`,
+          schemaJsonLd: generateDoctorSchema(doc, origin)
+        });
+      }
+    } else if (currentRoute === 'article') {
+      const post = BLOG_POSTS.find(b => b.slug === selectedArticleSlug) || BLOG_POSTS[0];
+      if (post) {
+        updatePageSeo({
+          title: `${post.titleBn} | স্বাস্থ্য ব্লগ — ডাক্তার আছেন`,
+          description: post.excerptBn,
+          canonicalUrl: `${origin}/blog/${post.slug}`,
+          ogImage: post.coverImage,
+          schemaJsonLd: generateBlogArticleSchema(post, origin)
+        });
+      }
+    } else if (currentRoute === 'blog') {
+      updatePageSeo({
+        title: lang === 'bn' ? '১০৬+ তথ্যবহুল স্বাস্থ্য ব্লগ ও চিকিৎসা নির্দেশিকা | ডাক্তার আছেন' : '106+ Evidence-Based Health Articles & Clinical Guides | Dakter Achen',
+        description: lang === 'bn' ? 'প্রতিরোধমূলক স্বাস্থ্য, দীর্ঘস্থায়ী রোগ, মা ও শিশু স্বাস্থ্য এবং জীবনযাত্রার ওপর ১০৬+ বিশেষজ্ঞ চিকিৎসকদের লেখা পরামর্শ।' : 'Expert medical articles on preventive healthcare, chronic illness, and child care.',
+        canonicalUrl: `${origin}/blog`
+      });
+    } else if (currentRoute === 'emergency') {
+      updatePageSeo({
+        title: lang === 'bn' ? 'চট্টগ্রাম জরুরি স্বাস্থ্য সেবা ও অ্যাম্বুলেন্স ডিরেক্টরি (২৪/৭) | ডাক্তার আছেন' : 'Chattogram 24/7 Emergency Care & Ambulance Directory | Dakter Achen',
+        description: lang === 'bn' ? 'জাতীয় জরুরি হটলাইন ৯৯৯, চট্টগ্রামের সরকারি ও বেসরকারি হাসপাতালের জরুরি বিভাগ এবং সার্বক্ষণিক অ্যাম্বুলেন্স যোগাযোগ।' : '24/7 emergency hotline 999, Chittagong emergency hospitals, and rapid ambulance dispatch.',
+        canonicalUrl: `${origin}/emergency`,
+        schemaJsonLd: generateEmergencySchema(origin)
+      });
+    } else if (currentRoute === 'sitemap') {
+      updatePageSeo({
+        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (৪০৩+ পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (403+ Pages) | Dakter Achen',
+        description: lang === 'bn' ? 'চট্টগ্রামের ৫০০+ বিশেষজ্ঞ চিকিৎসক, ১০৬+ স্বাস্থ্য প্রবন্ধ, ১২টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 500+ doctors, 106+ articles, and healthcare hubs.',
+        canonicalUrl: `${origin}/sitemap`
+      });
+    } else if (currentRoute === 'list') {
+      updatePageSeo({
+        title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
+        description: lang === 'bn' ? 'মেডিসিন, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১২টি বিভাগের বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find specialist doctors in Chittagong with verified chamber timings and serials.',
+        canonicalUrl: `${origin}/doctors`
+      });
+    } else {
+      // Home
+      updatePageSeo({
+        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ৫০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 500+ Specialist Doctors in Chittagong & Health Decision Platform',
+        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ৫০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 500+ verified specialist doctors, chambers, serial phone numbers, and medical guides.',
+        canonicalUrl: `${origin}/`
+      });
+    }
+  }, [currentRoute, selectedDoctorSlug, selectedArticleSlug, doctorsList, lang]);
 
   const navigateTo = (pathOrHash: string) => {
     const clean = pathOrHash.replace(/^#/, '');
@@ -2689,6 +2753,15 @@ export default function App() {
                 </button>
               </li>
               <li>
+                <button
+                  onClick={() => setSeoInspectorOpen(true)}
+                  className="hover:text-emerald-400 transition-colors text-emerald-300 font-semibold inline-flex items-center gap-1.5"
+                >
+                  <Code2 className="w-3.5 h-3.5" />
+                  <span>{lang === 'bn' ? 'মেটাডাটা ও স্কিমা ইন্সপেক্টর' : 'SEO & Schema Inspector'}</span>
+                </button>
+              </li>
+              <li>
                 <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-slate-400 inline-flex items-center gap-1">
                   <span>sitemap.xml</span>
                   <ExternalLink className="w-3 h-3 text-slate-500" />
@@ -3059,6 +3132,12 @@ export default function App() {
       <MedicineReminderModal
         isOpen={medicineModalOpen}
         onClose={() => setMedicineModalOpen(false)}
+        lang={lang}
+      />
+
+      <SeoInspectorModal
+        isOpen={seoInspectorOpen}
+        onClose={() => setSeoInspectorOpen(false)}
         lang={lang}
       />
     </div>

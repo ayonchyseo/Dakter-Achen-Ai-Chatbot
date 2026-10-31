@@ -10,11 +10,13 @@ import {
   FolderTree,
   ArrowRight,
   Download,
-  HelpCircle
+  HelpCircle,
+  Code2
 } from 'lucide-react';
 import { INITIAL_DOCTORS } from '../data/doctors';
 import { BLOG_POSTS } from '../data/blogData';
 import { CHATTOGRAM_AREAS, SPECIALTIES } from '../lib/sitemapGenerator';
+import SeoInspectorModal from './SeoInspectorModal';
 
 interface SitemapViewProps {
   lang: 'bn' | 'en';
@@ -41,6 +43,7 @@ const SPECIALTY_NAMES: Record<string, { bn: string; en: string }> = {
 export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onNavigateHome }: SitemapViewProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'doctors' | 'blogs' | 'specialties' | 'areas'>('all');
   const [filterQuery, setFilterQuery] = useState('');
+  const [seoModalOpen, setSeoModalOpen] = useState(false);
 
   const q = filterQuery.toLowerCase().trim();
 
@@ -125,6 +128,14 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
               <Download size={15} />
               <span>{lang === 'bn' ? '.htaccess ডাউনলোড (404 ফিক্স)' : 'Download .htaccess (404 Fix)'}</span>
             </a>
+
+            <button
+              onClick={() => setSeoModalOpen(true)}
+              className="inline-flex items-center gap-2 bg-slate-900/80 hover:bg-slate-900 text-cyan-300 border border-cyan-500/40 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
+            >
+              <Code2 size={15} />
+              <span>{lang === 'bn' ? 'মেটাডাটা ও স্কিমা ইন্সপেক্টর' : 'SEO & Schema Inspector'}</span>
+            </button>
 
             <a
               href="/dakterachen-wordpress-import.xml"
@@ -453,6 +464,12 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
           </div>
         )}
       </div>
+
+      <SeoInspectorModal
+        isOpen={seoModalOpen}
+        onClose={() => setSeoModalOpen(false)}
+        lang={lang}
+      />
     </div>
   );
 }
