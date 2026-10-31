@@ -41,9 +41,22 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
   try {
     // Resolve client base URL dynamically to match the current domain/host
     const protocol = (req.headers['x-forwarded-proto'] as string) || req.protocol || 'https';
-    const host = req.get('host') || 'ais-pre-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app';
-    const baseUrl = process.env.APP_URL || `${protocol}://${host}`;
-    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const host = req.get('host') || 'dakterachen.com';
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+    const isCustomDomain = host.includes('dakterachen.com');
+
+    // If request Host is dakterachen.com, ALWAYS use https://dakterachen.com
+    // Otherwise if localhost use http://localhost:port; else use APP_URL or protocol://host
+    let baseUrl = 'https://dakterachen.com';
+    if (isCustomDomain) {
+      baseUrl = 'https://dakterachen.com';
+    } else if (isLocalhost) {
+      baseUrl = `http://${host}`;
+    } else if (process.env.APP_URL) {
+      baseUrl = process.env.APP_URL;
+    } else {
+      baseUrl = `${protocol}://${host}`;
+    }
 
     // Set standard sitemap XML headers for search engine crawlers
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
@@ -56,11 +69,10 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
       const publicPath = path.resolve(__dirname, '../../public/sitemap.xml');
       const distPath = path.resolve(__dirname, '../../dist/sitemap.xml');
 
-      // Check if static pre-generated file exists and matches current host
+      // Check if static pre-generated file exists, matches current host, and has NO hash fragments
       if (fs.existsSync(publicPath)) {
         let content = fs.readFileSync(publicPath, 'utf-8');
-        // If the static file had a placeholder or different host, replace with current baseUrl
-        if (content.includes('http') && !content.includes(host)) {
+        if (content.includes('/#') || !content.includes(host)) {
           content = generateSitemapXml(baseUrl);
           try {
             fs.writeFileSync(publicPath, content, 'utf-8');
@@ -69,7 +81,10 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
         res.status(200).send(content);
         return;
       } else if (fs.existsSync(distPath)) {
-        const content = fs.readFileSync(distPath, 'utf-8');
+        let content = fs.readFileSync(distPath, 'utf-8');
+        if (content.includes('/#') || !content.includes(host)) {
+          content = generateSitemapXml(baseUrl);
+        }
         res.status(200).send(content);
         return;
       }
@@ -85,7 +100,7 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
       const publicPath = path.resolve(__dirname, '../../public/wp-sitemap.xml');
       if (fs.existsSync(publicPath)) {
         let content = fs.readFileSync(publicPath, 'utf-8');
-        if (content.includes('http') && !content.includes(host)) {
+        if (!content.includes(host)) {
           content = generateSitemapIndexXml(baseUrl);
           try {
             fs.writeFileSync(publicPath, content, 'utf-8');

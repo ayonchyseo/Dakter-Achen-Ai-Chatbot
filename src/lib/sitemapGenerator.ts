@@ -90,15 +90,16 @@ export function generatePagesSitemapXml(baseUrl: string): string {
 
   const entries: SitemapUrlEntry[] = [
     { loc: `${cleanBase}/`, lastmod: today, changefreq: 'daily', priority: '1.0' },
-    { loc: `${cleanBase}/#list`, lastmod: today, changefreq: 'daily', priority: '0.9' },
-    { loc: `${cleanBase}/#blog`, lastmod: today, changefreq: 'daily', priority: '0.9' },
-    { loc: `${cleanBase}/#sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
+    { loc: `${cleanBase}/doctors`, lastmod: today, changefreq: 'daily', priority: '0.9' },
+    { loc: `${cleanBase}/emergency`, lastmod: today, changefreq: 'daily', priority: '0.95' },
+    { loc: `${cleanBase}/blog`, lastmod: today, changefreq: 'daily', priority: '0.9' },
+    { loc: `${cleanBase}/sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
   ];
 
   for (const doc of INITIAL_DOCTORS) {
     if (doc.slug) {
       entries.push({
-        loc: `${cleanBase}/#doctor/${doc.slug}`,
+        loc: `${cleanBase}/doctor/${doc.slug}`,
         lastmod: today,
         changefreq: 'weekly',
         priority: '0.85',
@@ -121,7 +122,7 @@ export function generatePostsSitemapXml(baseUrl: string): string {
     if (blog.slug) {
       const blogDate = blog.publishedDate && blog.publishedDate.includes('-') ? blog.publishedDate : today;
       entries.push({
-        loc: `${cleanBase}/#blog/${blog.slug}`,
+        loc: `${cleanBase}/blog/${blog.slug}`,
         lastmod: blogDate,
         changefreq: 'monthly',
         priority: '0.8',
@@ -140,7 +141,7 @@ export function generateTaxonomiesSitemapXml(baseUrl: string): string {
   const today = new Date().toISOString().split('T')[0];
 
   const entries: SitemapUrlEntry[] = SPECIALTIES.map((spec) => ({
-    loc: `${cleanBase}/#list?specialty=${spec}`,
+    loc: `${cleanBase}/specialty/${spec}`,
     lastmod: today,
     changefreq: 'weekly',
     priority: '0.8',
@@ -157,7 +158,7 @@ export function generateUsersSitemapXml(baseUrl: string): string {
   const today = new Date().toISOString().split('T')[0];
 
   const entries: SitemapUrlEntry[] = CHATTOGRAM_AREAS.map((area) => ({
-    loc: `${cleanBase}/#list?area=${encodeURIComponent(area)}`,
+    loc: `${cleanBase}/area/${encodeURIComponent(area.toLowerCase())}`,
     lastmod: today,
     changefreq: 'weekly',
     priority: '0.8',
@@ -175,29 +176,30 @@ export function generateSitemapXml(baseUrl: string): string {
 
   const entries: SitemapUrlEntry[] = [
     { loc: `${cleanBase}/`, lastmod: today, changefreq: 'daily', priority: '1.0' },
-    { loc: `${cleanBase}/#list`, lastmod: today, changefreq: 'daily', priority: '0.9' },
-    { loc: `${cleanBase}/#blog`, lastmod: today, changefreq: 'daily', priority: '0.9' },
-    { loc: `${cleanBase}/#sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
+    { loc: `${cleanBase}/doctors`, lastmod: today, changefreq: 'daily', priority: '0.9' },
+    { loc: `${cleanBase}/emergency`, lastmod: today, changefreq: 'daily', priority: '0.95' },
+    { loc: `${cleanBase}/blog`, lastmod: today, changefreq: 'daily', priority: '0.9' },
+    { loc: `${cleanBase}/sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
   ];
 
   for (const spec of SPECIALTIES) {
-    entries.push({ loc: `${cleanBase}/#list?specialty=${spec}`, lastmod: today, changefreq: 'weekly', priority: '0.8' });
+    entries.push({ loc: `${cleanBase}/specialty/${spec}`, lastmod: today, changefreq: 'weekly', priority: '0.8' });
   }
 
   for (const area of CHATTOGRAM_AREAS) {
-    entries.push({ loc: `${cleanBase}/#list?area=${encodeURIComponent(area)}`, lastmod: today, changefreq: 'weekly', priority: '0.8' });
+    entries.push({ loc: `${cleanBase}/area/${encodeURIComponent(area.toLowerCase())}`, lastmod: today, changefreq: 'weekly', priority: '0.8' });
   }
 
   for (const doc of INITIAL_DOCTORS) {
     if (doc.slug) {
-      entries.push({ loc: `${cleanBase}/#doctor/${doc.slug}`, lastmod: today, changefreq: 'weekly', priority: '0.85' });
+      entries.push({ loc: `${cleanBase}/doctor/${doc.slug}`, lastmod: today, changefreq: 'weekly', priority: '0.85' });
     }
   }
 
   for (const blog of BLOG_POSTS) {
     if (blog.slug) {
       const blogDate = blog.publishedDate && blog.publishedDate.includes('-') ? blog.publishedDate : today;
-      entries.push({ loc: `${cleanBase}/#blog/${blog.slug}`, lastmod: blogDate, changefreq: 'monthly', priority: '0.8' });
+      entries.push({ loc: `${cleanBase}/blog/${blog.slug}`, lastmod: blogDate, changefreq: 'monthly', priority: '0.8' });
     }
   }
 

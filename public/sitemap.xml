@@ -1,2415 +1,2421 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<!-- Dakter Achen XML Sitemap - Total URLs: 402 -->
+<!-- Dakter Achen XML Sitemap - Total URLs: 403 -->
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctors</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/emergency</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://dakterachen.com/blog</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#sitemap</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/sitemap</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=medicine</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/medicine</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=heart</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/heart</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?specialty=surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/specialty/surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Panchlaish</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/panchlaish</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Prabartak</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/prabartak</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Chawkbazar</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/chawkbazar</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Mehedibag</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/mehedibag</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Dampara</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/dampara</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Agrabad</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/agrabad</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Nasirabad</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/nasirabad</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=GEC</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/gec</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Halishahar</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/halishahar</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Chatteshwari</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/chatteshwari</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Kotwali</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/kotwali</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Anderkilla</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/anderkilla</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Muradpur</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/muradpur</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#list?area=Khulshi</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/area/khulshi</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-soumitra-das</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-soumitra-das</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-ashok-kumar-dutta</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-ashok-kumar-dutta</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rezwanul-karim</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rezwanul-karim</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-aniruddha-ghose</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-aniruddha-ghose</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-m-a-awal</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-m-a-awal</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rajat-sanker-roy-biswas</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rajat-sanker-roy-biswas</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sujat-paul</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sujat-paul</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-gofranul-hoque</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-gofranul-hoque</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-jahangir-alam-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-jahangir-alam-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-ali-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-ali-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahed-ahmad-iqbal</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahed-ahmad-iqbal</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhad-mahmood</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhad-mahmood</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashis-kumar-dey</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashis-kumar-dey</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nasir-uddin-ahmed-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nasir-uddin-ahmed-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sheikh-md-hasan-mamun</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sheikh-md-hasan-mamun</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-khorshed-alam</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-khorshed-alam</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-pranab-sen-gupta</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-pranab-sen-gupta</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanjila-parvin-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanjila-parvin-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-akm-monwarul-islam-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-akm-monwarul-islam-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tamanna-ferdous-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tamanna-ferdous-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamal-hossain-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamal-hossain-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-zahirul-islam-med</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-zahirul-islam-med</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-abu-sayem-omar-faroque</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-abu-sayem-omar-faroque</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-prabir-kumar-das</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-prabir-kumar-das</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nuruddin-tareq</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nuruddin-tareq</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-mokhlesur-rahman-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-mokhlesur-rahman-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-ibrahim-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-ibrahim-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-rezaul-karim-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-rezaul-karim-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisul-awal</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisul-awal</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-jamal-ahmed-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-jamal-ahmed-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-ashraful-islam-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-ashraful-islam-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahedur-rahman-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahedur-rahman-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-moinuddin-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-moinuddin-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-asif-ahmed-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-asif-ahmed-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-manjur-morshed-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-manjur-morshed-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-taimur-khan-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-taimur-khan-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-salahuddin-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-salahuddin-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-arifur-rahman-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-arifur-rahman-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-subir-biswas-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-subir-biswas-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahfuzur-rahman-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahfuzur-rahman-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sanjoy-barua-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sanjoy-barua-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhan-ishraq-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhan-ishraq-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-moniruzzaman-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-moniruzzaman-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sharmin-sultana-card</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sharmin-sultana-card</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-shahana-akhter</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-shahana-akhter</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-rowshan-morshed</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-rowshan-morshed</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-rokeya-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-rokeya-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-kamrunnesa-runa</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-kamrunnesa-runa</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nasreen-banu-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nasreen-banu-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rehana-sultana-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rehana-sultana-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shamima-akhter-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shamima-akhter-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-jasmin-akhter-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-jasmin-akhter-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ferdousi-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ferdousi-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-taslima-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-taslima-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-dilruba-zeba</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-dilruba-zeba</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nahid-parveen-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nahid-parveen-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-munira-ferdous-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-munira-ferdous-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-suraiya-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-suraiya-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-monowara-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-monowara-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nusrat-jahan-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nusrat-jahan-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sabina-yasmin-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sabina-yasmin-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rubina-akhter-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rubina-akhter-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farzana-kabir-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farzana-kabir-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shaheena-parvin-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shaheena-parvin-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-salma-begum-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-salma-begum-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kaniz-fatema-gynae</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kaniz-fatema-gynae</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-pranab-kumar-chowdhury</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-pranab-kumar-chowdhury</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-mahmud-ahmed-chowdhury-arzu</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-mahmud-ahmed-chowdhury-arzu</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-rezaul-karim-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-rezaul-karim-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-sakil-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-sakil-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-jahedul-islam-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-jahedul-islam-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anupam-sen-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anupam-sen-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shaheen-akhter-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shaheen-akhter-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-nazmul-haque-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-nazmul-haque-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-abu-sayeed-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-abu-sayeed-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sanjoy-kumar-dey-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sanjoy-kumar-dey-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-selim-reza-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-selim-reza-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tahmina-begum-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tahmina-begum-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamrul-hasan-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamrul-hasan-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sharmin-afroze-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sharmin-afroze-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-iftekhar-alam-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-iftekhar-alam-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-asaduzzaman-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-asaduzzaman-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nargis-sultana-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nargis-sultana-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-biswajit-chowdhury-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-biswajit-chowdhury-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-mizanur-rahman-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-mizanur-rahman-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-masud-rana-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-masud-rana-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahida-sultana-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahida-sultana-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-faruk-hossain-child</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-faruk-hossain-child</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-muniruzzaman-osmani-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-muniruzzaman-osmani-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-khurshid-alam-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-khurshid-alam-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shafiul-alam-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shafiul-alam-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanima-das-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanima-das-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-monir-hossain-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-monir-hossain-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-tariq-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-tariq-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashis-dey-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashis-dey-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhana-sharmin-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhana-sharmin-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-masudur-rahman-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-masudur-rahman-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nasir-uddin-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nasir-uddin-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahabuddin-ahmed-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahabuddin-ahmed-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rashedul-hasan-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rashedul-hasan-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nurul-huda-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nurul-huda-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-samiran-sen-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-samiran-sen-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahbubur-rahman-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahbubur-rahman-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-asif-bin-saif-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-asif-bin-saif-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamrul-huda-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamrul-huda-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nigar-sultana-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nigar-sultana-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shariful-islam-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shariful-islam-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-dewan-md-mehedi-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-dewan-md-mehedi-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nazrul-islam-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nazrul-islam-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anowarul-karim-eye</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anowarul-karim-eye</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-mustafizur-rahman-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-mustafizur-rahman-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-subhan-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-subhan-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-kamrul-hasan-tarafder-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-kamrul-hasan-tarafder-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-zakaria-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-zakaria-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-rafiqul-islam-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-rafiqul-islam-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-pranab-kanti-barua-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-pranab-kanti-barua-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-morshedul-alam-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-morshedul-alam-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-syed-mohammad-tareq-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-syed-mohammad-tareq-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-jahangir-alam-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-jahangir-alam-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-fahmida-sultana-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-fahmida-sultana-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nazmul-huda-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nazmul-huda-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashfak-ahmed-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashfak-ahmed-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahmudul-hasan-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahmudul-hasan-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-saiful-islam-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-saiful-islam-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sazzad-hossain-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sazzad-hossain-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tariqul-islam-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tariqul-islam-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-m-a-matin-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-m-a-matin-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisur-rahman-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisur-rahman-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farzana-haque-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farzana-haque-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-imtiaz-ahmed-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-imtiaz-ahmed-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-mahbubur-rahman-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-mahbubur-rahman-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-babul-chandra-dey-ent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-babul-chandra-dey-ent</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-mizanur-rahman-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-mizanur-rahman-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-sarwar-jahan-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-sarwar-jahan-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-chandan-kumar-sen-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-chandan-kumar-sen-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-sirajuddin-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-sirajuddin-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-shamimul-hasan-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-shamimul-hasan-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-afm-fakhrul-islam-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-afm-fakhrul-islam-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-shafiul-azam-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-shafiul-azam-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kalyan-barua-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kalyan-barua-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-tofayel-ahmed-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-tofayel-ahmed-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-mohammad-asif-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-mohammad-asif-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-hossain-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-hossain-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shah-alam-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shah-alam-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-nazmul-islam-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-nazmul-islam-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-hasanul-banna-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-hasanul-banna-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anupom-barua-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anupom-barua-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanvir-ahmed-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanvir-ahmed-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-humayun-kabir-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-humayun-kabir-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-mostafa-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-mostafa-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rezaul-karim-chowdhury-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rezaul-karim-chowdhury-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-k-roy-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-k-roy-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tariqul-azim-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tariqul-azim-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ziaul-haque-ortho</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ziaul-haque-ortho</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-mansurul-alam-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-mansurul-alam-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-aqm-serajul-islam-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-aqm-serajul-islam-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-subrata-roy</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-subrata-roy</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-shamsuzzaman-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-shamsuzzaman-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-hasibur-rahman-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-hasibur-rahman-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-zakir-hossain-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-zakir-hossain-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-lubna-khondker-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-lubna-khondker-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhana-yesmin-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhana-yesmin-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-m-a-wahab-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-m-a-wahab-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahidul-islam-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahidul-islam-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanjima-parvin-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanjima-parvin-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shuvra-das-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shuvra-das-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-monirul-islam-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-monirul-islam-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sabina-yasmin-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sabina-yasmin-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashraful-hoque-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashraful-hoque-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nazneen-akhter-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nazneen-akhter-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahed-imran-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahed-imran-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rashedul-karim-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rashedul-karim-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-afroza-begum-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-afroza-begum-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahbubur-rashid-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahbubur-rashid-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-fahmida-shireen-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-fahmida-shireen-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisur-rahman-skin</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisur-rahman-skin</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-maruf-bin-habib</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-maruf-bin-habib</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-shamsul-alam-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-shamsul-alam-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nasir-uddin-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nasir-uddin-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-mahbubur-rahman-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-mahbubur-rahman-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanveer-ahmed-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanveer-ahmed-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sharmin-akter-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sharmin-akter-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farzana-chowdhury-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farzana-chowdhury-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-imran-hossain-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-imran-hossain-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashikur-rahman-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashikur-rahman-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nazmul-hasan-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nazmul-hasan-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-salma-khatun-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-salma-khatun-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rashed-chowdhury-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rashed-chowdhury-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-faisal-karim-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-faisal-karim-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nusrat-jahan-shimu-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nusrat-jahan-shimu-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahmudul-hasan-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahmudul-hasan-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rubayet-hossain-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rubayet-hossain-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-sadia-afrin-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-sadia-afrin-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-saikat-barua-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-saikat-barua-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-arifur-rahman-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-arifur-rahman-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-jannatul-ferdous-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-jannatul-ferdous-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-mominul-islam-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-mominul-islam-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-wahidur-rahman-dental</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-wahidur-rahman-dental</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-hasanuzzaman</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-hasanuzzaman</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shiuli-mazumder</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shiuli-mazumder</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-badrul-alam-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-badrul-alam-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-enayet-hussain-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-enayet-hussain-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-touhidul-islam-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-touhidul-islam-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-mohibur-rahman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-mohibur-rahman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-nazmul-huda-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-nazmul-huda-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shahed-hossain-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shahed-hossain-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-fahmida-begum-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-fahmida-begum-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-noman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-noman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rashedul-islam-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rashedul-islam-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-asifuzzaman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-asifuzzaman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-ali-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-ali-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mizanur-rahman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mizanur-rahman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanima-sultana-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanima-sultana-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamrul-islam-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamrul-islam-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisul-haque-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisul-haque-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhana-rahman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhana-rahman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahbubur-rashid-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahbubur-rashid-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-monjurul-hoque-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-monjurul-hoque-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-saifur-rahman-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-saifur-rahman-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-subir-kumar-dey-neuro</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-subir-kumar-dey-neuro</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-pradip-kumar-dutta-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-pradip-kumar-dutta-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-nurul-huda-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-nurul-huda-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-omar-faruk-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-omar-faruk-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-emran-hossain-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-emran-hossain-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-shahnewaz-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-shahnewaz-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-farhad-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-farhad-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-shahnoor-alam-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-shahnoor-alam-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-nazmul-hasan-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-nazmul-hasan-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-syeda-fahmida-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-syeda-fahmida-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashfaque-ahmed-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashfaque-ahmed-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shariful-alam-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shariful-alam-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahfuzur-rahman-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahfuzur-rahman-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamrul-hasan-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamrul-hasan-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tariqul-islam-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tariqul-islam-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-morshedul-alam-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-morshedul-alam-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-afroza-sultana-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-afroza-sultana-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-iqbal-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-iqbal-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-saifuddin-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-saifuddin-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisur-rahman-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisur-rahman-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-tanvirul-islam-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-tanvirul-islam-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rezaul-karim-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rezaul-karim-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-nurun-nabi-kidney</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-nurun-nabi-kidney</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-sanaullah-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-sanaullah-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-kazi-mahfuzul-alam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-kazi-mahfuzul-alam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/prof-dr-md-mostaque-hossain-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/prof-dr-md-mostaque-hossain-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-saiful-islam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-saiful-islam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-nurul-amin-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-nurul-amin-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-shariful-islam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-shariful-islam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-ashraful-hoque-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-ashraful-hoque-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-tariqul-alam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-tariqul-alam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-farhana-ahmed-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-farhana-ahmed-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-s-m-ali-reza-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-s-m-ali-reza-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kazi-tanvir-ahmed-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kazi-tanvir-ahmed-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-jahangir-kabir-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-jahangir-kabir-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-mohiuddin-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-mohiuddin-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-rubel-barua-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-rubel-barua-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-monzurul-hoque-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-monzurul-hoque-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mahbubul-alam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mahbubul-alam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-md-zakir-hossain-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-md-zakir-hossain-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-shamim-ara-begum-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-shamim-ara-begum-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-anisur-rahman-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-anisur-rahman-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-kamrul-islam-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-kamrul-islam-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-mohammad-masud-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-mohammad-masud-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#doctor/dr-arif-hossain-surgery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/doctor/dr-arif-hossain-surgery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/dengue-fever-warning-signs-chattogram</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/dengue-fever-warning-signs-chattogram</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/diabetes-diet-and-exercise-bangladesh</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/diabetes-diet-and-exercise-bangladesh</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hypertension-silent-killer-chattogram</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hypertension-silent-killer-chattogram</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/heart-attack-emergency-first-aid-response</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/heart-attack-emergency-first-aid-response</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/pregnancy-first-trimester-care-nutrition-bangladesh</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/pregnancy-first-trimester-care-nutrition-bangladesh</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/gastric-acid-reflux-gerd-management</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/gastric-acid-reflux-gerd-management</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/childhood-vaccination-schedule-bangladesh</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/childhood-vaccination-schedule-bangladesh</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/mental-health-anxiety-stress-relief-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/mental-health-anxiety-stress-relief-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/fatty-liver-grade-1-2-reversal-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/fatty-liver-grade-1-2-reversal-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hypothyroidism-vs-hyperthyroidism-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hypothyroidism-vs-hyperthyroidism-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/high-cholesterol-triglycerides-heart-risk</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/high-cholesterol-triglycerides-heart-risk</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/high-uric-acid-and-gout-arthritis</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/high-uric-acid-and-gout-arthritis</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hba1c-prediabetes-blood-sugar-mastery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hba1c-prediabetes-blood-sugar-mastery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/knee-osteoarthritis-joint-preservation</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/knee-osteoarthritis-joint-preservation</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/cervical-spondylosis-neck-pain-dizziness</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/cervical-spondylosis-neck-pain-dizziness</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/kidney-stones-symptoms-hydration-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/kidney-stones-symptoms-hydration-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/chronic-gastritis-and-ppi-overuse</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/chronic-gastritis-and-ppi-overuse</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/irritable-bowel-syndrome-ibs-diet</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/irritable-bowel-syndrome-ibs-diet</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/copd-and-chronic-bronchitis-management</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/copd-and-chronic-bronchitis-management</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/proper-inhaler-technique-asthma-care</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/proper-inhaler-technique-asthma-care</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/allergic-rhinitis-cold-weather-dust-care</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/allergic-rhinitis-cold-weather-dust-care</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/migraine-triggers-and-headache-relief</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/migraine-triggers-and-headache-relief</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/piles-anal-fissure-fistula-differences</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/piles-anal-fissure-fistula-differences</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/heart-failure-early-warning-signs</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/heart-failure-early-warning-signs</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/sleep-apnea-snoring-stroke-connection</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/sleep-apnea-snoring-stroke-connection</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/osteoporosis-bone-density-calcium-care</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/osteoporosis-bone-density-calcium-care</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/glaucoma-silent-thief-of-sight</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/glaucoma-silent-thief-of-sight</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/cataract-phaco-surgery-and-intraocular-lens</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/cataract-phaco-surgery-and-intraocular-lens</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/varicose-veins-leg-swelling-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/varicose-veins-leg-swelling-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/chronic-kidney-disease-proteinuria-screening</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/chronic-kidney-disease-proteinuria-screening</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/fatty-pancreas-and-chronic-pancreatitis</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/fatty-pancreas-and-chronic-pancreatitis</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/chronic-constipation-and-fiber-mastery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/chronic-constipation-and-fiber-mastery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/coronary-artery-disease-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/coronary-artery-disease-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/gestational-diabetes-blood-sugar-management</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/gestational-diabetes-blood-sugar-management</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/preeclampsia-warning-signs-pregnancy-bp</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/preeclampsia-warning-signs-pregnancy-bp</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/first-trimester-nutrition-folic-acid-importance</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/first-trimester-nutrition-folic-acid-importance</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/neonatal-jaundice-phototherapy-warning-signs</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/neonatal-jaundice-phototherapy-warning-signs</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/newborn-umbilical-cord-care-infection-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/newborn-umbilical-cord-care-infection-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/infant-weaning-nutritious-khichuri-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/infant-weaning-nutritious-khichuri-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/pediatric-pneumonia-fast-breathing-signs</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/pediatric-pneumonia-fast-breathing-signs</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/pediatric-diarrhea-ors-zinc-therapy</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/pediatric-diarrhea-ors-zinc-therapy</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/tonsillitis-and-adenoid-hypertrophy-children</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/tonsillitis-and-adenoid-hypertrophy-children</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/pcos-irregular-periods-and-insulin-diet</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/pcos-irregular-periods-and-insulin-diet</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/iron-deficiency-anemia-women-diet-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/iron-deficiency-anemia-women-diet-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/breast-self-examination-bse-steps</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/breast-self-examination-bse-steps</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hpv-vaccine-cervical-cancer-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hpv-vaccine-cervical-cancer-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/menopause-symptoms-hormone-bone-care</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/menopause-symptoms-hormone-bone-care</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/childhood-dental-caries-fluoride-brushing</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/childhood-dental-caries-fluoride-brushing</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/childhood-myopia-and-screen-time-rules</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/childhood-myopia-and-screen-time-rules</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/teen-acne-vulgaris-dermatology-skincare</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/teen-acne-vulgaris-dermatology-skincare</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/prenatal-iron-calcium-timing-guidelines</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/prenatal-iron-calcium-timing-guidelines</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/pediatric-deworming-protocol-albendazole</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/pediatric-deworming-protocol-albendazole</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/autism-early-signs-speech-therapy-milestones</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/autism-early-signs-speech-therapy-milestones</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/infantile-colic-evening-crying-soothing</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/infantile-colic-evening-crying-soothing</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/thalassemia-carrier-screening-marriage-counseling</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/thalassemia-carrier-screening-marriage-counseling</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/vitamin-d-deficiency-sunlight-and-supplements</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/vitamin-d-deficiency-sunlight-and-supplements</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hidden-sugars-metabolic-syndrome-liver-damage</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hidden-sugars-metabolic-syndrome-liver-damage</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/stroke-fast-signs-golden-hour-thrombolysis</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/stroke-fast-signs-golden-hour-thrombolysis</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/snakebite-first-aid-protocol-antivenom-bangladesh</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/snakebite-first-aid-protocol-antivenom-bangladesh</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/animal-bites-rabies-pep-vaccine-guidelines</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/animal-bites-rabies-pep-vaccine-guidelines</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/burn-first-aid-cool-running-water-toothpaste-harm</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/burn-first-aid-cool-running-water-toothpaste-harm</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/choking-first-aid-heimlich-maneuver-steps</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/choking-first-aid-heimlich-maneuver-steps</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/heat-stroke-vs-heat-exhaustion-first-aid</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/heat-stroke-vs-heat-exhaustion-first-aid</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/nosebleeds-epistaxis-proper-head-tilt-technique</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/nosebleeds-epistaxis-proper-head-tilt-technique</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/insect-stings-anaphylaxis-epipen-alert</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/insect-stings-anaphylaxis-epipen-alert</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/typhoid-fever-contaminated-food-antibiotic-stewardship</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/typhoid-fever-contaminated-food-antibiotic-stewardship</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hepatitis-b-and-c-silent-liver-damage</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hepatitis-b-and-c-silent-liver-damage</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/diabetic-foot-care-ulcer-amputation-prevention</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/diabetic-foot-care-ulcer-amputation-prevention</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/upper-gi-bleeding-hematemesis-melena-alert</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/upper-gi-bleeding-hematemesis-melena-alert</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/bone-fracture-first-aid-splinting-guidelines</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/bone-fracture-first-aid-splinting-guidelines</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/chemical-eye-splash-emergency-irrigation</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/chemical-eye-splash-emergency-irrigation</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/near-drowning-first-aid-resuscitation-steps</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/near-drowning-first-aid-resuscitation-steps</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/severe-hemorrhage-direct-pressure-tourniquet</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/severe-hemorrhage-direct-pressure-tourniquet</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hands-only-cpr-for-cardiac-arrest-bystanders</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hands-only-cpr-for-cardiac-arrest-bystanders</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/accidental-poison-ingestion-never-induce-vomiting</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/accidental-poison-ingestion-never-induce-vomiting</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/angioedema-swollen-lips-throat-tightness</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/angioedema-swollen-lips-throat-tightness</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/otitis-media-ear-discharge-eardrum-perforation</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/otitis-media-ear-discharge-eardrum-perforation</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/dental-abscess-facial-cellulitis-sepsis</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/dental-abscess-facial-cellulitis-sepsis</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/sleep-hygiene-protocol-chronic-insomnia</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/sleep-hygiene-protocol-chronic-insomnia</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/postpartum-depression-baby-blues-awareness</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/postpartum-depression-baby-blues-awareness</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/obsessive-compulsive-disorder-erp-therapy</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/obsessive-compulsive-disorder-erp-therapy</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/alzheimers-dementia-early-memory-stimulation</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/alzheimers-dementia-early-memory-stimulation</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/low-back-pain-lumbar-disc-prolapse-ergonomics</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/low-back-pain-lumbar-disc-prolapse-ergonomics</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/dash-diet-hypertension-blood-pressure-control</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/dash-diet-hypertension-blood-pressure-control</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/intermittent-fasting-metabolic-benefits-warnings</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/intermittent-fasting-metabolic-benefits-warnings</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/hair-loss-alopecia-and-dandruff-treatment</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/hair-loss-alopecia-and-dandruff-treatment</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/eczema-and-psoriasis-emollient-steroid-rules</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/eczema-and-psoriasis-emollient-steroid-rules</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/fungal-ringworm-tinea-hygiene-antifungal-rules</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/fungal-ringworm-tinea-hygiene-antifungal-rules</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/halitosis-bad-breath-dental-scaling-tongue-hygiene</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/halitosis-bad-breath-dental-scaling-tongue-hygiene</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/tonsil-stones-causes-symptoms-removal</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/tonsil-stones-causes-symptoms-removal</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/enlarged-prostate-bph-senior-men-symptoms</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/enlarged-prostate-bph-senior-men-symptoms</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/urinary-tract-infection-uti-water-prevention-women</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/urinary-tract-infection-uti-water-prevention-women</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/gallbladder-stones-cholecystectomy-indications</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/gallbladder-stones-cholecystectomy-indications</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/vertigo-bppv-epley-maneuver-inner-ear</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/vertigo-bppv-epley-maneuver-inner-ear</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/sinusitis-deviated-nasal-septum-heavy-head</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/sinusitis-deviated-nasal-septum-heavy-head</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/smoking-cessation-timeline-lung-regeneration</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/smoking-cessation-timeline-lung-regeneration</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/screen-time-infant-speech-delay-virtual-autism</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/screen-time-infant-speech-delay-virtual-autism</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/blue-zone-habits-longevity-secrets</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/blue-zone-habits-longevity-secrets</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/rabies-pre-exposure-post-exposure-guide</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/rabies-pre-exposure-post-exposure-guide</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/vitamin-b12-deficiency-neuropathy-memory</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/vitamin-b12-deficiency-neuropathy-memory</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/fatty-liver-grade-3-cirrhosis-transition</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/fatty-liver-grade-3-cirrhosis-transition</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/dry-eye-syndrome-lubricating-drops-screen-strain</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/dry-eye-syndrome-lubricating-drops-screen-strain</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/scabies-night-itching-permethrin-lotion-protocol</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/scabies-night-itching-permethrin-lotion-protocol</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/gastroesophageal-reflux-gerd-hiatal-hernia</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/gastroesophageal-reflux-gerd-hiatal-hernia</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/rheumatoid-arthritis-morning-stiffness-dmards</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/rheumatoid-arthritis-morning-stiffness-dmards</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/iron-overload-hemochromatosis-organ-damage</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/iron-overload-hemochromatosis-organ-damage</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/bell-palsy-facial-nerve-paralysis-recovery</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/bell-palsy-facial-nerve-paralysis-recovery</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app/#blog/plantar-fasciitis-morning-heel-pain-stretching</loc>
-    <lastmod>2026-10-30</lastmod>
+    <loc>https://dakterachen.com/blog/plantar-fasciitis-morning-heel-pain-stretching</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

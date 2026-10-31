@@ -107,36 +107,115 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
             </a>
 
             <a
+              href="/sitemap.xml"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="sitemap.xml"
+              className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
+            >
+              <Download size={15} />
+              <span>{lang === 'bn' ? 'স্ট্যাটিক sitemap.xml ডাউনলোড (৪০৩+ URL)' : 'Download Static sitemap.xml'}</span>
+            </a>
+
+            <a
+              href="/.htaccess"
+              download=".htaccess"
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all"
+            >
+              <Download size={15} />
+              <span>{lang === 'bn' ? '.htaccess ডাউনলোড (404 ফিক্স)' : 'Download .htaccess (404 Fix)'}</span>
+            </a>
+
+            <a
               href="/dakterachen-wordpress-import.xml"
               download="dakterachen-wordpress-import.xml"
               className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট ডাউনলোড (১০৬+ পোস্ট)' : 'Download WP XML (106+ Posts)'}</span>
+              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট (১০৬+ পোস্ট)' : 'Download WP XML (106+ Posts)'}</span>
             </a>
           </div>
         </div>
       </div>
 
-      {/* WordPress & Domain Migration Info Banner */}
-      <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 text-amber-950 text-xs sm:text-sm space-y-2 shadow-xs">
-        <div className="flex items-center gap-2 font-bold text-amber-900 text-sm sm:text-base">
-          <HelpCircle size={18} className="text-amber-700 shrink-0" />
-          <span>{lang === 'bn' ? 'dakterachen.com ডোমেইনে পোস্ট ও সাইটম্যাপ যুক্ত করার উপায়:' : 'How to show posts & sitemap on dakterachen.com:'}</span>
+      {/* WordPress & Server Sitemap Solution Guide */}
+      <div className="bg-slate-900 text-slate-100 rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-md space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+              ✓
+            </span>
+            <div>
+              <h3 className="font-bold text-white text-base sm:text-lg">
+                {lang === 'bn' ? 'ওয়ার্ডপ্রেস ও লাইভ ডোমেইনে Sitemap 404/Redirect সমাধানের ৩টি উপায়:' : '3 Solutions to Fix Sitemap 404 or WordPress Redirect on dakterachen.com:'}
+              </h3>
+              <p className="text-xs text-slate-400">
+                {lang === 'bn' ? 'সার্ভার ও হোস্টিং ভেদে যে কোনো একটি পদ্ধতি প্রয়োগ করলেই সাথে সাথে সমস্যা সমাধান হয়ে যাবে।' : 'Choose the method matching your hosting setup to resolve it immediately.'}
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="leading-relaxed text-slate-700">
-          {lang === 'bn' ? (
-            <>
-              ১. <strong>এই আধুনিক অ্যাপে:</strong> সমস্ত <strong>১০৬+ স্বাস্থ্য প্রবন্ধ</strong> ও <strong>২৬০+ ডাক্তার প্রোফাইল</strong> ইতিমধ্যেই লাইভ এবং উপরের <strong>&quot;স্বাস্থ্য ব্লগ&quot;</strong> ও <strong>&quot;ডাক্তার খুঁজুন&quot;</strong> বাটনে ক্লিক করলেই পড়তে পারবেন।<br />
-              ২. <strong>আপনার dakterachen.com সাইটে:</strong> যদি আপনার লাইভ ডোমেইনে ওয়ার্ডপ্রেস চলমান থাকে, তবে উপরের হলুদ বাটনে ক্লিক করে <code>dakterachen-wordpress-import.xml</code> ডাউনলোড করুন। এরপর আপনার ওয়ার্ডপ্রেস অ্যাডমিনে গিয়ে <strong>Tools &gt; Import &gt; WordPress</strong> এ আপলোড করলেই সাথে সাথে ১০৬টি নতুন পোস্ট আপনার ওয়ার্ডপ্রেস সাইট ও sitemap-এ যুক্ত হয়ে যাবে!
-            </>
-          ) : (
-            <>
-              1. <strong>In this app:</strong> All 106+ articles and 260+ doctors are already live under the &quot;Health Blog&quot; and &quot;Find Doctors&quot; sections.<br />
-              2. <strong>For dakterachen.com:</strong> If your live domain is running WordPress, click the yellow button above to download the <code>dakterachen-wordpress-import.xml</code> file, then go to <strong>Tools &gt; Import &gt; WordPress</strong> in your WordPress dashboard to import all 106+ posts instantly.
-            </>
-          )}
-        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          {/* Solution 1: cPanel / Apache .htaccess */}
+          <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700/80 space-y-2">
+            <div className="font-bold text-emerald-400 flex items-center gap-1.5 text-sm">
+              <span>পদ্ধতি ১: .htaccess রুল (Apache / cPanel)</span>
+            </div>
+            <p className="text-slate-300 leading-relaxed text-[11px]">
+              আপনার cPanel File Manager-এ গিয়ে <code>public_html/.htaccess</code> ফাইলের একেবারে শুরুতে (Before <code># BEGIN WordPress</code>) এই ৩ লাইন যোগ করুন:
+            </p>
+            <pre className="bg-slate-950 p-2.5 rounded-lg text-emerald-300 font-mono text-[10px] overflow-x-auto leading-relaxed border border-slate-800">
+{`# Fix Sitemap Pass-Through
+RewriteEngine On
+RewriteRule ^(sitemap\\.xml|wp-sitemap\\.xml)$ $1 [L,T=application/xml]
+RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
+            </pre>
+            <p className="text-[10px] text-slate-400">
+              💡 এটি ওয়ার্ডপ্রেসকে <code>sitemap.xml</code> রিকোয়েস্টে রিডাইরেক্ট করা থেকে সরাসরি বাধা দেয়।
+            </p>
+          </div>
+
+          {/* Solution 2: WordPress Plugin Drop-In */}
+          <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700/80 space-y-2">
+            <div className="font-bold text-cyan-400 flex items-center gap-1.5 text-sm">
+              <span>পদ্ধতি ২: WordPress MU-Plugin ড্রপ-ইন</span>
+            </div>
+            <p className="text-slate-300 leading-relaxed text-[11px]">
+              ওয়ার্ডপ্রেসের ভেতরেই ফিক্স করতে চাইলে <code>dakterachen-sitemap-fix.php</code> ফাইলটি ডাউনলোড করে আপনার সাইটের <code>/wp-content/mu-plugins/</code> ফোল্ডারে রাখুন:
+            </p>
+            <a
+              href="/dakterachen-sitemap-fix.php"
+              download="dakterachen-sitemap-fix.php"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-bold text-xs shadow-xs"
+            >
+              <Download size={13} />
+              <span>sitemap-fix.php ডাউনলোড</span>
+            </a>
+            <p className="text-[10px] text-slate-400">
+              💡 প্লাগইন ছাড়াই ওয়ার্ডপ্রেস স্বয়ংক্রিয়ভাবে HTTP 200 রেসপন্সে XML সার্ভ করবে।
+            </p>
+          </div>
+
+          {/* Solution 3: Nginx / Cloudflare */}
+          <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700/80 space-y-2">
+            <div className="font-bold text-amber-400 flex items-center gap-1.5 text-sm">
+              <span>পদ্ধতি ৩: Nginx কনফিগারেশন</span>
+            </div>
+            <p className="text-slate-300 leading-relaxed text-[11px]">
+              যদি Nginx সার্ভার ব্যবহার করেন, তবে আপনার সাইটের server ব্লকে নিচের অংশটি যোগ করুন:
+            </p>
+            <pre className="bg-slate-950 p-2.5 rounded-lg text-amber-300 font-mono text-[10px] overflow-x-auto leading-relaxed border border-slate-800">
+{`location ~* ^/(sitemap\\.xml|wp-sitemap\\.xml)$ {
+    try_files $uri =404;
+    default_type application/xml;
+}`}
+            </pre>
+            <p className="text-[10px] text-slate-400">
+              💡 কোনো PHP এক্সিকিউশন ছাড়া স্ট্যাটিক ফাইল সরাসরি পরিবেশন করে।
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Search & Filter Nav */}

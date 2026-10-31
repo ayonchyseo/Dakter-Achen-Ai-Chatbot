@@ -14,7 +14,8 @@ import { generateWordPressWxrXml } from '../src/lib/wordpressExportGenerator';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const baseUrl = process.env.APP_URL || 'https://ais-pre-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app';
+const targetDomain = process.env.SITEMAP_BASE_URL || 'https://dakterachen.com';
+const baseUrl = targetDomain;
 const publicDir = path.resolve(__dirname, '../public');
 
 if (!fs.existsSync(publicDir)) {

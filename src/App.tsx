@@ -327,11 +327,14 @@ export default function App() {
     }
   };
 
-  // Sync hash with route
+  // Sync pathname & hash with route
   useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.slice(1) || 'home';
-      const [route, param] = hash.split('/');
+    const handleRoute = () => {
+      const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      const hash = window.location.hash.slice(1);
+      const active = hash || pathname || 'home';
+      const [route, param] = active.split('/');
+
       if (route === 'emergency') {
         setCurrentRoute('emergency');
         window.scrollTo(0, 0);
@@ -349,7 +352,15 @@ export default function App() {
       } else if (route === 'sitemap') {
         setCurrentRoute('sitemap');
         window.scrollTo(0, 0);
-      } else if (route === 'list') {
+      } else if (route === 'list' || route === 'doctors') {
+        setCurrentRoute('list');
+        window.scrollTo(0, 0);
+      } else if (route === 'specialty' && param) {
+        setSelectedSpecialty(param);
+        setCurrentRoute('list');
+        window.scrollTo(0, 0);
+      } else if (route === 'area' && param) {
+        setSelectedArea(decodeURIComponent(param));
         setCurrentRoute('list');
         window.scrollTo(0, 0);
       } else {
@@ -363,13 +374,18 @@ export default function App() {
       }
     };
 
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    handleRoute();
+    window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('popstate', handleRoute);
+    return () => {
+      window.removeEventListener('hashchange', handleRoute);
+      window.removeEventListener('popstate', handleRoute);
+    };
   }, []);
 
-  const navigateTo = (hash: string) => {
-    window.location.hash = hash;
+  const navigateTo = (pathOrHash: string) => {
+    const clean = pathOrHash.replace(/^#/, '');
+    window.location.hash = clean;
   };
 
   const openChat = (message?: string) => {

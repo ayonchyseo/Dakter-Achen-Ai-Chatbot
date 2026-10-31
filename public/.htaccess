@@ -1,0 +1,27 @@
+# Dakter Achen - Sitemap & Static Pass-Through Configuration
+# For Apache / cPanel / LiteSpeed web servers
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1. Force serve XML sitemaps directly as application/xml without hitting WordPress
+RewriteRule ^(sitemap\.xml|sitemap_index\.xml|wp-sitemap\.xml|wp-sitemap-[a-z0-9-]+\.xml)$ $1 [L,T=application/xml]
+
+# 2. Force serve robots.txt directly
+RewriteRule ^robots\.txt$ robots.txt [L,T=text/plain]
+
+# 3. Direct pass-through for WordPress WXR import
+RewriteRule ^dakterachen-wordpress-import\.xml$ dakterachen-wordpress-import.xml [L,T=application/xml]
+</IfModule>
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
