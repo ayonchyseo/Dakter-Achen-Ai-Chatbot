@@ -5,7 +5,7 @@
 RewriteEngine On
 
 # 1. Force serve XML sitemaps directly as application/xml without hitting WordPress
-RewriteRule ^(sitemap\.xml|sitemap_index\.xml|wp-sitemap\.xml|wp-sitemap-[a-z0-9-]+\.xml)$ $1 [L,T=application/xml]
+RewriteRule ^(sitemap\.xml|sitemap_index\.xml|wp-sitemap\.xml|post-sitemap\.xml|page-sitemap\.xml|category-sitemap\.xml|wp-sitemap-[a-z0-9-]+\.xml)$ $1 [L,T=application/xml]
 
 # 2. Force serve robots.txt directly
 RewriteRule ^robots\.txt$ robots.txt [L,T=text/plain]

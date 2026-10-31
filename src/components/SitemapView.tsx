@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import { INITIAL_DOCTORS } from '../data/doctors';
 import { BLOG_POSTS } from '../data/blogData';
-import { CHATTOGRAM_AREAS, SPECIALTIES } from '../lib/sitemapGenerator';
+import { CHATTOGRAM_AREAS, SPECIALTIES, generateSitemapXml } from '../lib/sitemapGenerator';
+import { generateWordPressWxrXml } from '../lib/wordpressExportGenerator';
 import SeoInspectorModal from './SeoInspectorModal';
 
 interface SitemapViewProps {
@@ -66,6 +67,56 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
       b.categoryEn.toLowerCase().includes(q)
   );
 
+  const triggerBlobDownload = (filename: string, content: string, mimeType: string) => {
+    try {
+      const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch (e) {
+      console.error('Download failed:', e);
+    }
+  };
+
+  const handleDownloadSitemapXml = () => {
+    const xml = generateSitemapXml('https://dakterachen.com');
+    triggerBlobDownload('sitemap.xml', xml, 'application/xml');
+  };
+
+  const handleDownloadWxrXml = () => {
+    const xml = generateWordPressWxrXml('https://dakterachen.com');
+    triggerBlobDownload('dakterachen-wordpress-import.xml', xml, 'application/xml');
+  };
+
+  const handleDownloadHtaccess = () => {
+    const htaccess = `# Dakter Achen - Sitemap & Static Pass-Through Configuration
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(sitemap\\.xml|sitemap_index\\.xml|wp-sitemap\\.xml|post-sitemap\\.xml|page-sitemap\\.xml|category-sitemap\\.xml|wp-sitemap-[a-z0-9-]+\\.xml)$ $1 [L,T=application/xml]
+RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]
+RewriteRule ^dakterachen-wordpress-import\\.xml$ dakterachen-wordpress-import.xml [L,T=application/xml]
+</IfModule>
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+`;
+    triggerBlobDownload('.htaccess', htaccess, 'text/plain');
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
       {/* Header */}
@@ -88,46 +139,31 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
 
           <div className="pt-2 flex flex-wrap items-center gap-2.5">
             <a
-              href="/sitemap.xml"
+              href="/sitemap_index.xml"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-white text-[#0E7490] hover:bg-cyan-50 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
-              <FileText size={15} />
-              <span>{lang === 'bn' ? 'সরাসরি সাইটম্যাপ (sitemap.xml)' : 'Combined Sitemap'}</span>
-              <ExternalLink size={13} />
-            </a>
-
-            <a
-              href="/wp-sitemap.xml"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all"
-            >
               <FolderTree size={15} />
-              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস ইনডেক্স (wp-sitemap.xml)' : 'WP Sitemap Index'}</span>
+              <span>{lang === 'bn' ? 'Rank Math সাইটম্যাপ (sitemap_index.xml)' : 'Rank Math Index'}</span>
               <ExternalLink size={13} />
             </a>
 
-            <a
-              href="/sitemap.xml"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="sitemap.xml"
+            <button
+              onClick={handleDownloadSitemapXml}
               className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? 'স্ট্যাটিক sitemap.xml ডাউনলোড (৪০৩+ URL)' : 'Download Static sitemap.xml'}</span>
-            </a>
+              <span>{lang === 'bn' ? 'স্ট্যাটিক sitemap.xml ডাউনলোড (৪০৩+ URL)' : 'Download sitemap.xml'}</span>
+            </button>
 
-            <a
-              href="/.htaccess"
-              download=".htaccess"
-              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all"
+            <button
+              onClick={handleDownloadHtaccess}
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? '.htaccess ডাউনলোড (404 ফিক্স)' : 'Download .htaccess (404 Fix)'}</span>
-            </a>
+              <span>{lang === 'bn' ? '.htaccess ডাউনলোড (404 ফিক্স)' : 'Download .htaccess'}</span>
+            </button>
 
             <button
               onClick={() => setSeoModalOpen(true)}
@@ -137,14 +173,13 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
               <span>{lang === 'bn' ? 'মেটাডাটা ও স্কিমা ইন্সপেক্টর' : 'SEO & Schema Inspector'}</span>
             </button>
 
-            <a
-              href="/dakterachen-wordpress-import.xml"
-              download="dakterachen-wordpress-import.xml"
+            <button
+              onClick={handleDownloadWxrXml}
               className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট (১০৬+ পোস্ট)' : 'Download WP XML (106+ Posts)'}</span>
-            </a>
+              <span>{lang === 'bn' ? 'ওয়ার্ডপ্রেস XML এক্সপোর্ট ডাউনলোড (১০৬+ পোস্ট)' : 'Download WP XML (106+ Posts)'}</span>
+            </button>
           </div>
         </div>
       </div>

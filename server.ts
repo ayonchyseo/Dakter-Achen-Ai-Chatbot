@@ -68,9 +68,12 @@ async function startServer() {
   app.use(sitemapMiddleware);
 
   const getBaseUrl = (req: express.Request) => {
+    const host = req.get('host') || '';
+    if (host.includes('dakterachen.com')) {
+      return 'https://dakterachen.com';
+    }
     const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
-    const host = req.get('host') || 'ais-pre-c6xmglhpygp4mtnwxyh2al-315185213524.asia-southeast1.run.app';
-    return process.env.APP_URL || `${protocol}://${host}`;
+    return process.env.APP_URL || `${protocol}://${host || 'dakterachen.com'}`;
   };
 
   // 7. Dynamic robots.txt
@@ -78,7 +81,7 @@ async function startServer() {
     const baseUrl = getBaseUrl(req);
     const cleanBase = baseUrl.replace(/\/+$/, '');
     res.header('Content-Type', 'text/plain; charset=utf-8');
-    res.send(`User-agent: *\nAllow: /\n\nSitemap: ${cleanBase}/sitemap.xml\nSitemap: ${cleanBase}/wp-sitemap.xml\n`);
+    res.send(`User-agent: *\nAllow: /\n\n# Primary Sitemaps (Rank Math & Direct)\nSitemap: ${cleanBase}/sitemap_index.xml\nSitemap: ${cleanBase}/sitemap.xml\nSitemap: ${cleanBase}/wp-sitemap.xml\n`);
   });
 
   // 8. WordPress Import XML export endpoint (WXR 1.2 format for dakterachen.com)

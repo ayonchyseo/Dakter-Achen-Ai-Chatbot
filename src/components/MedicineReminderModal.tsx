@@ -72,16 +72,75 @@ export const MedicineReminderModal: React.FC<MedicineReminderModalProps> = ({
     saveReminders(updated);
   };
 
-  const requestNotification = async () => {
-    if ('Notification' in window) {
-      const perm = await Notification.requestPermission();
-      setNotificationPermission(perm);
-      if (perm === 'granted') {
-        new Notification(lang === 'bn' ? 'ডাক্তার আছেন' : 'Dakter Achen', {
-          body: lang === 'bn' ? 'ওষুধের রিমাইন্ডার সফলভাবে সক্রিয় করা হয়েছে!' : 'Medicine reminder notifications enabled!',
+  const [showNotificationHelp, setShowNotificationHelp] = useState(false);
+  const [notificationSuccessMsg, setNotificationSuccessMsg] = useState(false);
+
+  const sendTestNotification = async () => {
+    try {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([150, 80, 150]);
+      }
+
+      // Try Service Worker notification first (Required on Android Chrome)
+      if ('serviceWorker' in navigator) {
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          if (reg && reg.showNotification) {
+            await reg.showNotification(lang === 'bn' ? 'ডাক্তার আছেন — ওষুধ রিমাইন্ডার' : 'Dakter Achen — Medicine Reminder', {
+              body: lang === 'bn' ? '🔔 টেস্ট সফল! আপনার ওষুধের সময়মতো নোটিফিকেশন আসবে।' : '🔔 Test successful! You will receive pill reminders on time.',
+              icon: '/assets/icon-192.png',
+              badge: '/assets/icon-192.png',
+              vibrate: [200, 100, 200]
+            } as any);
+            setNotificationSuccessMsg(true);
+            setTimeout(() => setNotificationSuccessMsg(false), 3000);
+            return;
+          }
+        } catch (swErr) {
+          console.warn('Service worker notification failed, trying fallback:', swErr);
+        }
+      }
+
+      // Desktop fallback
+      try {
+        new Notification(lang === 'bn' ? 'ডাক্তার আছেন — ওষুধ রিমাইন্ডার' : 'Dakter Achen — Medicine Reminder', {
+          body: lang === 'bn' ? '🔔 টেস্ট সফল! আপনার ওষুধের সময়মতো নোটিফিকেশন আসবে।' : '🔔 Test successful! You will receive pill reminders on time.',
           icon: '/assets/icon-192.png',
         });
+      } catch (e) {
+        console.warn('Direct notification fallback failed:', e);
       }
+
+      setNotificationSuccessMsg(true);
+      setTimeout(() => setNotificationSuccessMsg(false), 3000);
+    } catch (e) {
+      console.error('Test notification failed:', e);
+    }
+  };
+
+  const requestNotification = async () => {
+    if (!('Notification' in window)) {
+      alert(lang === 'bn' ? 'আপনার বর্তমান ব্রাউজারে পুশ নোটিফিকেশন ফিচারটি সমর্থিত নয়।' : 'Notifications are not supported on this browser.');
+      return;
+    }
+
+    try {
+      let perm: NotificationPermission;
+      try {
+        perm = await Notification.requestPermission();
+      } catch {
+        perm = await new Promise((resolve) => Notification.requestPermission(resolve));
+      }
+
+      setNotificationPermission(perm);
+
+      if (perm === 'granted') {
+        await sendTestNotification();
+      } else if (perm === 'denied') {
+        setShowNotificationHelp(true);
+      }
+    } catch (err) {
+      console.error('Error requesting notification permission:', err);
     }
   };
 
@@ -127,23 +186,94 @@ export const MedicineReminderModal: React.FC<MedicineReminderModalProps> = ({
           </button>
         </div>
 
-        {/* Top notification permission bar if applicable */}
-        {notificationPermission !== 'granted' && 'Notification' in window && (
-          <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-800">
-            <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>
-                {lang === 'bn'
-                  ? 'মোবাইলে নোটিফিকেশন পেতে অনুমতি দিন'
-                  : 'Enable browser notifications for pill alerts'}
-              </span>
+        {/* Notification Permission & Status Bar */}
+        {'Notification' in window && (
+          <>
+            {notificationPermission === 'granted' ? (
+              <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-emerald-800 animate-fade-in">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>
+                    {notificationSuccessMsg
+                      ? (lang === 'bn' ? '✓ টেস্ট নোটিফিকেশন পাঠানো হয়েছে!' : '✓ Test alert sent!')
+                      : (lang === 'bn' ? 'মোবাইলে নোটিফিকেশন সক্রিয় রয়েছে — ওষুধ খাওয়ার সময়ে এলার্ট পাবেন।' : 'Notifications active — you will receive pill alerts.')}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={sendTestNotification}
+                  className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-xs transition-colors shrink-0 active:scale-95 shadow-2xs"
+                >
+                  {lang === 'bn' ? 'টেস্ট এলার্ট' : 'Test Alert'}
+                </button>
+              </div>
+            ) : notificationPermission === 'denied' ? (
+              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-900">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>
+                    {lang === 'bn'
+                      ? 'ব্রাউজারে নোটিফিকেশন ব্লক করা রয়েছে।'
+                      : 'Notifications are blocked in your browser.'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowNotificationHelp(true)}
+                  className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded text-xs transition-colors shrink-0"
+                >
+                  {lang === 'bn' ? 'কীভাবে চালু করবেন?' : 'How to allow?'}
+                </button>
+              </div>
+            ) : (
+              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-800">
+                <div className="flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>
+                    {lang === 'bn'
+                      ? 'মোবাইলে নোটিফিকেশন পেতে অনুমতি দিন'
+                      : 'Enable browser notifications for pill alerts'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={requestNotification}
+                  className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded text-xs transition-all shrink-0 active:scale-95 shadow-xs"
+                >
+                  {lang === 'bn' ? 'অনুমতি দিন' : 'Enable'}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* How to enable notifications helper modal */}
+        {showNotificationHelp && (
+          <div className="fixed inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                  <Bell className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'bn' ? 'নোটিফিকেশন চালু করার নিয়ম' : 'How to Enable Notifications'}</span>
+                </h4>
+                <button onClick={() => setShowNotificationHelp(false)} className="text-slate-400 hover:text-slate-600">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="text-xs text-slate-600 space-y-2 leading-relaxed">
+                <p>১. আপনার মোবাইলের ব্রাউজার অ্যাড্রেস বারের বামপাশে <strong>লক (🔒) বা টিউন আইকনে</strong> ট্যাপ করুন।</p>
+                <p>২. <strong>"Permissions"</strong> বা <strong>"সাইট সেটিংস"</strong>-এ যান।</p>
+                <p>৩. <strong>Notifications</strong> অপশনটি <strong>"Allow" (অনুমতি দিন)</strong> করুন।</p>
+                <p>৪. পেজটি একবার রিফ্রেশ করলেই নোটিফিকেশন কাজ শুরু করবে।</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNotificationHelp(false)}
+                className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs"
+              >
+                {lang === 'bn' ? 'বুঝেছি' : 'Got it'}
+              </button>
             </div>
-            <button
-              onClick={requestNotification}
-              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded text-xs transition-colors shrink-0"
-            >
-              {lang === 'bn' ? 'অনুমতি দিন' : 'Enable'}
-            </button>
           </div>
         )}
 

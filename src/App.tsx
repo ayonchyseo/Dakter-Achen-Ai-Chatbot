@@ -245,8 +245,9 @@ export default function App() {
   const [filterTime, setFilterTime] = useState<Set<string>>(new Set());
   const [filterArea, setFilterArea] = useState<Set<string>>(new Set());
   const [filterGender, setFilterGender] = useState<Set<string>>(new Set());
-  const [sortBy, setSortBy] = useState<'today' | 'rating' | 'senior' | 'az'>('today');
+  const [sortBy, setSortBy] = useState<'today' | 'rating' | 'senior' | 'az' | 'distance'>('today');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
 
   // Ratings state
   const [ratingsStore, setRatingsStore] = useState<Record<string, DoctorRatingData>>(() => loadAllRatings());
@@ -286,21 +287,46 @@ export default function App() {
   // GPS Location handler for Nearest Doctor & Chamber
   const handleRequestLocation = () => {
     if (!('geolocation' in navigator)) {
-      showToast(lang === 'bn' ? 'আপনার ডিভাইসে লোকেশন ফিচারটি সমর্থিত নয়' : 'Geolocation is not supported by your browser');
+      setLocationModalOpen(true);
       return;
     }
+
     setIsLocating(true);
+
+    const applyLocation = (lat: number, lng: number, areaName?: string) => {
+      setUserCoords({ lat, lng });
+      setIsLocating(false);
+      setSortBy('distance');
+      setCurrentRoute('list');
+      navigateTo('list');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(
+        lang === 'bn'
+          ? `📍 আপনার লোকেশন সক্রিয় ${areaName ? `(${areaName})` : ''}! সবচেয়ে কাছের চেম্বারগুলো সাজানো হয়েছে।`
+          : `📍 Location active! Nearest chambers sorted.`
+      );
+    };
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setIsLocating(false);
-        showToast(lang === 'bn' ? 'আপনার লোকেশন শনাক্ত হয়েছে! নিকটবর্তী দূরত্ব প্রদর্শিত হচ্ছে।' : 'Location detected! Showing distances.');
+        applyLocation(pos.coords.latitude, pos.coords.longitude);
       },
       (err) => {
+        console.warn('GPS location request error:', err);
         setIsLocating(false);
-        showToast(lang === 'bn' ? 'লোকেশন অ্যাক্সেস পাওয়া যায়নি, ব্রাউজার পারমিশন চেক করুন।' : 'Location access denied or unavailable.');
+        // Fallback: Open Area Selector modal seamlessly
+        setLocationModalOpen(true);
+        showToast(
+          lang === 'bn'
+            ? 'জিপিএস অন নেই। আপনার নিকটবর্তী এলাকা বেছে নিন।'
+            : 'GPS unavailable. Please select your Chittagong area.'
+        );
       },
-      { timeout: 8000 }
+      {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 60000,
+      }
     );
   };
 
@@ -530,6 +556,11 @@ export default function App() {
 
       return hasMatchingChamber;
     }).sort((a, b) => {
+      if (sortBy === 'distance' && userCoords) {
+        const aDist = calculateDistanceKm(userCoords, getChamberCoords(a.ch[0]?.area, a.ch[0]?.name));
+        const bDist = calculateDistanceKm(userCoords, getChamberCoords(b.ch[0]?.area, b.ch[0]?.name));
+        if (aDist !== bDist) return aDist - bDist;
+      }
       if (sortBy === 'rating') {
         const aRating = getDoctorRating(ratingsStore, a.slug, a.rank).avg;
         const bRating = getDoctorRating(ratingsStore, b.slug, b.rank).avg;
@@ -544,7 +575,7 @@ export default function App() {
       const weight: Record<string, number> = { now: 0, today: 1, next: 2, off: 3 };
       return (weight[aStatus] ?? 4) - (weight[bStatus] ?? 4);
     });
-  }, [doctorsList, searchQuery, selectedSpecialty, selectedArea, filterDay, filterTime, filterArea, filterGender, sortBy, lang, dhakaNow.day, ratingsStore]);
+  }, [doctorsList, searchQuery, selectedSpecialty, selectedArea, filterDay, filterTime, filterArea, filterGender, sortBy, lang, dhakaNow.day, ratingsStore, userCoords]);
 
   // Doctors sitting today for Homepage
   const todayDoctors = useMemo(() => {
@@ -1651,6 +1682,7 @@ export default function App() {
                     className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none cursor-pointer"
                   >
                     <option value="today">{lang === 'bn' ? 'আজ বসছেন আগে' : 'Sitting today first'}</option>
+                    <option value="distance">{lang === 'bn' ? '📍 নিকটবর্তী দূরত্ব অনুযায়ী' : '📍 Nearest by distance'}</option>
                     <option value="rating">{lang === 'bn' ? 'সর্বোচ্চ রেটিং আগে' : 'Highest Rated'}</option>
                     <option value="senior">{lang === 'bn' ? 'অভিজ্ঞতা অনুযায়ী' : 'Seniority'}</option>
                     <option value="az">{lang === 'bn' ? 'নাম A–Z' : 'Name A–Z'}</option>
@@ -1908,6 +1940,33 @@ export default function App() {
                       className="text-xs font-bold text-red-600 hover:underline ml-auto"
                     >
                       {lang === 'bn' ? 'সব মুছুন' : 'Clear all'}
+                    </button>
+                  </div>
+                )}
+
+                {userCoords && (
+                  <div className="mb-4 p-3.5 bg-cyan-50/90 border border-cyan-200 rounded-2xl flex items-center justify-between gap-3 text-xs sm:text-sm text-cyan-950 animate-fade-in shadow-2xs">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-cyan-600 text-white flex items-center justify-center shrink-0">
+                        <Navigation className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="font-bold">
+                          {lang === 'bn' ? '📍 আপনার অবস্থান সক্রিয় রয়েছে' : '📍 Location Active'}
+                        </span>
+                        <p className="text-xs text-cyan-700">
+                          {lang === 'bn'
+                            ? 'নিকটবর্তী দূরত্ব অনুযায়ী চিকিৎসকদের চেম্বার তালিকা সাজানো হয়েছে।'
+                            : 'Doctors are sorted from nearest to farthest.'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setLocationModalOpen(true)}
+                      className="px-3 py-1.5 bg-white border border-cyan-300 hover:bg-cyan-100 text-cyan-800 font-bold rounded-xl text-xs transition-colors shrink-0 shadow-2xs"
+                    >
+                      {lang === 'bn' ? 'এলাকা পরিবর্তন' : 'Change Area'}
                     </button>
                   </div>
                 )}
@@ -3140,6 +3199,101 @@ export default function App() {
         onClose={() => setSeoInspectorOpen(false)}
         lang={lang}
       />
+
+      {/* Chittagong Area Selector GPS Fallback Modal */}
+      {locationModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/65 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center">
+                  <Navigation className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base sm:text-lg text-slate-900 leading-tight">
+                    {lang === 'bn' ? 'নিকটবর্তী এলাকা নির্বাচন করুন' : 'Select Your Area'}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {lang === 'bn' ? 'আপনার বর্তমান অবস্থান থেকে ডাক্তারদের দূরত্ব পরিমাপ করা হবে' : 'Calculate distance from your chosen area'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLocationModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-slate-600">
+                {lang === 'bn' ? 'চট্টগ্রামের প্রধান স্বাস্থ্য কেন্দ্র ও এলাকা:' : 'Chattogram Medical Zones:'}
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { nameBn: 'পাঁচলাইশ (CMCH / Parkview)', nameEn: 'Panchlaish', area: 'Panchlaish' },
+                  { nameBn: 'ও.আর. নিজাম রোড (CSCR)', nameEn: 'O.R. Nizam Road', area: 'O.R. Nizam Road' },
+                  { nameBn: 'জিইসি মোড় (Medical Center)', nameEn: 'GEC Circle', area: 'GEC Circle' },
+                  { nameBn: 'চকবাজার', nameEn: 'Chawkbazar', area: 'Chawkbazar' },
+                  { nameBn: 'মেহেদীবাগ (Max Hospital)', nameEn: 'Mehedibag', area: 'Mehedibag' },
+                  { nameBn: 'জামাল খান ও মমিন রোড', nameEn: 'Jamal Khan', area: 'Jamal Khan' },
+                  { nameBn: 'আগ্রাবাদ এলাকা', nameEn: 'Agrabad', area: 'Agrabad' },
+                  { nameBn: 'হালিশহর', nameEn: 'Halishahar', area: 'Halishahar' },
+                ].map((item) => (
+                  <button
+                    key={item.area}
+                    type="button"
+                    onClick={() => {
+                      const coords = getChamberCoords(item.area, '');
+                      setUserCoords(coords);
+                      setSortBy('distance');
+                      setLocationModalOpen(false);
+                      setCurrentRoute('list');
+                      navigateTo('list');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      showToast(
+                        lang === 'bn'
+                          ? `📍 ${item.nameBn} অনুযায়ী নিকটবর্তী ডাক্তার সাজানো হয়েছে!`
+                          : `📍 Nearest doctors sorted from ${item.nameEn}!`
+                      );
+                    }}
+                    className="p-3 text-left bg-slate-50 hover:bg-cyan-50 hover:border-cyan-300 border border-slate-200 rounded-xl font-medium transition-all group flex items-center justify-between active:scale-95 cursor-pointer"
+                  >
+                    <span className="font-bold text-slate-800 group-hover:text-cyan-800 line-clamp-1">
+                      {lang === 'bn' ? item.nameBn : item.nameEn}
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-600 shrink-0 ml-1" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  setLocationModalOpen(false);
+                  handleRequestLocation();
+                }}
+                className="text-cyan-700 hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <Navigation className="w-3.5 h-3.5 text-cyan-600" />
+                <span>{lang === 'bn' ? 'আবার GPS দিয়ে চেষ্টা করুন' : 'Retry browser GPS'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setLocationModalOpen(false)}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors cursor-pointer"
+              >
+                {lang === 'bn' ? 'বন্ধ করুন' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

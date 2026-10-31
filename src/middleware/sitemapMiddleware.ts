@@ -29,6 +29,9 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
     urlPath === '/sitemap.xml' ||
     urlPath === '/wp-sitemap.xml' ||
     urlPath === '/sitemap_index.xml' ||
+    urlPath === '/page-sitemap.xml' ||
+    urlPath === '/post-sitemap.xml' ||
+    urlPath === '/category-sitemap.xml' ||
     urlPath === '/wp-sitemap-posts-page-1.xml' ||
     urlPath === '/wp-sitemap-posts-post-1.xml' ||
     urlPath === '/wp-sitemap-taxonomies-category-1.xml' ||
@@ -114,22 +117,22 @@ export function sitemapMiddleware(req: Request, res: Response, next: NextFunctio
       return;
     }
 
-    // 3. Pages & Doctors Sub-Sitemap: /wp-sitemap-posts-page-1.xml
-    if (urlPath === '/wp-sitemap-posts-page-1.xml') {
+    // 3. Pages & Doctors Sub-Sitemap: /wp-sitemap-posts-page-1.xml & /page-sitemap.xml
+    if (urlPath === '/wp-sitemap-posts-page-1.xml' || urlPath === '/page-sitemap.xml') {
       const xml = generatePagesSitemapXml(baseUrl);
       res.status(200).send(xml);
       return;
     }
 
-    // 4. Health Blog Posts Sub-Sitemap: /wp-sitemap-posts-post-1.xml
-    if (urlPath === '/wp-sitemap-posts-post-1.xml') {
+    // 4. Health Blog Posts Sub-Sitemap: /wp-sitemap-posts-post-1.xml & /post-sitemap.xml
+    if (urlPath === '/wp-sitemap-posts-post-1.xml' || urlPath === '/post-sitemap.xml') {
       const xml = generatePostsSitemapXml(baseUrl);
       res.status(200).send(xml);
       return;
     }
 
-    // 5. Specialty Categories Sub-Sitemap: /wp-sitemap-taxonomies-category-1.xml
-    if (urlPath === '/wp-sitemap-taxonomies-category-1.xml') {
+    // 5. Specialty Categories Sub-Sitemap: /wp-sitemap-taxonomies-category-1.xml & /category-sitemap.xml
+    if (urlPath === '/wp-sitemap-taxonomies-category-1.xml' || urlPath === '/category-sitemap.xml') {
       const xml = generateTaxonomiesSitemapXml(baseUrl);
       res.status(200).send(xml);
       return;

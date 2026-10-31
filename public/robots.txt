@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 
-# Primary Sitemaps
+# Primary Sitemaps (Rank Math & Direct)
+Sitemap: https://dakterachen.com/sitemap_index.xml
 Sitemap: https://dakterachen.com/sitemap.xml
 Sitemap: https://dakterachen.com/wp-sitemap.xml
