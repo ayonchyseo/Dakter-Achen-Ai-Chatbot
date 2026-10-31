@@ -41,7 +41,9 @@ import {
   Navigation,
   CheckCircle2,
   ShieldCheck,
-  Code2
+  Code2,
+  List,
+  Map
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
@@ -49,6 +51,7 @@ import EmergencyView from './components/EmergencyView';
 import { DiagnosticCostModal } from './components/DiagnosticCostModal';
 import { VisitChecklistModal } from './components/VisitChecklistModal';
 import { MedicineReminderModal } from './components/MedicineReminderModal';
+import { DoctorMapView } from './components/DoctorMapView';
 import SeoInspectorModal from './components/SeoInspectorModal';
 import { updatePageSeo, generateDoctorSchema, generateBlogArticleSchema, generateEmergencySchema, getActiveOrigin } from './lib/seoManager';
 import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
@@ -248,6 +251,7 @@ export default function App() {
   const [sortBy, setSortBy] = useState<'today' | 'rating' | 'senior' | 'az' | 'distance'>('today');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [directoryView, setDirectoryView] = useState<'list' | 'map'>('list');
 
   // Ratings state
   const [ratingsStore, setRatingsStore] = useState<Record<string, DoctorRatingData>>(() => loadAllRatings());
@@ -1020,6 +1024,17 @@ export default function App() {
                       {chip.label}
                     </button>
                   ))}
+                  <button
+                    key="map-view-shortcut"
+                    onClick={() => {
+                      setDirectoryView('map');
+                      navigateTo('list');
+                    }}
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 text-[#0E7490] text-xs sm:text-sm font-bold transition-all shadow-2xs active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                  >
+                    <Map className="w-3.5 h-3.5 text-[#0E7490]" />
+                    <span>{lang === 'bn' ? 'মানচিত্রে চেম্বার' : 'Map View'}</span>
+                  </button>
                 </div>
 
                 {/* Trust Points */}
@@ -1658,36 +1673,66 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Mobile Filter Sheet Trigger & Sort */}
-              <div className="flex items-center gap-3">
+              {/* View Toggle (List vs Map), Mobile Filter Sheet Trigger & Sort */}
+              <div className="flex items-center gap-2.5 flex-wrap justify-between sm:justify-end">
+                {/* View Switcher: List vs Map */}
+                <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => setDirectoryView('list')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      directoryView === 'list'
+                        ? 'bg-white text-[#0E7490] shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <List className="w-3.5 h-3.5" />
+                    <span>{lang === 'bn' ? 'তালিকা' : 'List'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDirectoryView('map')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      directoryView === 'map'
+                        ? 'bg-[#0E7490] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <Map className="w-3.5 h-3.5" />
+                    <span>{lang === 'bn' ? 'মানচিত্র ভিউ' : 'Map View'}</span>
+                  </button>
+                </div>
+
                 <button
                   type="button"
                   onClick={() => setMobileFilterOpen(true)}
-                  className="md:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-800 shadow-xs"
+                  className="md:hidden inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-800 shadow-2xs cursor-pointer"
                 >
-                  <Filter className="w-4 h-4 text-cyan-700" />
+                  <Filter className="w-3.5 h-3.5 text-cyan-700" />
                   <span>{lang === 'bn' ? 'ফিল্টার' : 'Filters'}</span>
                   {totalActiveFilters > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-[#0E7490] text-white text-xs font-bold flex items-center justify-center num">
+                    <span className="w-4 h-4 rounded-full bg-[#0E7490] text-white text-[10px] font-bold flex items-center justify-center num">
                       {totalActiveFilters}
                     </span>
                   )}
                 </button>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-500">{lang === 'bn' ? 'সাজান:' : 'Sort:'}</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none cursor-pointer"
-                  >
-                    <option value="today">{lang === 'bn' ? 'আজ বসছেন আগে' : 'Sitting today first'}</option>
-                    <option value="distance">{lang === 'bn' ? '📍 নিকটবর্তী দূরত্ব অনুযায়ী' : '📍 Nearest by distance'}</option>
-                    <option value="rating">{lang === 'bn' ? 'সর্বোচ্চ রেটিং আগে' : 'Highest Rated'}</option>
-                    <option value="senior">{lang === 'bn' ? 'অভিজ্ঞতা অনুযায়ী' : 'Seniority'}</option>
-                    <option value="az">{lang === 'bn' ? 'নাম A–Z' : 'Name A–Z'}</option>
-                  </select>
-                </div>
+                {directoryView === 'list' && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-slate-500 hidden sm:inline">{lang === 'bn' ? 'সাজান:' : 'Sort:'}</span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer shadow-2xs"
+                    >
+                      <option value="today">{lang === 'bn' ? 'আজ বসছেন আগে' : 'Sitting today first'}</option>
+                      <option value="distance">{lang === 'bn' ? '📍 নিকটবর্তী দূরত্ব অনুযায়ী' : '📍 Nearest by distance'}</option>
+                      <option value="rating">{lang === 'bn' ? 'সর্বোচ্চ রেটিং আগে' : 'Highest Rated'}</option>
+                      <option value="senior">{lang === 'bn' ? 'অভিজ্ঞতা অনুযায়ী' : 'Seniority'}</option>
+                      <option value="az">{lang === 'bn' ? 'নাম A–Z' : 'Name A–Z'}</option>
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1971,9 +2016,21 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Doctor Cards */}
-                {filteredDoctors.length > 0 ? (
-                  filteredDoctors.map(doc => {
+                {/* Doctor Cards or Map View */}
+                {directoryView === 'map' ? (
+                  <DoctorMapView
+                    doctors={filteredDoctors}
+                    userCoords={userCoords}
+                    lang={lang}
+                    onSelectDoctor={(slug) => navigateTo(`doctor/${slug}`)}
+                    selectedArea={selectedArea}
+                    onSelectArea={(area) => setSelectedArea(area)}
+                    onOpenLocationModal={() => setLocationModalOpen(true)}
+                  />
+                ) : (
+                  <>
+                    {filteredDoctors.length > 0 ? (
+                      filteredDoctors.map(doc => {
                     const primaryChamber = doc.ch[0];
                     const status = getDoctorStatus(primaryChamber, lang);
                     const voteData = chamberVotes[doc.slug] || { present: 0, absent: 0, lastVotedDate: '' };
@@ -2185,6 +2242,8 @@ export default function App() {
                     </button>
                   </div>
                 )}
+              </>
+            )}
 
                 {/* Inline Add Doctor Card */}
                 <div className="bg-cyan-50/80 border border-cyan-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
