@@ -46,7 +46,8 @@ import {
   Map,
   HelpCircle,
   Calendar,
-  FileText
+  FileText,
+  MessageSquarePlus
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
@@ -56,6 +57,7 @@ import { VisitChecklistModal } from './components/VisitChecklistModal';
 import { MedicineReminderModal } from './components/MedicineReminderModal';
 import { DoctorMapView } from './components/DoctorMapView';
 import { ChamberPhotoGallery } from './components/ChamberPhotoGallery';
+import PatientExperienceModal from './components/PatientExperienceModal';
 import SeoInspectorModal from './components/SeoInspectorModal';
 import { updatePageSeo, generateDoctorSchema, generateBlogArticleSchema, generateEmergencySchema, getActiveOrigin } from './lib/seoManager';
 import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
@@ -237,6 +239,8 @@ export default function App() {
   const [diagnosticModalOpen, setDiagnosticModalOpen] = useState(false);
   const [checklistModalOpen, setChecklistModalOpen] = useState(false);
   const [medicineModalOpen, setMedicineModalOpen] = useState(false);
+  const [experienceModalOpen, setExperienceModalOpen] = useState(false);
+  const [experienceChamberName, setExperienceChamberName] = useState<string>('');
 
   // Crowdsourced Presence State
   const [chamberVotes, setChamberVotes] = useState<Record<string, { present: number; absent: number; lastVotedDate: string; userVote?: 'yes' | 'no' }>>(() => loadChamberVotes());
@@ -783,58 +787,21 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Right actions: Lang & Add Doctor */}
-          <div className="flex items-center gap-2">
-            {/* Mobile Emergency shortcut */}
-            <button
-              type="button"
-              onClick={() => navigateTo('emergency')}
-              title={lang === 'bn' ? 'জরুরি রক্ত ও অ্যাম্বুলেন্স' : 'Emergency Blood & Ambulance'}
-              className="md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-bold transition-colors hover:bg-red-100"
-            >
-              <Droplet className="w-3.5 h-3.5 fill-red-600 text-red-600" />
-              <span>{lang === 'bn' ? 'জরুরি' : 'SOS'}</span>
-            </button>
-
-            {/* Mobile Blog shortcut */}
-            <button
-              type="button"
-              onClick={() => navigateTo('blog')}
-              title={lang === 'bn' ? 'স্বাস্থ্য ব্লগ ও টিপস' : 'Health Blog'}
-              className={`md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-colors ${
-                currentRoute === 'blog' || currentRoute === 'article'
-                  ? 'bg-cyan-50 border-cyan-300 text-[#0E7490]'
-                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{lang === 'bn' ? 'ব্লগ' : 'Blog'}</span>
-            </button>
-
-            {/* Mobile AI Chat shortcut */}
-            <button
-              type="button"
-              onClick={() => openChat()}
-              title={lang === 'bn' ? 'AI স্বাস্থ্য সহকারী' : 'AI Assistant'}
-              className="md:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-cyan-200 bg-cyan-50/80 text-[#0E7490] text-xs font-bold transition-colors hover:bg-cyan-100/70"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{lang === 'bn' ? 'এআই' : 'AI'}</span>
-            </button>
-
+          {/* Right actions: Lang & Add Doctor (Mobile & Desktop clean fit) */}
+          <div className="flex items-center gap-2 shrink-0">
             {/* Language toggle pill */}
-            <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200 text-xs font-bold" role="group" aria-label="Language">
+            <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200 text-xs font-bold shrink-0" role="group" aria-label="Language">
               <button
                 type="button"
                 onClick={() => setLang('bn')}
-                className={`px-2.5 py-1 rounded-full transition-all ${lang === 'bn' ? 'bg-[#0E7490] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`min-h-[32px] px-2.5 py-1 rounded-full transition-all whitespace-nowrap ${lang === 'bn' ? 'bg-[#0E7490] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
               >
                 বাং
               </button>
               <button
                 type="button"
                 onClick={() => setLang('en')}
-                className={`px-2.5 py-1 rounded-full transition-all ${lang === 'en' ? 'bg-[#0E7490] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`min-h-[32px] px-2.5 py-1 rounded-full transition-all whitespace-nowrap ${lang === 'en' ? 'bg-[#0E7490] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
               >
                 EN
               </button>
@@ -843,11 +810,11 @@ export default function App() {
             {/* Add Doctor Button */}
             <button
               onClick={() => setAddDoctorModalOpen(true)}
-              className="inline-flex items-center gap-1.5 min-h-[38px] px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#0E7490] hover:bg-[#155E75] text-white transition-all shadow-xs active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 min-h-[38px] px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#0E7490] hover:bg-[#155E75] text-white transition-all shadow-xs active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 shrink-0" />
               <span className="hidden sm:inline">{lang === 'bn' ? 'ডাক্তার যোগ করুন' : 'Add Doctor'}</span>
-              <span className="sm:hidden">{lang === 'bn' ? 'যুক্ত করুন' : 'Add'}</span>
+              <span className="sm:hidden">{lang === 'bn' ? 'ডাক্তার যোগ' : 'Add'}</span>
             </button>
           </div>
         </div>
@@ -2238,14 +2205,14 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Card CTA Bar */}
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                        {/* Card CTA Bar (Mobile Ergonomic Grid + Desktop Flex) */}
+                        <div className="mt-4 pt-3 border-t border-slate-100 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
                           <a
                             href={`tel:${primaryChamber.serial[0]?.replace(/\D/g, '')}`}
-                            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs active:scale-95 num"
+                            className="col-span-2 sm:col-span-1 sm:flex-initial inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs active:scale-95 num"
                           >
-                            <Phone className="w-4 h-4" />
-                            <span>{lang === 'bn' ? 'সিরিয়ালে কল' : 'Call'} · {primaryChamber.serial[0]}</span>
+                            <Phone className="w-4 h-4 shrink-0" />
+                            <span className="truncate">{lang === 'bn' ? 'সিরিয়ালে কল' : 'Call'} · {primaryChamber.serial[0]}</span>
                           </a>
 
                           {/* 1-Tap WhatsApp Serial Booking Assistant */}
@@ -2256,26 +2223,26 @@ export default function App() {
                             className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-colors shrink-0"
                             title={lang === 'bn' ? 'হোয়াটসঅ্যাপে সরাসরি সিরিয়ালের বার্তা পাঠান' : 'Book serial via WhatsApp'}
                           >
-                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600 shrink-0" />
                             <span>WhatsApp</span>
                           </a>
 
                           <button
                             type="button"
                             onClick={() => copyToClipboard(primaryChamber.serial[0], lang === 'bn' ? 'সিরিয়াল নম্বর' : 'Number')}
-                            className="min-h-[44px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                            className="min-h-[44px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs inline-flex items-center justify-center gap-1.5 transition-colors"
                           >
-                            <Copy className="w-4 h-4 text-slate-500" />
+                            <Copy className="w-4 h-4 text-slate-500 shrink-0" />
                             <span>{lang === 'bn' ? 'কপি' : 'Copy'}</span>
                           </button>
 
                           <a
                             href={`#doctor/${doc.slug}`}
                             onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
-                            className="min-h-[44px] px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm inline-flex items-center gap-1 transition-colors ml-auto"
+                            className="col-span-2 sm:col-span-1 min-h-[44px] px-4 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-1 transition-colors sm:ml-auto"
                           >
-                            <span>{lang === 'bn' ? 'বিস্তারিত প্রোফাইল' : 'View Profile'}</span>
-                            <ChevronRight className="w-4 h-4 text-slate-400" />
+                            <span>{lang === 'bn' ? 'বিস্তারিত প্রোফাইল ও গ্যালারি' : 'View Full Profile'}</span>
+                            <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
                           </a>
                         </div>
                       </article>
@@ -2446,13 +2413,13 @@ export default function App() {
                         );
                       })()}
 
-                      {/* Desktop Direct Call, WhatsApp & Share Bar */}
-                      <div className="hidden sm:flex flex-wrap items-center gap-2.5 mt-5 pt-5 border-t border-slate-100">
+                      {/* Direct Call, WhatsApp, Share & Patient Experience Modal Trigger Bar (Visible on Mobile & Desktop) */}
+                      <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5 mt-5 pt-5 border-t border-slate-100">
                         <a
                           href={`tel:${activeDoctor.ch[0]?.serial[0]?.replace(/\D/g, '')}`}
-                          className="inline-flex items-center gap-2 min-h-[46px] px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-sm font-bold shadow-xs active:scale-95 num"
+                          className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-2 min-h-[46px] px-5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs active:scale-95 num"
                         >
-                          <Phone className="w-4 h-4" />
+                          <Phone className="w-4 h-4 shrink-0" />
                           <span>{lang === 'bn' ? 'সিরিয়ালের জন্য কল' : 'Call for Serial'} · {activeDoctor.ch[0]?.serial[0]}</span>
                         </a>
 
@@ -2461,19 +2428,32 @@ export default function App() {
                             href={formatWhatsAppSerialUrl(activeDoctor.ch[0].serial[0], activeDoctor.name, activeDoctor.ch[0].name)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 min-h-[46px] px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-xs"
+                            className="inline-flex items-center justify-center gap-1.5 min-h-[46px] px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
                           >
-                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                            <MessageCircle className="w-4 h-4 fill-white text-emerald-600 shrink-0" />
                             <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপ সিরিয়াল' : 'WhatsApp'}</span>
                           </a>
                         )}
 
+                        {/* Trigger Button for PatientExperienceModal */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setExperienceChamberName(activeDoctor.ch[0]?.name || '');
+                            setExperienceModalOpen(true);
+                          }}
+                          className="inline-flex items-center justify-center gap-1.5 min-h-[46px] px-4 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 font-bold text-xs sm:text-sm shadow-2xs transition-all active:scale-95 cursor-pointer"
+                        >
+                          <MessageSquarePlus className="w-4 h-4 text-amber-600 shrink-0" />
+                          <span>{lang === 'bn' ? 'চেম্বার অভিজ্ঞতা জানান' : 'Share Experience'}</span>
+                        </button>
+
                         <button
                           type="button"
                           onClick={() => copyToClipboard(activeDoctor.ch[0]?.serial[0], lang === 'bn' ? 'সিরিয়াল নম্বর' : 'Phone')}
-                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
+                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm inline-flex items-center justify-center gap-1.5"
                         >
-                          <Copy className="w-4 h-4 text-slate-500" />
+                          <Copy className="w-4 h-4 text-slate-500 shrink-0" />
                           <span>{lang === 'bn' ? 'নম্বর কপি' : 'Copy'}</span>
                         </button>
                         <button
@@ -2485,9 +2465,9 @@ export default function App() {
                               copyToClipboard(window.location.href, lang === 'bn' ? 'প্রোফাইল লিংক' : 'Link');
                             }
                           }}
-                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center gap-1.5"
+                          className="min-h-[46px] px-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm inline-flex items-center justify-center gap-1.5"
                         >
-                          <Share2 className="w-4 h-4 text-slate-500" />
+                          <Share2 className="w-4 h-4 text-slate-500 shrink-0" />
                           <span>{lang === 'bn' ? 'শেয়ার' : 'Share'}</span>
                         </button>
                       </div>
@@ -2497,9 +2477,22 @@ export default function App() {
 
                 {/* Chambers Breakdown Section */}
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4">
-                    {lang === 'bn' ? 'চেম্বার ও সময়সূচি' : 'Chambers & Weekly Schedule'}
-                  </h2>
+                  <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                      {lang === 'bn' ? 'চেম্বার ও সময়সূচি' : 'Chambers & Weekly Schedule'}
+                    </h2>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExperienceChamberName(activeDoctor.ch[0]?.name || '');
+                        setExperienceModalOpen(true);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-amber-50 border border-slate-200 hover:border-amber-300 text-slate-800 text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+                    >
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                      <span>{lang === 'bn' ? 'চেম্বার রিভিউ দিন' : 'Rate Chamber'}</span>
+                    </button>
+                  </div>
 
                   <div className="space-y-5">
                     {activeDoctor.ch.map((chamber, cIdx) => {
@@ -2509,31 +2502,44 @@ export default function App() {
                       return (
                         <div
                           key={cIdx}
-                          className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs space-y-5"
+                          className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-xs space-y-5"
                         >
                           <div className="flex items-start justify-between gap-3 flex-wrap">
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className="w-6 h-6 rounded-lg bg-cyan-100 text-cyan-800 font-bold text-xs flex items-center justify-center">
+                                <span className="w-6 h-6 rounded-lg bg-cyan-100 text-cyan-800 font-bold text-xs flex items-center justify-center shrink-0">
                                   {cIdx + 1}
                                 </span>
-                                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                                <h3 className="text-base sm:text-xl font-bold text-slate-900">
                                   {chamber.name}
                                 </h3>
                               </div>
-                              <p className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5 mt-1">
-                                <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                              <p className="text-xs sm:text-sm text-slate-500 flex items-start sm:items-center gap-1.5 mt-1">
+                                <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5 sm:mt-0" />
                                 <span>{chamber.address} · <span className="font-semibold text-slate-700">{chamber.area}</span></span>
                               </p>
-                              <a
-                                href={`https://maps.google.com/?q=${encodeURIComponent(chamber.name + ' ' + chamber.address)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-xs font-bold text-cyan-700 hover:underline mt-1.5"
-                              >
-                                <span>{lang === 'bn' ? 'Google Maps-এ দেখুন' : 'View on Google Maps'}</span>
-                                <ExternalLink className="w-3.5 h-3.5" />
-                              </a>
+                              <div className="flex items-center gap-3 flex-wrap mt-1.5">
+                                <a
+                                  href={`https://maps.google.com/?q=${encodeURIComponent(chamber.name + ' ' + chamber.address)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs font-bold text-cyan-700 hover:underline"
+                                >
+                                  <span>{lang === 'bn' ? 'Google Maps-এ দেখুন' : 'View on Google Maps'}</span>
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </a>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setExperienceChamberName(chamber.name);
+                                    setExperienceModalOpen(true);
+                                  }}
+                                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-800 hover:underline cursor-pointer"
+                                >
+                                  <MessageSquarePlus className="w-3.5 h-3.5" />
+                                  <span>{lang === 'bn' ? 'এই চেম্বারের অভিজ্ঞতা দিন' : 'Rate this Chamber'}</span>
+                                </button>
+                              </div>
                             </div>
 
                             <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full ${
@@ -2548,19 +2554,19 @@ export default function App() {
                             </span>
                           </div>
 
-                          {/* Weekly Schedule Visual Table */}
+                          {/* Weekly Schedule Visual Table (Mobile 2/4-col, Desktop 7-col) */}
                           <div>
                             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
                               {lang === 'bn' ? 'সাপ্তাহিক সময়সূচি' : 'Weekly Schedule'}
                             </h4>
-                            <div className="grid grid-cols-7 gap-1 sm:gap-2 num text-center">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 num text-center">
                               {WEEK_DAYS.map(dayKey => {
                                 const isOpen = chamber.days.includes(dayKey);
                                 const isToday = dayKey === dhakaNow.day;
                                 return (
                                   <div
                                     key={dayKey}
-                                    className={`p-2 sm:p-2.5 rounded-xl border text-xs flex flex-col justify-between ${
+                                    className={`p-2.5 rounded-xl border text-xs flex sm:flex-col items-center sm:justify-between justify-between gap-1 ${
                                       isToday
                                         ? 'border-emerald-500 bg-emerald-50/70 text-emerald-950 font-bold ring-2 ring-emerald-400/20'
                                         : isOpen
@@ -2568,14 +2574,13 @@ export default function App() {
                                         : 'border-slate-100 bg-slate-50 text-slate-400'
                                     }`}
                                   >
-                                    <span className="font-bold text-[11px] sm:text-xs">
+                                    <span className="font-bold text-xs">
                                       {lang === 'bn' ? BN_DAYS[dayKey] : dayKey}
                                     </span>
-                                    <span className="text-[10px] sm:text-[11px] mt-1 leading-tight font-medium">
+                                    <span className="text-[11px] sm:mt-1 leading-tight font-semibold">
                                       {isOpen ? (
                                         <span>
-                                          {formatTime(chamber.start, lang).split(' ')[0]}
-                                          <br className="hidden sm:inline" />–{formatTime(chamber.end, lang).split(' ')[0]}
+                                          {formatTime(chamber.start, lang).split(' ')[0]}–{formatTime(chamber.end, lang).split(' ')[0]}
                                         </span>
                                       ) : (
                                         <span>{lang === 'bn' ? 'বন্ধ' : 'Off'}</span>
@@ -2616,28 +2621,28 @@ export default function App() {
                             </h4>
                             <div className="flex flex-wrap gap-2.5">
                               {chamber.serial.map((ser, sIdx) => (
-                                <div key={sIdx} className="flex flex-wrap items-center gap-1.5">
+                                <div key={sIdx} className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
                                   <a
                                     href={`tel:${ser.replace(/\D/g, '')}`}
-                                    className="inline-flex items-center gap-2 min-h-[42px] px-4 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs num"
+                                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs num"
                                   >
-                                    <Phone className="w-3.5 h-3.5" />
+                                    <Phone className="w-3.5 h-3.5 shrink-0" />
                                     <span>{ser}</span>
                                   </a>
                                   <a
                                     href={formatWhatsAppSerialUrl(ser, activeDoctor.name, chamber.name)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 min-h-[42px] px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
+                                    className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
                                     title={lang === 'bn' ? 'হোয়াটসঅ্যাপে সিরিয়াল বার্তা পাঠান' : 'Book on WhatsApp'}
                                   >
-                                    <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                                    <MessageCircle className="w-4 h-4 fill-white text-emerald-600 shrink-0" />
                                     <span>WhatsApp</span>
                                   </a>
                                   <button
                                     type="button"
                                     onClick={() => copyToClipboard(ser, lang === 'bn' ? 'সিরিয়াল নম্বর' : 'Phone')}
-                                    className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600"
+                                    className="min-h-[44px] min-w-[44px] p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center"
                                     title={lang === 'bn' ? 'কপি করুন' : 'Copy'}
                                   >
                                     <Copy className="w-4 h-4" />
@@ -2788,24 +2793,53 @@ export default function App() {
               </div>
             </div>
 
-            {/* Mobile Fixed Bottom Action Bar */}
-            <div className="fixed inset-x-0 bottom-0 bg-white border-t border-slate-200 p-3 flex items-center gap-2 z-30 sm:hidden shadow-lg">
+            {/* Mobile Fixed Bottom Action Bar (Positioned above Mobile Bottom Nav Bar to prevent collision) */}
+            <div className="fixed inset-x-0 bottom-[60px] bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 flex items-center gap-2 z-40 md:hidden shadow-[0_-4px_16px_rgba(15,23,42,0.08)]">
               <a
                 href={`tel:${activeDoctor.ch[0]?.serial[0]?.replace(/\D/g, '')}`}
-                className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 bg-[#047857] text-white rounded-xl text-sm font-bold shadow-xs active:scale-95 num"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3 bg-[#047857] text-white rounded-xl text-xs font-bold shadow-xs active:scale-95 num"
               >
-                <Phone className="w-4 h-4" />
-                <span>{lang === 'bn' ? 'সিরিয়ালে কল' : 'Call'} · {activeDoctor.ch[0]?.serial[0]}</span>
+                <Phone className="w-4 h-4 shrink-0" />
+                <span className="truncate">{lang === 'bn' ? 'সিরিয়ালে কল' : 'Call'} · {activeDoctor.ch[0]?.serial[0]}</span>
               </a>
               <button
                 type="button"
+                onClick={() => {
+                  setExperienceChamberName(activeDoctor.ch[0]?.name || '');
+                  setExperienceModalOpen(true);
+                }}
+                className="min-h-[44px] px-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs font-bold inline-flex items-center gap-1 shrink-0 active:scale-95"
+              >
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500 shrink-0" />
+                <span>{lang === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => copyToClipboard(activeDoctor.ch[0]?.serial[0], lang === 'bn' ? 'নম্বর' : 'Phone')}
-                className="p-3 rounded-xl border border-slate-200 text-slate-700"
+                className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 text-slate-700 flex items-center justify-center shrink-0"
                 title="Copy"
               >
                 <Copy className="w-4 h-4" />
               </button>
             </div>
+
+            {/* Patient Experience Feedback Modal */}
+            <PatientExperienceModal
+              isOpen={experienceModalOpen}
+              onClose={() => setExperienceModalOpen(false)}
+              doctorName={activeDoctor.name}
+              doctorNameEn={activeDoctor.nameEn}
+              specialtyBn={activeDoctor.specialtyBn}
+              chambers={activeDoctor.ch}
+              initialChamberName={experienceChamberName}
+              existingRating={activeDoctorRating.userRating}
+              existingComment={activeDoctorRating.userComment}
+              existingTags={activeDoctorRating.userTags}
+              lang={lang}
+              onSubmitFeedback={(rating, comment, tags) =>
+                handleDoctorRate(activeDoctor.slug, rating, activeDoctor.rank, comment, tags)
+              }
+            />
           </div>
         )}
 

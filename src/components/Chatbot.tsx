@@ -576,12 +576,12 @@ const Chatbot: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Floating Launcher Button */}
+      {/* Floating Launcher Button (Desktop only; Mobile uses Bottom Navigation Bar AI Tab) */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-gradient-to-r from-[#0E7490] to-[#0284C7] text-white p-4 rounded-full shadow-[0_8px_30px_rgba(14,116,144,0.4)] hover:shadow-cyan-600/50 transition-all flex items-center justify-center border-2 border-white relative group"
+        className="hidden md:flex bg-gradient-to-r from-[#0E7490] to-[#0284C7] text-white p-4 rounded-full shadow-[0_8px_30px_rgba(14,116,144,0.4)] hover:shadow-cyan-600/50 transition-all items-center justify-center border-2 border-white relative group"
         aria-label="ওপেন ডাক্তার আছেন এআই"
       >
         {isOpen ? (
