@@ -55,6 +55,7 @@ import { DiagnosticCostModal } from './components/DiagnosticCostModal';
 import { VisitChecklistModal } from './components/VisitChecklistModal';
 import { MedicineReminderModal } from './components/MedicineReminderModal';
 import { DoctorMapView } from './components/DoctorMapView';
+import { ChamberPhotoGallery } from './components/ChamberPhotoGallery';
 import SeoInspectorModal from './components/SeoInspectorModal';
 import { updatePageSeo, generateDoctorSchema, generateBlogArticleSchema, generateEmergencySchema, getActiveOrigin } from './lib/seoManager';
 import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
@@ -247,7 +248,7 @@ export default function App() {
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArea, setSelectedArea] = useState('All');
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('all');
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('medicine');
   const [filterDay, setFilterDay] = useState<Set<string>>(new Set());
   const [filterTime, setFilterTime] = useState<Set<string>>(new Set());
   const [filterArea, setFilterArea] = useState<Set<string>>(new Set());
@@ -894,6 +895,9 @@ export default function App() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
+                      if (searchQuery.trim().length > 0 || selectedArea !== 'All') {
+                        setSelectedSpecialty('all');
+                      }
                       navigateTo('list');
                     }}
                     className="flex flex-col sm:flex-row items-stretch bg-white border border-slate-300/80 rounded-2xl p-2 shadow-lg shadow-slate-900/5 gap-2"
@@ -1278,22 +1282,24 @@ export default function App() {
               </div>
             </section>
 
-            {/* Specialty Grid Section */}
-            <section id="home-spec" className="pt-6 sm:pt-8 pb-10 sm:pb-14 px-4 max-w-7xl mx-auto w-full">
-              <div className="flex items-end justify-between gap-4 mb-6">
+            {/* Specialty Grid Section (Doctors are displayed inside their respective departments) */}
+            <section id="home-spec" className="pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 max-w-7xl mx-auto w-full">
+              <div className="flex items-end justify-between gap-4 mb-6 flex-wrap">
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                    {lang === 'bn' ? 'বিভাগ অনুযায়ী ডাক্তার' : 'Doctors by Specialty'}
+                    {lang === 'bn' ? 'বিভাগ অনুযায়ী বিশেষজ্ঞ ডাক্তার' : 'Specialist Doctors by Department'}
                   </h2>
                   <p className="text-sm sm:text-base text-slate-500 mt-1">
-                    {lang === 'bn' ? 'আপনার শারীরিক সমস্যা অনুযায়ী সঠিক বিশেষজ্ঞ বেছে নিন' : 'Choose the right specialist based on your condition'}
+                    {lang === 'bn'
+                      ? 'যেকোনো বিভাগে ক্লিক করে সেই বিভাগের সকল বিশেষজ্ঞ ডাক্তার, চেম্বার ফটো গ্যালারি ও সিরিয়াল নম্বর দেখুন'
+                      : 'Select any department below to view its specialist doctors, chamber photo galleries, and serial numbers'}
                   </p>
                 </div>
                 <button
-                  onClick={() => { setSelectedSpecialty('all'); navigateTo('list'); }}
-                  className="inline-flex items-center gap-1 text-sm font-bold text-[#0E7490] hover:text-[#155E75] hover:underline"
+                  onClick={() => { setSelectedSpecialty('medicine'); navigateTo('list'); }}
+                  className="inline-flex items-center gap-1 text-sm font-bold text-[#0E7490] hover:text-[#155E75] hover:underline cursor-pointer"
                 >
-                  <span>{lang === 'bn' ? 'সব বিভাগ দেখুন' : 'All specialties'}</span>
+                  <span>{lang === 'bn' ? 'বিভাগভিত্তিক তালিকা খুলুন' : 'Browse by Department'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -1318,146 +1324,15 @@ export default function App() {
                         <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-cyan-700 transition-colors leading-snug">
                           {lang === 'bn' ? spec.bn : spec.en}
                         </h3>
-                        <p className="text-xs text-slate-500 font-semibold mt-1">
+                        <p className="text-xs text-slate-500 font-semibold mt-1 num">
                           {count > 0
-                            ? (lang === 'bn' ? `${count} জন ডাক্তার` : `${count} doctors`)
+                            ? (lang === 'bn' ? `${count} জন বিশেষজ্ঞ ডাক্তার →` : `${count} specialists →`)
                             : (lang === 'bn' ? 'শীঘ্রই — যোগ করুন' : 'Coming soon — help add')}
                         </p>
                       </div>
                     </div>
                   );
                 })}
-              </div>
-            </section>
-
-            {/* Today's Chamber Section */}
-            <section className="py-12 sm:py-16 px-4 bg-slate-50/70 border-y border-slate-200/70">
-              <div className="max-w-7xl mx-auto">
-                <div className="flex items-end justify-between gap-4 mb-8 flex-wrap">
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                      {lang === 'bn' ? 'আজ চেম্বারে বসছেন' : 'Sitting in Chamber Today'}
-                    </h2>
-                    <p className="text-sm sm:text-base text-slate-500 mt-1 num">
-                      {lang === 'bn'
-                        ? `${dhakaDayBn}বার · চট্টগ্রাম সময় অনুযায়ী সক্রিয় ডাক্তারগণ`
-                        : `${dhakaNow.day} · Active specialists based on Chattogram time`}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setFilterDay(new Set(['today']));
-                      navigateTo('list');
-                    }}
-                    className="inline-flex items-center gap-1 text-sm font-bold text-[#0E7490] hover:text-[#155E75] hover:underline"
-                  >
-                    <span>{lang === 'bn' ? 'আজকের সব ডাক্তার →' : 'See all today →'}</span>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {todayDoctors.map(doc => {
-                    const primaryChamber = doc.ch[0];
-                    const status = getDoctorStatus(primaryChamber, lang);
-
-                    return (
-                      <article
-                        key={doc.slug}
-                        className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-                      >
-                        <div>
-                          {/* Header */}
-                          <div className="flex items-start gap-3.5 mb-3.5">
-                            <DoctorAvatar img={doc.img} name={doc.name} ini={doc.ini} className="w-13 h-13 rounded-2xl text-sm" />
-
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between gap-2 flex-wrap">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <h3 className="font-bold text-base sm:text-lg text-slate-900 leading-snug">
-                                    <a
-                                      href={`#doctor/${doc.slug}`}
-                                      onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
-                                      className="hover:text-cyan-700"
-                                    >
-                                      {doc.name}
-                                    </a>
-                                  </h3>
-                                  <span className="inline-flex items-center gap-0.5 text-xs font-bold text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 num shrink-0">
-                                    <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
-                                    <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
-                                  </span>
-                                </div>
-                              </div>
-                              <p className="text-xs font-semibold text-cyan-700 mt-0.5">{doc.specialtyBn}</p>
-                              <p className="text-xs text-slate-500 font-medium line-clamp-1 mt-0.5">{doc.degrees}</p>
-                            </div>
-                          </div>
-
-                          {/* Live Status Badge */}
-                          <div className="mb-3">
-                            <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${
-                              status.type === 'now'
-                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                : status.type === 'today'
-                                ? 'bg-cyan-50 text-cyan-800 border border-cyan-200'
-                                : 'bg-amber-50 text-amber-800 border border-amber-200'
-                            }`}>
-                              <span className={`w-2 h-2 rounded-full ${status.type === 'now' ? 'bg-emerald-600 pulse-dot' : status.type === 'today' ? 'bg-cyan-600' : 'bg-amber-600'}`} />
-                              <span>{status.label}</span>
-                            </span>
-                          </div>
-
-                          {/* Chamber Meta */}
-                          <div className="space-y-1.5 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-3">
-                            <div className="flex items-start gap-2">
-                              <Building2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="font-medium text-slate-800">{primaryChamber.name}</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="text-slate-500 line-clamp-1">{primaryChamber.address}</span>
-                            </div>
-                            <div className="flex items-center gap-2 num">
-                              <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                              <span className="text-slate-600">
-                                {formatTime(primaryChamber.start, lang)} – {formatTime(primaryChamber.end, lang)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-2">
-                          <a
-                            href={`tel:${primaryChamber.serial[0]?.replace(/\D/g, '')}`}
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[42px] px-3 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs active:scale-95 num"
-                          >
-                            <Phone className="w-4 h-4" />
-                            <span>{lang === 'bn' ? 'সিরিয়াল:' : 'Call:'} {primaryChamber.serial[0]}</span>
-                          </a>
-
-                          <button
-                            type="button"
-                            onClick={() => copyToClipboard(primaryChamber.serial[0], lang === 'bn' ? 'সিরিয়াল নম্বর' : 'Phone')}
-                            className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
-                            title={lang === 'bn' ? 'নম্বর কপি করুন' : 'Copy number'}
-                          >
-                            <Copy className="w-4 h-4" />
-                          </button>
-
-                          <a
-                            href={`#doctor/${doc.slug}`}
-                            onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
-                            className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
-                            title={lang === 'bn' ? 'সম্পূর্ণ প্রোফাইল' : 'Profile'}
-                          >
-                            <ChevronRight className="w-4 h-4" />
-                          </a>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
               </div>
             </section>
 
@@ -1809,6 +1684,38 @@ export default function App() {
                     </select>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Department Selector Tabs Bar (Browse doctors within their own department) */}
+            <div className="mb-6 bg-white border border-slate-200/90 rounded-2xl p-3 shadow-2xs">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-1">
+                {lang === 'bn' ? 'বিভাগ নির্বাচন করুন (Department):' : 'Select Department:'}
+              </div>
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {SPECIALTIES.map(spec => {
+                  const SpecIcon = spec.icon;
+                  const deptCount = doctorsList.filter(d => d.specialtyKey === spec.key).length;
+                  const isActive = selectedSpecialty === spec.key;
+                  return (
+                    <button
+                      key={spec.key}
+                      type="button"
+                      onClick={() => setSelectedSpecialty(spec.key)}
+                      className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 cursor-pointer border ${
+                        isActive
+                          ? 'bg-[#0E7490] text-white border-[#0E7490] shadow-xs'
+                          : 'bg-slate-50 hover:bg-cyan-50 text-slate-700 border-slate-200 hover:border-cyan-300'
+                      }`}
+                    >
+                      <SpecIcon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-cyan-700'}`} />
+                      <span>{lang === 'bn' ? spec.bn : spec.en}</span>
+                      <span className={`px-1.5 py-0.5 rounded-full text-[10px] num ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200/80 text-slate-600'}`}>
+                        {deptCount}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -2267,6 +2174,11 @@ export default function App() {
                                 <FileText className="w-3 h-3 text-slate-500 shrink-0" />
                                 <span>{lang === 'bn' ? bookingGuide.reportRuleBn : bookingGuide.reportRuleEn}</span>
                               </span>
+                            </div>
+
+                            {/* Chamber Visual Photo Gallery (Compact Preview) */}
+                            <div className="mt-3">
+                              <ChamberPhotoGallery chamber={primaryChamber} lang={lang} compact />
                             </div>
 
                             {/* Real-Time Crowdsourced Presence Check */}
@@ -2734,6 +2646,9 @@ export default function App() {
                               ))}
                             </div>
                           </div>
+
+                          {/* Chamber Visual Photo Gallery (Full 4-Photo Gallery with Lightbox) */}
+                          <ChamberPhotoGallery chamber={chamber} lang={lang} />
                         </div>
                       );
                     })}

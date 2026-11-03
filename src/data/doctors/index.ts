@@ -11,6 +11,7 @@ import { DENTAL_DOCTORS } from './dental';
 import { NEURO_DOCTORS } from './neuro';
 import { KIDNEY_DOCTORS } from './kidney';
 import { SURGERY_DOCTORS } from './surgery';
+import { ADDITIONAL_100_DOCTORS } from './additional100Doctors';
 
 export const INITIAL_DOCTORS: Doctor[] = [
   ...MEDICINE_DOCTORS,
@@ -24,7 +25,8 @@ export const INITIAL_DOCTORS: Doctor[] = [
   ...DENTAL_DOCTORS,
   ...NEURO_DOCTORS,
   ...KIDNEY_DOCTORS,
-  ...SURGERY_DOCTORS
+  ...SURGERY_DOCTORS,
+  ...ADDITIONAL_100_DOCTORS
 ];
 
 export {
@@ -39,5 +41,6 @@ export {
   DENTAL_DOCTORS,
   NEURO_DOCTORS,
   KIDNEY_DOCTORS,
-  SURGERY_DOCTORS
+  SURGERY_DOCTORS,
+  ADDITIONAL_100_DOCTORS
 };
