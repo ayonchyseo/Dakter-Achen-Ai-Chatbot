@@ -43,7 +43,10 @@ import {
   ShieldCheck,
   Code2,
   List,
-  Map
+  Map,
+  HelpCircle,
+  Calendar,
+  FileText
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
@@ -56,6 +59,7 @@ import SeoInspectorModal from './components/SeoInspectorModal';
 import { updatePageSeo, generateDoctorSchema, generateBlogArticleSchema, generateEmergencySchema, getActiveOrigin } from './lib/seoManager';
 import { loadChamberVotes, recordChamberVote } from './lib/crowdPresence';
 import { getChamberCoords, calculateDistanceKm } from './lib/geoDistance';
+import { SYMPTOM_MAPPINGS, matchQueryToSymptoms, getChamberBookingGuide, generateDoctorFaqs } from './lib/patientNeeds';
 
 const Chatbot = React.lazy(() => import('./components/Chatbot'));
 const BlogView = React.lazy(() => import('./components/BlogView'));
@@ -497,17 +501,23 @@ export default function App() {
   const dhakaNow = getDhakaNow();
   const dhakaDayBn = BN_DAYS[dhakaNow.day] || dhakaNow.day;
 
+  // Symptom match from current searchQuery
+  const activeSymptomMatch = useMemo(() => matchQueryToSymptoms(searchQuery), [searchQuery]);
+
   // Filtered doctors for listing
   const filteredDoctors = useMemo(() => {
+    const symptomSpec = matchQueryToSymptoms(searchQuery);
+
     return doctorsList.filter(d => {
-      // Search Query
+      // Search Query (Name, Specialty, Chamber, or Symptom)
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         const matchName = d.name.toLowerCase().includes(q) || d.nameEn.toLowerCase().includes(q);
         const matchSpec = d.specialtyBn.toLowerCase().includes(q) || d.specialtyEn.toLowerCase().includes(q);
         const matchDeg = d.degrees.toLowerCase().includes(q);
         const matchChamber = d.ch.some(c => c.name.toLowerCase().includes(q) || c.address.toLowerCase().includes(q) || c.area.toLowerCase().includes(q));
-        if (!matchName && !matchSpec && !matchDeg && !matchChamber) return false;
+        const matchSymptom = symptomSpec ? d.specialtyKey.toLowerCase() === symptomSpec.specialtyKey.toLowerCase() : false;
+        if (!matchName && !matchSpec && !matchDeg && !matchChamber && !matchSymptom) return false;
       }
 
       // Specialty filter
@@ -602,14 +612,20 @@ export default function App() {
     return getDoctorRating(ratingsStore, activeDoctor.slug, activeDoctor.rank);
   }, [ratingsStore, activeDoctor]);
 
-  // Autocomplete live matches
+  // Autocomplete live matches (with symptom intelligence)
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const autocompleteResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
     const q = searchQuery.toLowerCase().trim();
-    const matchedDocs = doctorsList.filter(d => d.name.toLowerCase().includes(q) || d.nameEn.toLowerCase().includes(q)).slice(0, 3);
-    const matchedSpecs = SPECIALTIES.filter(s => s.bn.toLowerCase().includes(q) || s.en.toLowerCase().includes(q)).slice(0, 2);
-    return { docs: matchedDocs, specs: matchedSpecs };
+    const symptomMatch = matchQueryToSymptoms(q);
+    let matchedDocs = doctorsList.filter(d => d.name.toLowerCase().includes(q) || d.nameEn.toLowerCase().includes(q)).slice(0, 3);
+    if (matchedDocs.length === 0 && symptomMatch) {
+      matchedDocs = doctorsList.filter(d => d.specialtyKey.toLowerCase() === symptomMatch.specialtyKey.toLowerCase()).slice(0, 3);
+    }
+    const matchedSpecs = SPECIALTIES.filter(
+      s => s.bn.toLowerCase().includes(q) || s.en.toLowerCase().includes(q) || (symptomMatch && s.key === symptomMatch.specialtyKey)
+    ).slice(0, 2);
+    return { docs: matchedDocs, specs: matchedSpecs, symptomMatch };
   }, [searchQuery, doctorsList]);
 
   // Clear all filters
@@ -936,8 +952,32 @@ export default function App() {
                   </form>
 
                   {/* Autocomplete Dropdown */}
-                  {autocompleteOpen && autocompleteResults && (
+                  {autocompleteOpen && autocompleteResults && (autocompleteResults.specs.length > 0 || autocompleteResults.docs.length > 0 || autocompleteResults.symptomMatch) && (
                     <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl p-3 z-40 text-left space-y-3">
+                      {autocompleteResults.symptomMatch && (
+                        <div className="p-2.5 rounded-lg bg-cyan-50/90 border border-cyan-200 flex items-center justify-between gap-2">
+                          <div className="text-xs text-cyan-950">
+                            <span className="font-bold text-[#0E7490]">
+                              {lang === 'bn' ? '💡 লক্ষণ অনুযায়ী পরামর্শ:' : '💡 Recommended Specialist:'}
+                            </span>{' '}
+                            <span className="font-semibold">
+                              {lang === 'bn' ? autocompleteResults.symptomMatch.deptBn : autocompleteResults.symptomMatch.deptEn}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedSpecialty(autocompleteResults.symptomMatch!.specialtyKey);
+                              setAutocompleteOpen(false);
+                              navigateTo('list');
+                            }}
+                            className="px-2.5 py-1 rounded-md bg-[#0E7490] text-white text-[11px] font-bold shrink-0 hover:bg-[#155E75] cursor-pointer"
+                          >
+                            {lang === 'bn' ? 'সব ডাক্তার দেখুন →' : 'See All →'}
+                          </button>
+                        </div>
+                      )}
+
                       {autocompleteResults.specs.length > 0 && (
                         <div>
                           <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-2 mb-1">
@@ -998,7 +1038,7 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Quick Specialty Chips */}
+                {/* Quick Specialty Chips + Friday Open + Map View */}
                 <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3.5 sm:mt-5">
                   <span className="text-xs font-semibold text-slate-400 mr-1 hidden sm:inline">
                     {lang === 'bn' ? 'জনপ্রিয় বিভাগ:' : 'Popular:'}
@@ -1024,6 +1064,20 @@ export default function App() {
                       {chip.label}
                     </button>
                   ))}
+                  {/* 1-Tap Friday Open Filter */}
+                  <button
+                    key="friday-open-shortcut"
+                    onClick={() => {
+                      setSelectedSpecialty('all');
+                      setFilterDay(new Set(['Fri']));
+                      setDirectoryView('list');
+                      navigateTo('list');
+                    }}
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-[#047857] text-xs sm:text-sm font-bold transition-all shadow-2xs active:scale-95 cursor-pointer inline-flex items-center gap-1"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-[#047857]" />
+                    <span>{lang === 'bn' ? 'শুক্রবার খোলা' : 'Open on Friday'}</span>
+                  </button>
                   <button
                     key="map-view-shortcut"
                     onClick={() => {
@@ -1035,6 +1089,28 @@ export default function App() {
                     <Map className="w-3.5 h-3.5 text-[#0E7490]" />
                     <span>{lang === 'bn' ? 'মানচিত্রে চেম্বার' : 'Map View'}</span>
                   </button>
+                </div>
+
+                {/* Quick Symptom Matcher Pills (Zero Bloat — 1-Tap Symptom-to-Doctor) */}
+                <div className="flex flex-wrap items-center justify-center gap-1.5 mt-2.5">
+                  <span className="text-[11px] font-bold text-slate-500 mr-1">
+                    {lang === 'bn' ? 'লক্ষণ দেখে খুঁজুন:' : 'By Symptom:'}
+                  </span>
+                  {SYMPTOM_MAPPINGS.slice(0, 7).map(sym => (
+                    <button
+                      key={sym.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedSpecialty(sym.specialtyKey);
+                        setSearchQuery(lang === 'bn' ? sym.labelBn.split(',')[0] : sym.labelEn.split(',')[0]);
+                        setDirectoryView('list');
+                        navigateTo('list');
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100/90 hover:bg-cyan-50 border border-slate-200/80 hover:border-cyan-300 text-slate-600 hover:text-[#0E7490] text-[11px] sm:text-xs font-medium transition-all cursor-pointer"
+                    >
+                      {lang === 'bn' ? sym.labelBn : sym.labelEn}
+                    </button>
+                  ))}
                 </div>
 
                 {/* Trust Points */}
@@ -1950,6 +2026,58 @@ export default function App() {
 
               {/* Main Cards List */}
               <div className="space-y-4">
+                {/* 1-Tap Quick Patient Filters: Sitting Today & Open on Friday */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = new Set(filterDay);
+                      next.has('today') ? next.delete('today') : next.add('today');
+                      setFilterDay(next);
+                    }}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                      filterDay.has('today')
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${filterDay.has('today') ? 'bg-white' : 'bg-emerald-500 pulse-dot'}`} />
+                    <span>{lang === 'bn' ? 'আজ বসছেন' : 'Sitting Today'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = new Set(filterDay);
+                      next.has('Fri') ? next.delete('Fri') : next.add('Fri');
+                      setFilterDay(next);
+                    }}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                      filterDay.has('Fri')
+                        ? 'bg-[#0E7490] text-white border-[#0E7490] shadow-xs'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-cyan-300 hover:bg-cyan-50/50'
+                    }`}
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>{lang === 'bn' ? 'শুক্রবার খোলা (ছুটির দিন)' : 'Open on Friday'}</span>
+                  </button>
+                </div>
+
+                {/* Symptom-to-Specialty Active Recommendation Banner */}
+                {activeSymptomMatch && (
+                  <div className="p-3.5 bg-cyan-50/90 border border-cyan-200 rounded-2xl flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm text-cyan-950">
+                    <div className="flex items-center gap-2">
+                      <Stethoscope className="w-4 h-4 text-[#0E7490] shrink-0" />
+                      <span>
+                        <strong>{lang === 'bn' ? 'লক্ষণ অনুযায়ী পরামর্শ:' : 'Recommended for symptom:'}</strong>{' '}
+                        {lang === 'bn'
+                          ? `"${searchQuery}" সমস্যার জন্য ${activeSymptomMatch.deptBn} দেখানো সবচেয়ে উপযুক্ত।`
+                          : `For "${searchQuery}", consulting a ${activeSymptomMatch.deptEn} is recommended.`}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Active Filter Chips */}
                 {totalActiveFilters > 0 && (
                   <div className="flex flex-wrap items-center gap-2 mb-2 p-3 bg-slate-100/80 rounded-xl border border-slate-200">
@@ -2035,6 +2163,8 @@ export default function App() {
                     const status = getDoctorStatus(primaryChamber, lang);
                     const voteData = chamberVotes[doc.slug] || { present: 0, absent: 0, lastVotedDate: '' };
                     const distKm = userCoords ? calculateDistanceKm(userCoords, getChamberCoords(primaryChamber.area, primaryChamber.name)) : null;
+                    const bookingGuide = getChamberBookingGuide(primaryChamber);
+                    const isFridayOpen = doc.ch.some(c => c.days.includes('Fri'));
 
                     return (
                       <article
@@ -2066,6 +2196,12 @@ export default function App() {
                                     <ShieldCheck className="w-3 h-3 text-emerald-600" />
                                     <span>{lang === 'bn' ? 'BMDC নিবন্ধিত ও যাচাইকৃত' : 'BMDC Verified'}</span>
                                   </span>
+                                  {isFridayOpen && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-200 text-[11px] font-bold">
+                                      <Calendar className="w-3 h-3 text-teal-600" />
+                                      <span>{lang === 'bn' ? 'শুক্রবার খোলা' : 'Friday Open'}</span>
+                                    </span>
+                                  )}
                                   {distKm !== null && (
                                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
                                       <Navigation className="w-3 h-3 text-cyan-600" />
@@ -2119,6 +2255,18 @@ export default function App() {
                                   {primaryChamber.fee && ` · ফি: ${primaryChamber.fee}`}
                                 </p>
                               </div>
+                            </div>
+
+                            {/* Serial Booking Window & Report Showing Quick Tip */}
+                            <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] sm:text-xs">
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-50/90 text-cyan-900 border border-cyan-200/80 font-semibold">
+                                <Phone className="w-3 h-3 text-[#0E7490] shrink-0" />
+                                <span>{lang === 'bn' ? bookingGuide.serialBadgeBn : bookingGuide.serialBadgeEn}</span>
+                              </span>
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200/80 font-medium">
+                                <FileText className="w-3 h-3 text-slate-500 shrink-0" />
+                                <span>{lang === 'bn' ? bookingGuide.reportRuleBn : bookingGuide.reportRuleEn}</span>
+                              </span>
                             </div>
 
                             {/* Real-Time Crowdsourced Presence Check */}
@@ -2444,6 +2592,7 @@ export default function App() {
                   <div className="space-y-5">
                     {activeDoctor.ch.map((chamber, cIdx) => {
                       const status = getDoctorStatus(chamber, lang);
+                      const chamberGuide = getChamberBookingGuide(chamber);
 
                       return (
                         <div
@@ -2526,6 +2675,28 @@ export default function App() {
                             </div>
                           </div>
 
+                          {/* Serial Booking Window & Report Showing Guide */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div className="p-3.5 rounded-xl bg-cyan-50/70 border border-cyan-200/80 space-y-1">
+                              <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#0E7490]">
+                                <Clock className="w-3.5 h-3.5 shrink-0" />
+                                <span>{lang === 'bn' ? 'সিরিয়াল দেওয়ার সঠিক সময়' : 'When to Book Serial'}</span>
+                              </div>
+                              <p className="text-xs text-slate-700 leading-relaxed">
+                                {lang === 'bn' ? chamberGuide.serialRuleBn : chamberGuide.serialRuleEn}
+                              </p>
+                            </div>
+                            <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
+                              <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#047857]">
+                                <FileText className="w-3.5 h-3.5 shrink-0" />
+                                <span>{lang === 'bn' ? 'টেস্টের রিপোর্ট দেখানোর নিয়ম' : 'Report Showing Rule'}</span>
+                              </div>
+                              <p className="text-xs text-slate-700 leading-relaxed">
+                                {lang === 'bn' ? chamberGuide.reportRuleBn : chamberGuide.reportRuleEn}
+                              </p>
+                            </div>
+                          </div>
+
                           {/* Serial Numbers and Direct Dial */}
                           <div className="pt-4 border-t border-slate-100">
                             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
@@ -2584,6 +2755,43 @@ export default function App() {
                         {lang === 'bn' ? 'তথ্য ভুল থাকলে জানান →' : 'Report wrong info →'}
                       </button>
                     </div>
+                  </div>
+                </div>
+
+                {/* Google "People Also Ask" (PAA) / Patient FAQ Section */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs space-y-4">
+                  <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                    <HelpCircle className="w-5 h-5 text-[#0E7490] shrink-0" />
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+                        {lang === 'bn'
+                          ? `${activeDoctor.name} সম্পর্কে সচরাচর জিজ্ঞাসিত প্রশ্ন (FAQ)`
+                          : `Frequently Asked Questions about ${activeDoctor.nameEn}`}
+                      </h2>
+                      <p className="text-xs text-slate-500">
+                        {lang === 'bn'
+                          ? 'রোগীরা গুগলে ও চেম্বারে সাধারণত যে প্রশ্নগুলোর উত্তর খোঁজেন'
+                          : 'Key information patients look for before visiting the chamber'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="divide-y divide-slate-100">
+                    {generateDoctorFaqs(activeDoctor).map((faq, fIdx) => (
+                      <details
+                        key={fIdx}
+                        open={fIdx < 2}
+                        className="group py-3.5 first:pt-1 last:pb-1"
+                      >
+                        <summary className="flex items-start justify-between gap-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#0E7490] transition-colors">
+                          <span>{lang === 'bn' ? faq.questionBn : faq.questionEn}</span>
+                          <span className="text-slate-400 group-open:rotate-90 transition-transform text-xs mt-1 shrink-0">▶</span>
+                        </summary>
+                        <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed pl-0.5">
+                          {lang === 'bn' ? faq.answerBn : faq.answerEn}
+                        </p>
+                      </details>
+                    ))}
                   </div>
                 </div>
 

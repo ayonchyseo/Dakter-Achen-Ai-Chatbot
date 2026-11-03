@@ -1,5 +1,6 @@
 import { Doctor } from '../types/doctor';
 import { BlogPost } from '../types/blog';
+import { generateDoctorFaqs } from './patientNeeds';
 
 export interface SeoConfig {
   title: string;
@@ -83,51 +84,61 @@ export function updatePageSeo(config: SeoConfig) {
 }
 
 /**
- * Generate Schema.org for Doctor Profile
+ * Generate Schema.org for Doctor Profile (Physician + FAQPage for Google PAA)
  */
 export function generateDoctorSchema(doctor: Doctor, origin: string = getActiveOrigin()) {
   const doctorUrl = `${origin}/doctor/${doctor.slug}`;
-  
+  const faqs = generateDoctorFaqs(doctor);
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'Physician',
-    '@id': `${doctorUrl}#physician`,
-    'name': doctor.name,
-    'alternateName': doctor.nameEn,
-    'description': `${doctor.name} — ${doctor.specialtyBn} (${doctor.specialtyEn})। ${doctor.degrees}। চেম্বার: ${doctor.ch.map(c => c.name).join(', ')}`,
-    'url': doctorUrl,
-    'medicalSpecialty': doctor.specialtyEn,
-    'alumniOf': {
-      '@type': 'EducationalOrganization',
-      'name': doctor.degrees
-    },
-    'address': doctor.ch.map(chamber => ({
-      '@type': 'PostalAddress',
-      'streetAddress': chamber.address,
-      'addressLocality': chamber.area,
-      'addressRegion': 'Chattogram',
-      'addressCountry': 'BD'
-    })),
-    'telephone': doctor.ch.flatMap(c => c.serial || []).filter(Boolean).join(', ') || '+8801800000000',
-    'workLocation': doctor.ch.map(chamber => ({
-      '@type': 'MedicalClinic',
-      'name': chamber.name,
-      'address': {
-        '@type': 'PostalAddress',
-        'streetAddress': chamber.address,
-        'addressLocality': chamber.area,
-        'addressRegion': 'Chattogram',
-        'addressCountry': 'BD'
+    '@graph': [
+      {
+        '@type': 'Physician',
+        '@id': `${doctorUrl}#physician`,
+        'name': doctor.name,
+        'alternateName': doctor.nameEn,
+        'description': `${doctor.name} — ${doctor.specialtyBn} (${doctor.specialtyEn})। ${doctor.degrees}। চেম্বার: ${doctor.ch.map(c => c.name).join(', ')}`,
+        'url': doctorUrl,
+        'medicalSpecialty': doctor.specialtyEn,
+        'alumniOf': {
+          '@type': 'EducationalOrganization',
+          'name': doctor.degrees
+        },
+        'address': doctor.ch.map(chamber => ({
+          '@type': 'PostalAddress',
+          'streetAddress': chamber.address,
+          'addressLocality': chamber.area,
+          'addressRegion': 'Chattogram',
+          'addressCountry': 'BD'
+        })),
+        'telephone': doctor.ch.flatMap(c => c.serial || []).filter(Boolean).join(', ') || '+8801800000000',
+        'workLocation': doctor.ch.map(chamber => ({
+          '@type': 'MedicalClinic',
+          'name': chamber.name,
+          'address': {
+            '@type': 'PostalAddress',
+            'streetAddress': chamber.address,
+            'addressLocality': chamber.area,
+            'addressRegion': 'Chattogram',
+            'addressCountry': 'BD'
+          },
+          'telephone': (chamber.serial && chamber.serial[0]) || '+8801800000000'
+        }))
       },
-      'telephone': (chamber.serial && chamber.serial[0]) || '+8801800000000'
-    })),
-    'offers': doctor.ch.filter(c => c.fee).map(chamber => ({
-      '@type': 'Offer',
-      'name': `Consultation Fee at ${chamber.name}`,
-      'price': chamber.fee,
-      'priceCurrency': 'BDT',
-      'availability': 'https://schema.org/InStock'
-    }))
+      {
+        '@type': 'FAQPage',
+        '@id': `${doctorUrl}#faq`,
+        'mainEntity': faqs.map(f => ({
+          '@type': 'Question',
+          'name': f.questionBn,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': f.answerBn
+          }
+        }))
+      }
+    ]
   };
 }
 
