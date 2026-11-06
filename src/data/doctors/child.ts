@@ -2,6 +2,60 @@ import { Doctor } from '../../types/doctor';
 
 export const CHILD_DOCTORS: Doctor[] = [
   {
+    "slug": "prof-dr-sanat-kumar-barua",
+    "name": "অধ্যাপক ডাঃ সনৎ কুমার বড়ুয়া",
+    "nameEn": "Prof. Dr. Sanat Kumar Barua",
+    "ini": "SB",
+    "g": "M",
+    "rank": 5,
+    "specialtyBn": "শিশু ও নবজাতক রোগ বিশেষজ্ঞ",
+    "specialtyEn": "Child Specialist & Pediatrician",
+    "specialtyKey": "child",
+    "degrees": "MBBS, FCPS (Pediatrics), MD (Pediatrics)",
+    "designation": "অধ্যাপক ও বিভাগীয় প্রধান (শিশু বিভাগ)",
+    "institution": "চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল",
+    "ch": [
+      {
+        "name": "এপিক হেলথ কেয়ার (ইস্ট গেট শাখা)",
+        "address": "৩৬, কে.বি. ফজলুল কাদের রোড, পাঁচলাইশ, চট্টগ্রাম (সিএমসিএইচ ইস্ট গেটের বিপরীতে)",
+        "area": "Panchlaish",
+        "days": [
+          "Sat",
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu"
+        ],
+        "start": "17:00",
+        "end": "22:00",
+        "serial": [
+          "01829-053939",
+          "01984-499600"
+        ],
+        "fee": "১০০০ টাকা"
+      },
+      {
+        "name": "শেভরণ ক্লিনিক্যাল ল্যাবরেটরি",
+        "address": "১২/১২ ও.আর. নিজাম রোড, পাঁচলাইশ, চট্টগ্রাম",
+        "area": "O.R. Nizam Road",
+        "days": [
+          "Sat",
+          "Mon",
+          "Wed"
+        ],
+        "start": "14:30",
+        "end": "16:30",
+        "serial": [
+          "01755-666955",
+          "02334455660"
+        ],
+        "fee": "১০০০ টাকা"
+      }
+    ],
+    "verified": "2026-11-06"
+  },
+  {
     "slug": "prof-dr-pranab-kumar-chowdhury",
     "name": "অধ্যাপক ডাঃ প্রণব কুমার চৌধুরী",
     "nameEn": "Prof. Dr. Pranab Kumar Chowdhury",
