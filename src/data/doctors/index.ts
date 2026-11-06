@@ -25,8 +25,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
   ...DENTAL_DOCTORS,
   ...NEURO_DOCTORS,
   ...KIDNEY_DOCTORS,
-  ...SURGERY_DOCTORS,
-  ...ADDITIONAL_100_DOCTORS
+  ...SURGERY_DOCTORS
 ];
 
 export {

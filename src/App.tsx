@@ -466,21 +466,21 @@ export default function App() {
       });
     } else if (currentRoute === 'sitemap') {
       updatePageSeo({
-        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (৪০৩+ পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (403+ Pages) | Dakter Achen',
-        description: lang === 'bn' ? 'চট্টগ্রামের ৫০০+ বিশেষজ্ঞ চিকিৎসক, ১০৬+ স্বাস্থ্য প্রবন্ধ, ১২টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 500+ doctors, 106+ articles, and healthcare hubs.',
+        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (১২০০+ ডাক্তার ও পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (1,200+ Doctors & Pages) | Dakter Achen',
+        description: lang === 'bn' ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ চিকিৎসক (১২টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 1,200+ specialist doctors (100 per department), 106+ articles, and healthcare hubs.',
         canonicalUrl: `${origin}/sitemap`
       });
     } else if (currentRoute === 'list') {
       updatePageSeo({
         title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
-        description: lang === 'bn' ? 'মেডিসিন, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১২টি বিভাগের বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find specialist doctors in Chittagong with verified chamber timings and serials.',
+        description: lang === 'bn' ? 'মেডিসিন, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১২টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,200+ specialist doctors in Chittagong across 12 medical departments with verified chamber timings and serials.',
         canonicalUrl: `${origin}/doctors`
       });
     } else {
       // Home
       updatePageSeo({
-        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ৫০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 500+ Specialist Doctors in Chittagong & Health Decision Platform',
-        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ৫০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 500+ verified specialist doctors, chambers, serial phone numbers, and medical guides.',
+        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ১২০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 1,200+ Specialist Doctors in Chittagong & Health Decision Platform',
+        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ১২টি বিভাগে প্রতিটিতে ১০০ জন করে মোট ১২০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 1,200+ verified specialist doctors (100 per department), chambers, serial phone numbers, and medical guides.',
         canonicalUrl: `${origin}/`
       });
     }
@@ -841,7 +841,7 @@ export default function App() {
                 {/* Eyebrow Pill */}
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 border border-cyan-200 shadow-xs text-xs sm:text-sm font-bold text-[#0E7490] mb-3 sm:mb-4">
                   <MapPin className="w-3.5 h-3.5 text-cyan-600" />
-                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ৫০০+ বিশেষজ্ঞ ডাক্তার' : 'Chattogram · 500+ Specialist Doctors'}</span>
+                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ১২০০+ বিশেষজ্ঞ ডাক্তার (১২টি বিভাগে প্রতিটিতে ১০০ জন)' : 'Chattogram · 1,200+ Specialists (100 per Department)'}</span>
                 </div>
 
                 {/* Main Headline */}

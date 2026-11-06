@@ -510,7 +510,7 @@ export default function BlogView({
             {lang === 'bn' ? 'বিশেষজ্ঞ চেম্বার ও সিরিয়াল' : 'Doctor Directory'}
           </span>
           <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-            {lang === 'bn' ? 'চট্টগ্রামের ৫০০+ বিশেষজ্ঞ ডাক্তারের সময়সূচি' : 'Find 500+ Specialist Doctors in Chattogram'}
+            {lang === 'bn' ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ ডাক্তারের সময়সূচি' : 'Find 1,200+ Specialist Doctors in Chattogram'}
           </h3>
           <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
             {lang === 'bn'

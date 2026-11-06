@@ -133,8 +133,8 @@ RewriteRule . /index.php [L]
 
           <p className="text-sm sm:text-base text-white/90 max-w-2xl leading-relaxed">
             {lang === 'bn'
-              ? 'চট্টগ্রামের ৫০০+ বিশেষজ্ঞ চিকিৎসক, ১০৬+ স্বাস্থ্য প্রবন্ধ, ১২টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
-              : 'Complete index of 500+ specialist doctors, 106+ medical articles, 12 specialties, and 14 Chittagong healthcare hubs.'}
+              ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ চিকিৎসক (১২টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ, ১২টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
+              : 'Complete index of 1,200+ specialist doctors (100 per department), 106+ medical articles, 12 specialties, and 14 Chittagong healthcare hubs.'}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-2.5">
