@@ -12,16 +12,87 @@ export interface SymptomMapping {
 
 export const SYMPTOM_MAPPINGS: SymptomMapping[] = [
   {
-    id: 'fever-gastric-diabetes',
-    labelBn: 'জ্বর, গ্যাস্ট্রিক বা ডায়াবেটিস',
-    labelEn: 'Fever, Gastric or Diabetes',
-    specialtyKey: 'medicine',
-    deptBn: 'মেডিসিন ও ডায়াবেটিস বিশেষজ্ঞ',
-    deptEn: 'Medicine & Diabetes Specialist',
+    id: 'breathing-chest-asthma',
+    labelBn: 'শ্বাসকষ্ট, হাঁপানি বা কাশি',
+    labelEn: 'Breathing, Asthma or Cough',
+    specialtyKey: 'chest',
+    deptBn: 'শ্বাসকষ্ট, অ্যাজমা ও বক্ষব্যাধি বিশেষজ্ঞ',
+    deptEn: 'Pulmonology, Asthma & Chest Specialist',
     keywords: [
-      'জ্বর', 'গ্যাস্ট্রিক', 'গ্যাস', 'বুক জ্বালাপোড়া', 'ডায়াবেটিস', 'ডায়াবেটিস', 'সুগার', 'থাইরয়েড', 'থাইরয়েড',
-      'দুর্বলতা', 'পেট ব্যথা', 'বমি', 'লিভার', 'জন্ডিস', 'প্রেসার', 'উচ্চ রক্তচাপ', 'কাশি', 'শ্বাসকষ্ট', 'হাঁপানি',
-      'fever', 'gastric', 'acidity', 'diabetes', 'sugar', 'thyroid', 'weakness', 'stomach pain', 'liver', 'jaundice', 'asthma', 'cough'
+      'শ্বাসকষ্ট', 'হাঁপানি', 'কাশি', 'অ্যাজমা', 'বুকে ঘড়ঘড়', 'কফ', 'যক্ষ্মা', 'টিবি', 'সিওপিডি', 'ফুসফুস', 'বুকে কফ', 'ইনহেলার', 'ধূমপান', 'ব্রঙ্কাইটিস',
+      'asthma', 'breathing', 'cough', 'chest', 'copd', 'tuberculosis', 'tb', 'lungs', 'inhaler', 'pulmonology', 'respiratory'
+    ]
+  },
+  {
+    id: 'gastric-liver-acidity',
+    labelBn: 'গ্যাস্ট্রিক, পেটের সমস্যা বা লিভার',
+    labelEn: 'Gastric, Liver or Acidity',
+    specialtyKey: 'gastro',
+    deptBn: 'গ্যাস্ট্রোএন্টারোলজি ও লিভার বিশেষজ্ঞ',
+    deptEn: 'Gastroenterology & Hepatology Specialist',
+    keywords: [
+      'গ্যাস্ট্রিক', 'গ্যাস', 'এসিডিটি', 'বুক জ্বালাপোড়া', 'পেট ব্যথা', 'লিভার', 'জন্ডিস', 'ফ্যাটি লিভার', 'বমি', 'বদহজম', 'আলসার', 'আইবিএস', 'হেপাটাইটিস', 'এন্ডোস্কোপি',
+      'gastric', 'gas', 'acidity', 'liver', 'jaundice', 'hepatitis', 'ulcer', 'ibs', 'endoscopy', 'colonoscopy', 'stomach'
+    ]
+  },
+  {
+    id: 'fever-general-medicine',
+    labelBn: 'জ্বর, ক্লান্তি বা সাধারণ মেডিসিন',
+    labelEn: 'Fever, Weakness or General Medicine',
+    specialtyKey: 'medicine',
+    deptBn: 'মেডিসিন বিশেষজ্ঞ',
+    deptEn: 'Medicine Specialist',
+    keywords: [
+      'জ্বর', 'দুর্বলতা', 'গা ব্যথা', 'প্রেসার', 'উচ্চ রক্তচাপ', 'টাইফয়েড', 'ডেঙ্গু', 'রক্তশূন্যতা',
+      'fever', 'weakness', 'general medicine', 'pressure', 'bp', 'dengue', 'typhoid'
+    ]
+  },
+  {
+    id: 'thyroid-diabetes-hormone',
+    labelBn: 'থাইরয়েড, হরমোন বা ডায়াবেটিস',
+    labelEn: 'Thyroid, Hormone or Diabetes',
+    specialtyKey: 'endocrine',
+    deptBn: 'ডায়াবেটিস, থাইরয়েড ও হরমোন বিশেষজ্ঞ',
+    deptEn: 'Endocrinology, Thyroid & Hormone Specialist',
+    keywords: [
+      'থাইরয়েড', 'থাইরয়েড', 'হরমোন', 'ডায়াবেটিস', 'ডায়াবেটিস', 'সুগার', 'ওজন বৃদ্ধি', 'ইনসুলিন',
+      'thyroid', 'hormone', 'diabetes', 'sugar', 'insulin', 'obesity', 'endocrine'
+    ]
+  },
+  {
+    id: 'cancer-tumor-care',
+    labelBn: 'ক্যান্সার, টিউমার বা কেমোথেরাপি',
+    labelEn: 'Cancer, Tumor or Chemotherapy',
+    specialtyKey: 'cancer',
+    deptBn: 'ক্যান্সার ও অনকোলজি বিশেষজ্ঞ',
+    deptEn: 'Oncology & Cancer Specialist',
+    keywords: [
+      'ক্যান্সার', 'টিউমার', 'ব্রেস্ট লাম্প', 'কেমোথেরাপি', 'রেডিয়েশন', 'বায়োপসি', 'অঙ্কোলজি', 'অনকোলজি',
+      'cancer', 'tumor', 'oncology', 'chemotherapy', 'biopsy', 'radiation'
+    ]
+  },
+  {
+    id: 'physical-medicine-pain',
+    labelBn: 'বাতব্যথা, প্যারালাইসিস বা ফ্রোজেন শোল্ডার',
+    labelEn: 'Arthritis, Paralysis or Pain Rehab',
+    specialtyKey: 'physmed',
+    deptBn: 'বাতব্যথা ও ফিজিক্যাল মেডিসিন বিশেষজ্ঞ',
+    deptEn: 'Physical Medicine & Rehabilitation',
+    keywords: [
+      'বাতব্যথা', 'প্যারালাইসিস', 'ফ্রোজেন শোল্ডার', 'ফিজিওথেরাপি', 'আর্থ্রাইটিস', 'স্ট্রোক রিহ্যাব', 'কোমর ব্যথা',
+      'pain', 'arthritis', 'paralysis', 'rehab', 'physiotherapy', 'frozen shoulder', 'physical medicine'
+    ]
+  },
+  {
+    id: 'mental-health-depression',
+    labelBn: 'মানসিক রোগ, অনিদ্রা বা বিষণ্ণতা',
+    labelEn: 'Mental Health, Insomnia or Depression',
+    specialtyKey: 'psychiatry',
+    deptBn: 'মানসিক রোগ ও সাইকিয়াট্রি বিশেষজ্ঞ',
+    deptEn: 'Psychiatry & Behavioral Health',
+    keywords: [
+      'মানসিক রোগ', 'হতাশা', 'ডিপ্রেশন', 'ঘুম না হওয়া', 'অনিদ্রা', 'উদ্বেগ', 'প্যানিক', 'মানসিক চাপ', 'টেনশন', 'ওসিডি', 'মাদকাসক্তি',
+      'depression', 'anxiety', 'insomnia', 'sleep problem', 'mental health', 'psychiatry', 'panic', 'stress'
     ]
   },
   {

@@ -20,16 +20,22 @@ export const CHATTOGRAM_AREAS = [
 
 export const SPECIALTIES = [
   'medicine',
+  'chest',
+  'gastro',
+  'heart',
   'gynae',
   'child',
   'eye',
   'ent',
-  'heart',
   'ortho',
   'skin',
   'dental',
   'neuro',
   'kidney',
+  'cancer',
+  'endocrine',
+  'physmed',
+  'psychiatry',
   'surgery',
 ];
 

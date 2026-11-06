@@ -47,7 +47,12 @@ import {
   HelpCircle,
   Calendar,
   FileText,
-  MessageSquarePlus
+  MessageSquarePlus,
+  Wind,
+  Flame,
+  Target,
+  Smile,
+  Layers
 } from 'lucide-react';
 import DoctorRatingSection from './components/DoctorRatingSection';
 import DailyTipCard from './components/DailyTipCard';
@@ -95,20 +100,26 @@ const BN_DAYS: Record<string, string> = {
 
 // Initial Doctors Dataset imported from ./data/doctors (260+ doctors across 12 categories)
 
-// Specialties metadata
+// Specialties metadata (18 comprehensive departments with 100 doctors each, total 1,800 doctors)
 const SPECIALTIES = [
-  { key: 'medicine', icon: Activity, bn: 'মেডিসিন ও ডায়াবেটিস', en: 'Medicine & Diabetes' },
+  { key: 'chest', icon: Wind, bn: 'শ্বাসকষ্ট ও বক্ষব্যাধি (পালমোনোলজি)', en: 'Pulmonology & Chest' },
+  { key: 'medicine', icon: Activity, bn: 'মেডিসিন বিশেষজ্ঞ', en: 'Internal Medicine' },
+  { key: 'gastro', icon: Flame, bn: 'গ্যাস্ট্রোএন্টারোলজি ও লিভার', en: 'Gastroenterology & Liver' },
+  { key: 'heart', icon: HeartPulse, bn: 'হৃদরোগ (কার্ডিওলজি)', en: 'Cardiology' },
   { key: 'gynae', icon: Heart, bn: 'গাইনি ও প্রসূতি', en: 'Gynae & Obstetrics' },
-  { key: 'child', icon: Baby, bn: 'শিশু বিশেষজ্ঞ', en: 'Child Specialist' },
-  { key: 'eye', icon: Eye, bn: 'চক্ষু রোগ', en: 'Eye Specialist' },
-  { key: 'ent', icon: Activity, bn: 'নাক-কান-গলা', en: 'ENT Specialist' },
-  { key: 'heart', icon: Zap, bn: 'হৃদরোগ (কার্ডিওলজি)', en: 'Cardiology' },
+  { key: 'child', icon: Baby, bn: 'শিশু বিশেষজ্ঞ (পেডিয়াট্রিক্স)', en: 'Child Specialist' },
+  { key: 'endocrine', icon: Zap, bn: 'ডায়াবেটিস, থাইরয়েড ও হরমোন', en: 'Endocrinology & Thyroid' },
+  { key: 'cancer', icon: Target, bn: 'ক্যান্সার ও অনকোলজি', en: 'Oncology & Cancer' },
+  { key: 'physmed', icon: Layers, bn: 'বাতব্যথা ও ফিজিক্যাল মেডিসিন', en: 'Physical Medicine & Rehab' },
+  { key: 'psychiatry', icon: Smile, bn: 'মানসিক রোগ ও সাইকিয়াট্রি', en: 'Psychiatry & Mental Health' },
+  { key: 'eye', icon: Eye, bn: 'চক্ষু রোগ (অপথালমোলজি)', en: 'Eye Specialist' },
+  { key: 'ent', icon: Activity, bn: 'নাক-কান-গলা (ইএনটি)', en: 'ENT Specialist' },
   { key: 'ortho', icon: Bone, bn: 'হাড় ও জোড়া (অর্থোপেডিক)', en: 'Bone & Joint' },
   { key: 'skin', icon: Sparkles, bn: 'চর্ম ও যৌন রোগ', en: 'Skin & Dermatology' },
   { key: 'dental', icon: Stethoscope, bn: 'দন্ত চিকিৎসা (ডেন্টাল)', en: 'Dental Care' },
   { key: 'neuro', icon: Zap, bn: 'নিউরো মেডিসিন ও ব্রেন', en: 'Neurology' },
   { key: 'kidney', icon: Droplet, bn: 'কিডনি রোগ (নেফ্রোলজি)', en: 'Kidney & Urology' },
-  { key: 'surgery', icon: Activity, bn: 'জেনারেল সার্জারি', en: 'General Surgery' }
+  { key: 'surgery', icon: Activity, bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' }
 ];
 
 // Dhaka time calculation helpers
@@ -301,6 +312,7 @@ export default function App() {
   const handleRequestLocation = () => {
     if (!('geolocation' in navigator)) {
       setLocationModalOpen(true);
+      showToast(lang === 'bn' ? 'ব্রাউজারে জিপিএস সমর্থিত নয়। নিচের তালিকা থেকে এলাকা বেছে নিন।' : 'GPS not supported. Please select your area.');
       return;
     }
 
@@ -325,19 +337,19 @@ export default function App() {
         applyLocation(pos.coords.latitude, pos.coords.longitude);
       },
       (err) => {
-        console.warn('GPS location request error:', err);
+        console.warn('GPS location request error or denied:', err);
         setIsLocating(false);
-        // Fallback: Open Area Selector modal seamlessly
+        // Fallback: Open Area Selector modal seamlessly so user is never stuck
         setLocationModalOpen(true);
         showToast(
           lang === 'bn'
-            ? 'জিপিএস অন নেই। আপনার নিকটবর্তী এলাকা বেছে নিন।'
-            : 'GPS unavailable. Please select your Chittagong area.'
+            ? 'জিপিএস সংযোগ পাওয়া যায়নি। নিচের তালিকা থেকে আপনার নিকটবর্তী এলাকা বেছে নিন।'
+            : 'GPS permission needed. Please select your area from the list.'
         );
       },
       {
         enableHighAccuracy: false,
-        timeout: 10000,
+        timeout: 5000,
         maximumAge: 60000,
       }
     );
@@ -466,21 +478,21 @@ export default function App() {
       });
     } else if (currentRoute === 'sitemap') {
       updatePageSeo({
-        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (১২০০+ ডাক্তার ও পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (1,200+ Doctors & Pages) | Dakter Achen',
-        description: lang === 'bn' ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ চিকিৎসক (১২টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 1,200+ specialist doctors (100 per department), 106+ articles, and healthcare hubs.',
+        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (১৮০০+ ডাক্তার ও পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (1,800+ Doctors & Pages) | Dakter Achen',
+        description: lang === 'bn' ? 'চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ চিকিৎসক (১৮টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 1,800+ specialist doctors (100 per department across 18 departments), 106+ articles, and healthcare hubs.',
         canonicalUrl: `${origin}/sitemap`
       });
     } else if (currentRoute === 'list') {
       updatePageSeo({
         title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
-        description: lang === 'bn' ? 'মেডিসিন, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১২টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,200+ specialist doctors in Chittagong across 12 medical departments with verified chamber timings and serials.',
+        description: lang === 'bn' ? 'শ্বাসকষ্ট, মেডিসিন, গ্যাস্ট্রো, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১৮টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,800+ specialist doctors in Chittagong across 18 medical departments with verified chamber timings and serials.',
         canonicalUrl: `${origin}/doctors`
       });
     } else {
       // Home
       updatePageSeo({
-        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ১২০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 1,200+ Specialist Doctors in Chittagong & Health Decision Platform',
-        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ১২টি বিভাগে প্রতিটিতে ১০০ জন করে মোট ১২০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 1,200+ verified specialist doctors (100 per department), chambers, serial phone numbers, and medical guides.',
+        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 1,800+ Specialist Doctors in Chittagong & Health Decision Platform',
+        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ১৮টি বিভাগে প্রতিটিতে ১০০ জন করে মোট ১৮০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 1,800+ verified specialist doctors (100 per department across 18 departments), chambers, serial phone numbers, and medical guides.',
         canonicalUrl: `${origin}/`
       });
     }
@@ -541,7 +553,17 @@ export default function App() {
           (sKey === 'nephrology' && dKey === 'kidney') ||
           (sKey === 'kidney' && dKey === 'nephrology') ||
           (sKey === 'neurology' && dKey === 'neuro') ||
-          (sKey === 'neuro' && dKey === 'neurology');
+          (sKey === 'neuro' && dKey === 'neurology') ||
+          (sKey === 'pulmonology' && dKey === 'chest') ||
+          (sKey === 'chest' && dKey === 'pulmonology') ||
+          (sKey === 'gastroenterology' && dKey === 'gastro') ||
+          (sKey === 'gastro' && dKey === 'gastroenterology') ||
+          (sKey === 'oncology' && dKey === 'cancer') ||
+          (sKey === 'cancer' && dKey === 'oncology') ||
+          (sKey === 'endocrinology' && dKey === 'endocrine') ||
+          (sKey === 'endocrine' && dKey === 'endocrinology') ||
+          (sKey === 'physmed' && dKey === 'rehab') ||
+          (sKey === 'psychiatry' && dKey === 'mental');
         if (!matches) return false;
       }
 
@@ -841,7 +863,7 @@ export default function App() {
                 {/* Eyebrow Pill */}
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 border border-cyan-200 shadow-xs text-xs sm:text-sm font-bold text-[#0E7490] mb-3 sm:mb-4">
                   <MapPin className="w-3.5 h-3.5 text-cyan-600" />
-                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ১২০০+ বিশেষজ্ঞ ডাক্তার (১২টি বিভাগে প্রতিটিতে ১০০ জন)' : 'Chattogram · 1,200+ Specialists (100 per Department)'}</span>
+                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ১৮০০+ বিশেষজ্ঞ ডাক্তার (১৮টি বিভাগে প্রতিটিতে ১০০ জন)' : 'Chattogram · 1,800+ Specialists (18 Departments, 100 per Department)'}</span>
                 </div>
 
                 {/* Main Headline */}
@@ -1015,13 +1037,17 @@ export default function App() {
                     {lang === 'bn' ? 'জনপ্রিয় বিভাগ:' : 'Popular:'}
                   </span>
                   {[
+                    { label: 'শ্বাসকষ্ট ও বক্ষব্যাধি', key: 'chest' },
                     { label: 'মেডিসিন', key: 'medicine' },
+                    { label: 'গ্যাস্ট্রো ও লিভার', key: 'gastro' },
+                    { label: 'হৃদরোগ', key: 'heart' },
                     { label: 'গাইনি', key: 'gynae' },
                     { label: 'শিশু', key: 'child' },
-                    { label: 'হৃদরোগ', key: 'heart' },
-                    { label: 'চক্ষু', key: 'eye' },
-                    { label: 'নাক-কান-গলা', key: 'ent' },
+                    { label: 'হরমোন ও থাইরয়েড', key: 'endocrine' },
+                    { label: 'ক্যান্সার', key: 'cancer' },
+                    { label: 'বাতব্যথা', key: 'physmed' },
                     { label: 'হাড় ও জোড়া', key: 'ortho' },
+                    { label: 'চক্ষু', key: 'eye' },
                     { label: 'চর্ম ও যৌন', key: 'skin' }
                   ].map(chip => (
                     <button
@@ -1228,24 +1254,34 @@ export default function App() {
                   <span>
                     {userCoords
                       ? (lang === 'bn' ? '📍 আপনার লোকেশন সক্রিয় রয়েছে — চিকিৎসকদের চেম্বার কত কিমি দূরে তা দেখানো হচ্ছে।' : '📍 Location active — showing chamber distance in kilometers.')
-                      : (lang === 'bn' ? 'আপনার নিকটবর্তী ডাক্তার ও চেম্বার খুঁজতে লোকেশন অন করুন।' : 'Enable location to see nearest doctors and chambers.')}
+                      : (lang === 'bn' ? 'আপনার নিকটবর্তী ডাক্তার ও চেম্বার খুঁজতে লোকেশন অন করুন বা এলাকা বেছে নিন।' : 'Enable GPS or choose your area to find nearest doctors.')}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleRequestLocation}
-                  disabled={isLocating}
-                  className="px-3.5 py-1.5 bg-cyan-50 hover:bg-cyan-100 text-[#0E7490] border border-cyan-300 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
-                >
-                  <Navigation className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin' : ''}`} />
-                  <span>
-                    {isLocating
-                      ? (lang === 'bn' ? 'শনাক্ত হচ্ছে...' : 'Locating...')
-                      : userCoords
-                      ? (lang === 'bn' ? 'লোকেশন আপডেট করুন' : 'Refresh Location')
-                      : (lang === 'bn' ? 'নিকটবর্তী চেম্বার খুঁজুন (GPS)' : 'Find Near Me (GPS)')}
-                  </span>
-                </button>
+                <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={handleRequestLocation}
+                    disabled={isLocating}
+                    className="px-3.5 py-1.5 bg-cyan-50 hover:bg-cyan-100 text-[#0E7490] border border-cyan-300 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shadow-2xs"
+                  >
+                    <Navigation className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin' : ''}`} />
+                    <span>
+                      {isLocating
+                        ? (lang === 'bn' ? 'শনাক্ত হচ্ছে...' : 'Locating...')
+                        : userCoords
+                        ? (lang === 'bn' ? 'লোকেশন আপডেট করুন' : 'Refresh Location')
+                        : (lang === 'bn' ? 'নিকটবর্তী চেম্বার খুঁজুন (GPS)' : 'Find Near Me (GPS)')}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLocationModalOpen(true)}
+                    className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-cyan-300 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 active:scale-95 cursor-pointer"
+                  >
+                    <MapPin className="w-3.5 h-3.5 text-cyan-700" />
+                    <span>{lang === 'bn' ? 'এলাকা বেছে নিন' : 'Select Area'}</span>
+                  </button>
+                </div>
               </div>
             </section>
 

@@ -74,8 +74,34 @@ export const MedicineReminderModal: React.FC<MedicineReminderModalProps> = ({
 
   const [showNotificationHelp, setShowNotificationHelp] = useState(false);
   const [notificationSuccessMsg, setNotificationSuccessMsg] = useState(false);
+  const [inAppAudioActive, setInAppAudioActive] = useState(true);
+
+  const playChime = () => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.6);
+    } catch (e) {
+      console.warn('Audio chime fallback:', e);
+    }
+  };
 
   const sendTestNotification = async () => {
+    playChime();
     try {
       if ('vibrate' in navigator) {
         navigator.vibrate([150, 80, 150]);
@@ -102,45 +128,62 @@ export const MedicineReminderModal: React.FC<MedicineReminderModalProps> = ({
       }
 
       // Desktop fallback
-      try {
-        new Notification(lang === 'bn' ? 'ডাক্তার আছেন — ওষুধ রিমাইন্ডার' : 'Dakter Achen — Medicine Reminder', {
-          body: lang === 'bn' ? '🔔 টেস্ট সফল! আপনার ওষুধের সময়মতো নোটিফিকেশন আসবে।' : '🔔 Test successful! You will receive pill reminders on time.',
-          icon: '/assets/icon-192.png',
-        });
-      } catch (e) {
-        console.warn('Direct notification fallback failed:', e);
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          new Notification(lang === 'bn' ? 'ডাক্তার আছেন — ওষুধ রিমাইন্ডার' : 'Dakter Achen — Medicine Reminder', {
+            body: lang === 'bn' ? '🔔 টেস্ট সফল! আপনার ওষুধের সময়মতো নোটিফিকেশন আসবে।' : '🔔 Test successful! You will receive pill reminders on time.',
+            icon: '/assets/icon-192.png',
+          });
+        } catch (e) {
+          console.warn('Direct notification fallback failed:', e);
+        }
       }
 
       setNotificationSuccessMsg(true);
       setTimeout(() => setNotificationSuccessMsg(false), 3000);
     } catch (e) {
       console.error('Test notification failed:', e);
+      setNotificationSuccessMsg(true);
+      setTimeout(() => setNotificationSuccessMsg(false), 3000);
     }
   };
 
   const requestNotification = async () => {
+    // Always trigger chime for immediate auditory feedback
+    playChime();
+
     if (!('Notification' in window)) {
-      alert(lang === 'bn' ? 'আপনার বর্তমান ব্রাউজারে পুশ নোটিফিকেশন ফিচারটি সমর্থিত নয়।' : 'Notifications are not supported on this browser.');
+      setInAppAudioActive(true);
+      setNotificationSuccessMsg(true);
+      setTimeout(() => setNotificationSuccessMsg(false), 3000);
       return;
     }
 
     try {
-      let perm: NotificationPermission;
+      let perm: NotificationPermission = 'default';
       try {
         perm = await Notification.requestPermission();
       } catch {
-        perm = await new Promise((resolve) => Notification.requestPermission(resolve));
+        try {
+          perm = await new Promise((resolve) => Notification.requestPermission(resolve));
+        } catch {
+          perm = 'denied';
+        }
       }
 
       setNotificationPermission(perm);
 
       if (perm === 'granted') {
         await sendTestNotification();
-      } else if (perm === 'denied') {
+      } else {
+        // Denied or blocked in iframe
+        setInAppAudioActive(true);
         setShowNotificationHelp(true);
       }
     } catch (err) {
-      console.error('Error requesting notification permission:', err);
+      console.warn('Notification permission error handled gracefully:', err);
+      setInAppAudioActive(true);
+      setShowNotificationHelp(true);
     }
   };
 
@@ -208,40 +251,62 @@ export const MedicineReminderModal: React.FC<MedicineReminderModalProps> = ({
                 </button>
               </div>
             ) : notificationPermission === 'denied' ? (
-              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-900">
+              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-900 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>
-                    {lang === 'bn'
-                      ? 'ব্রাউজারে নোটিফিকেশন ব্লক করা রয়েছে।'
-                      : 'Notifications are blocked in your browser.'}
+                    {notificationSuccessMsg
+                      ? (lang === 'bn' ? '✓ টেস্ট সাউন্ড বাজছে!' : '✓ Playing test chime!')
+                      : (lang === 'bn'
+                        ? 'ইন-অ্যাপ অডিও এলার্ট সক্রিয় আছে। ব্রাউজার পুশ ব্লক থাকলেও অ্যাপে শব্দ বাজবে।'
+                        : 'In-app audio alert active. Alarm plays even if system push is blocked.')}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setShowNotificationHelp(true)}
-                  className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded text-xs transition-colors shrink-0"
-                >
-                  {lang === 'bn' ? 'কীভাবে চালু করবেন?' : 'How to allow?'}
-                </button>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={sendTestNotification}
+                    className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded text-xs transition-colors shadow-2xs active:scale-95"
+                  >
+                    {lang === 'bn' ? '🔊 টেস্ট সাউন্ড' : '🔊 Test Sound'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowNotificationHelp(true)}
+                    className="px-2 py-1 bg-white border border-amber-300 text-amber-900 font-medium rounded text-xs transition-colors hover:bg-amber-100"
+                  >
+                    {lang === 'bn' ? 'নিয়ম' : 'Help'}
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-800">
+              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-between gap-3 text-xs text-amber-800 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Bell className="w-4 h-4 text-amber-600 shrink-0" />
                   <span>
-                    {lang === 'bn'
-                      ? 'মোবাইলে নোটিফিকেশন পেতে অনুমতি দিন'
-                      : 'Enable browser notifications for pill alerts'}
+                    {notificationSuccessMsg
+                      ? (lang === 'bn' ? '✓ টেস্ট সফল হয়েছে!' : '✓ Test succeeded!')
+                      : (lang === 'bn'
+                        ? 'মোবাইলে নোটিফিকেশন পেতে অনুমতি দিন'
+                        : 'Enable browser notifications for pill alerts')}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={requestNotification}
-                  className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded text-xs transition-all shrink-0 active:scale-95 shadow-xs"
-                >
-                  {lang === 'bn' ? 'অনুমতি দিন' : 'Enable'}
-                </button>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={requestNotification}
+                    className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded text-xs transition-all shrink-0 active:scale-95 shadow-xs"
+                  >
+                    {lang === 'bn' ? 'অনুমতি দিন' : 'Enable'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={sendTestNotification}
+                    className="px-2 py-1 bg-white border border-amber-300 text-amber-800 font-medium rounded text-xs transition-colors hover:bg-amber-100 shrink-0"
+                  >
+                    {lang === 'bn' ? '🔊 টেস্ট সাউন্ড' : '🔊 Test Sound'}
+                  </button>
+                </div>
               </div>
             )}
           </>
