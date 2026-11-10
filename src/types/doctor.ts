@@ -25,4 +25,6 @@ export interface Doctor {
   img?: string;
   ch: Chamber[];
   verified: string;
+  isUserAdded?: boolean;
+  addedAt?: string;
 }

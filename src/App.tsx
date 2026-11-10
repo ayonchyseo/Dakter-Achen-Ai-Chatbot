@@ -81,6 +81,13 @@ import type { DoctorRatingData } from './lib/ratings';
 
 export type { Chamber, Doctor } from './types/doctor';
 import type { Chamber, Doctor } from './types/doctor';
+import {
+  loadUserAddedDoctors,
+  saveUserAddedDoctorToStorage,
+  checkAndSyncUserDoctors,
+  STORAGE_KEY_USER_DOCTORS,
+  STORAGE_KEY_ALL_DOCTORS,
+} from './lib/userDoctors';
 
 // Helper to open the AI chatbot
 const openChat = (message?: string) => {
@@ -222,22 +229,41 @@ export default function App() {
   const [lang, setLang] = useState<'bn' | 'en'>('bn');
   const [doctorsList, setDoctorsList] = useState<Doctor[]>(() => {
     try {
-      const saved = localStorage.getItem('dakterachen_doctors');
+      const userDocs = loadUserAddedDoctors();
+      if (userDocs.length > 0) {
+        const userSlugs = new Set(userDocs.map(d => d.slug));
+        const filteredInitial = INITIAL_DOCTORS.filter(d => !userSlugs.has(d.slug));
+        const merged = [...userDocs, ...filteredInitial];
+        try {
+          localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(merged));
+        } catch {}
+        return merged;
+      }
+      const saved = localStorage.getItem(STORAGE_KEY_ALL_DOCTORS);
       if (saved) {
         const parsed: Doctor[] = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const initSlugs = new Set(INITIAL_DOCTORS.map(d => d.slug));
-          const customUserDoctors = parsed.filter(d => !initSlugs.has(d.slug));
+          const customUserDoctors = parsed.filter(d => !initSlugs.has(d.slug)).map(d => ({ ...d, isUserAdded: true }));
+          if (customUserDoctors.length > 0) {
+            try {
+              localStorage.setItem(STORAGE_KEY_USER_DOCTORS, JSON.stringify(customUserDoctors));
+            } catch {}
+          }
           const updatedInitial = INITIAL_DOCTORS.map(init => {
             const match = parsed.find(p => p.slug === init.slug);
             return match ? { ...init, ...match, name: init.name, degrees: init.degrees, ch: init.ch, img: init.img || match.img } : init;
           });
-          const merged = [...updatedInitial, ...customUserDoctors];
-          localStorage.setItem('dakterachen_doctors', JSON.stringify(merged));
+          const merged = [...customUserDoctors, ...updatedInitial];
+          try {
+            localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(merged));
+          } catch {}
           return merged;
         }
       }
-    } catch {}
+    } catch (err) {
+      console.warn('Error initializing doctors list from storage:', err);
+    }
     return INITIAL_DOCTORS;
   });
 
@@ -381,6 +407,51 @@ export default function App() {
       showToast(`${text}`);
     }
   };
+
+  /**
+   * Periodically checks localStorage for any user-added doctors to ensure the main doctorsList
+   * state remains consistent across browser reloads, background tabs, and multiple windows.
+   */
+  const checkLocalStorageForUserDoctors = () => {
+    setDoctorsList(prevList => {
+      const { updatedList, hasChanges, newDoctorsCount } = checkAndSyncUserDoctors(INITIAL_DOCTORS, prevList);
+      if (hasChanges && newDoctorsCount > 0) {
+        showToast(
+          lang === 'bn'
+            ? `💾 লোকাল স্টোরেজ থেকে ${newDoctorsCount} জন ডাক্তারের তথ্য সিঙ্ক করা হয়েছে!`
+            : `💾 Synced ${newDoctorsCount} doctor(s) from local storage!`
+        );
+      }
+      return hasChanges ? updatedList : prevList;
+    });
+  };
+
+  // Set up periodic interval and event listeners for localStorage synchronization
+  useEffect(() => {
+    // 1. Initial check on mount
+    checkLocalStorageForUserDoctors();
+
+    // 2. Periodic background check every 3 seconds
+    const intervalId = window.setInterval(() => {
+      checkLocalStorageForUserDoctors();
+    }, 3000);
+
+    // 3. Sync immediately when storage changes across tabs or window gains focus
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY_USER_DOCTORS || e.key === STORAGE_KEY_ALL_DOCTORS) {
+        checkLocalStorageForUserDoctors();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('focus', checkLocalStorageForUserDoctors);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('focus', checkLocalStorageForUserDoctors);
+    };
+  }, [lang]);
 
   // Sync pathname & hash with route
   useEffect(() => {
@@ -538,7 +609,9 @@ export default function App() {
       }
 
       // Specialty filter
-      if (selectedSpecialty !== 'all') {
+      if (selectedSpecialty === 'user_added') {
+        if (!d.isUserAdded) return false;
+      } else if (selectedSpecialty !== 'all') {
         const sKey = selectedSpecialty.toLowerCase();
         const dKey = d.specialtyKey.toLowerCase();
         const matches = dKey === sKey ||
@@ -655,6 +728,11 @@ export default function App() {
     return { docs: matchedDocs, specs: matchedSpecs, symptomMatch };
   }, [searchQuery, doctorsList]);
 
+  // Count of user-added doctors in current state
+  const userAddedDoctorsCount = useMemo(() => {
+    return doctorsList.filter(d => d.isUserAdded).length;
+  }, [doctorsList]);
+
   // Clear all filters
   const clearFilters = () => {
     setFilterDay(new Set());
@@ -687,12 +765,16 @@ export default function App() {
   const handleAddDoctorSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDoctor.name || !newDoctor.chamberName || !newDoctor.serial) {
-      alert(lang === 'bn' ? 'দয়া করে প্রয়োজনীয় তথ্য পূরণ করুন' : 'Please fill all required fields');
+      showToast(lang === 'bn' ? 'দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন' : 'Please fill all required fields');
       return;
     }
 
-    const slug = newDoctor.name.toLowerCase().replace(/[^a-z0-9]/g, '-') || `doc-${Date.now()}`;
+    const slug = `user-doc-${newDoctor.name.toLowerCase().replace(/[^a-z0-9]/g, '-') || Date.now()}`;
     const initials = newDoctor.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || 'DR';
+
+    const matchedSpec = SPECIALTIES.find(s => s.bn === newDoctor.specialtyBn || s.key === newDoctor.specialtyBn);
+    const specKey = matchedSpec ? matchedSpec.key : 'medicine';
+    const specEn = matchedSpec ? matchedSpec.en : 'Medicine & Healthcare';
 
     const doctorObj: Doctor = {
       slug,
@@ -700,36 +782,38 @@ export default function App() {
       nameEn: newDoctor.name,
       ini: initials,
       g: 'M',
-      rank: 2,
+      rank: 3,
       specialtyBn: newDoctor.specialtyBn,
-      specialtyEn: 'Medicine & Healthcare',
-      specialtyKey: 'medicine',
+      specialtyEn: specEn,
+      specialtyKey: specKey,
       degrees: newDoctor.degrees || 'MBBS',
       designation: 'বিশেষজ্ঞ চিকিৎসক',
       institution: newDoctor.institution || 'চট্টগ্রাম',
-      verified: '2026-10-01',
+      verified: new Date().toISOString().split('T')[0],
+      isUserAdded: true,
+      addedAt: new Date().toISOString(),
       ch: [
         {
           name: newDoctor.chamberName,
-          address: newDoctor.address,
-          area: newDoctor.area,
-          days: newDoctor.days,
-          start: newDoctor.start,
-          end: newDoctor.end,
+          address: newDoctor.address || 'চট্টগ্রাম',
+          area: newDoctor.area || 'Panchlaish',
+          days: newDoctor.days.length > 0 ? newDoctor.days : ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'],
+          start: newDoctor.start || '18:00',
+          end: newDoctor.end || '21:00',
           serial: [newDoctor.serial],
-          fee: newDoctor.fee
+          fee: newDoctor.fee || '৫০০ – ১০০০ টাকা'
         }
       ]
     };
 
-    const updated = [doctorObj, ...doctorsList];
-    setDoctorsList(updated);
-    try {
-      localStorage.setItem('dakterachen_doctors', JSON.stringify(updated));
-    } catch {}
-
+    const { updatedList } = saveUserAddedDoctorToStorage(doctorObj, INITIAL_DOCTORS, doctorsList);
+    setDoctorsList(updatedList);
     setAddDoctorModalOpen(false);
-    showToast(lang === 'bn' ? 'ডাক্তারের তথ্য সফলভাবে যোগ করা হয়েছে!' : 'Doctor profile added successfully!');
+    showToast(
+      lang === 'bn'
+        ? `✅ "${doctorObj.name}" সফলভাবে লোকাল স্টোরেজে (localStorage) সংরক্ষিত হয়েছে!`
+        : `✅ "${doctorObj.name}" saved locally to localStorage!`
+    );
     navigateTo(`doctor/${slug}`);
   };
 
@@ -1696,6 +1780,23 @@ export default function App() {
                 {lang === 'bn' ? 'বিভাগ নির্বাচন করুন (Department):' : 'Select Department:'}
               </div>
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {userAddedDoctorsCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSpecialty(selectedSpecialty === 'user_added' ? 'all' : 'user_added')}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 cursor-pointer border ${
+                      selectedSpecialty === 'user_added'
+                        ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'
+                    }`}
+                  >
+                    <CheckCircle2 className={`w-3.5 h-3.5 ${selectedSpecialty === 'user_added' ? 'text-white' : 'text-emerald-700'}`} />
+                    <span>{lang === 'bn' ? 'আমার সংরক্ষিত ডাক্তার' : 'Saved Locally'}</span>
+                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] num ${selectedSpecialty === 'user_added' ? 'bg-white/20 text-white' : 'bg-emerald-200 text-emerald-900 font-bold'}`}>
+                      {userAddedDoctorsCount}
+                    </span>
+                  </button>
+                )}
                 {SPECIALTIES.map(spec => {
                   const SpecIcon = spec.icon;
                   const deptCount = doctorsList.filter(d => d.specialtyKey === spec.key).length;
@@ -2079,7 +2180,7 @@ export default function App() {
                     return (
                       <article
                         key={doc.slug}
-                        className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                        className="group bg-white border border-slate-200/90 hover:border-cyan-400/90 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-xl hover:shadow-cyan-950/8 transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-[1.012] flex flex-col justify-between will-change-transform"
                       >
                         <div className="flex flex-col sm:flex-row items-start gap-4">
                           <DoctorAvatar img={doc.img} name={doc.name} ini={doc.ini} className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl text-base" />
@@ -2102,6 +2203,12 @@ export default function App() {
                                     <span>{getDoctorRating(ratingsStore, doc.slug, doc.rank).avg.toFixed(1)}</span>
                                     <span className="text-amber-800/70 font-normal">({getDoctorRating(ratingsStore, doc.slug, doc.rank).count})</span>
                                   </span>
+                                  {doc.isUserAdded && (
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-bold shadow-2xs">
+                                      <CheckCircle2 className="w-3 h-3 text-emerald-700" />
+                                      <span>{lang === 'bn' ? '💾 লোকাল স্টোরেজে সংরক্ষিত' : '💾 Saved Locally'}</span>
+                                    </span>
+                                  )}
                                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-semibold">
                                     <ShieldCheck className="w-3 h-3 text-emerald-600" />
                                     <span>{lang === 'bn' ? 'BMDC নিবন্ধিত ও যাচাইকৃত' : 'BMDC Verified'}</span>
@@ -2361,6 +2468,12 @@ export default function App() {
                           <Activity className="w-3.5 h-3.5" />
                           <span>{activeDoctor.specialtyBn}</span>
                         </span>
+                        {activeDoctor.isUserAdded && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold shadow-2xs">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
+                            <span>{lang === 'bn' ? '💾 লোকাল স্টোরেজে সংরক্ষিত (localStorage)' : '💾 Saved Locally (localStorage)'}</span>
+                          </span>
+                        )}
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                           <span>{lang === 'bn' ? 'BMDC নিবন্ধিত বিশেষজ্ঞ · যাচাইকৃত' : 'BMDC Verified Specialist'}</span>
@@ -2399,6 +2512,35 @@ export default function App() {
                       <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
                         {activeDoctor.designation} · {activeDoctor.institution}
                       </p>
+
+                      {/* User-added doctor localStorage persistence card */}
+                      {activeDoctor.isUserAdded && (
+                        <div className="mt-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border border-emerald-300 flex items-start gap-3.5 shadow-2xs animate-fade-in">
+                          <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                            <CheckCircle2 className="w-5 h-5" />
+                          </div>
+                          <div className="text-xs text-slate-700">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-bold text-emerald-950 text-sm">
+                                {lang === 'bn' ? 'ব্যবহারকারী দ্বারা যুক্ত — লোকাল ডিভাইসে সংরক্ষিত' : 'User-Added Doctor — Saved Locally'}
+                              </span>
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-200 text-emerald-900">
+                                {lang === 'bn' ? 'স্থায়ীভাবে সংরক্ষিত (localStorage)' : 'Persistent in Browser'}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-slate-600 leading-relaxed text-xs sm:text-sm">
+                              {lang === 'bn'
+                                ? 'এই ডাক্তারের প্রোফাইলটি আপনার ব্রাউজারের লোকাল স্টোরেজে (localStorage) সক্রিয়ভাবে সংরক্ষিত রয়েছে। পেজ রিলোড বা বন্ধ করলেও ডাক্তারের তথ্য সুরক্ষিত থাকবে।'
+                                : 'This doctor profile is actively saved in your browser\'s localStorage. It persists across reloads and is always accessible.'}
+                            </p>
+                            {activeDoctor.addedAt && (
+                              <p className="mt-1.5 text-[11px] text-slate-500 font-semibold">
+                                {lang === 'bn' ? 'সংরক্ষণ সময়:' : 'Saved on:'} {new Date(activeDoctor.addedAt).toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
 
                       {/* Real-time crowd presence voting banner on profile */}
                       {(() => {
@@ -3249,6 +3391,15 @@ export default function App() {
                   placeholder={lang === 'bn' ? 'যেমন: 01846-469331' : 'e.g. 01846-469331'}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-cyan-600 num font-bold text-[#047857]"
                 />
+              </div>
+
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2.5 text-xs text-emerald-800">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>
+                  {lang === 'bn'
+                    ? '💾 ডাক্তারের প্রোফাইলটি আপনার ডিভাইসের লোকাল স্টোরেজে (localStorage) সরাসরি সংরক্ষিত হবে এবং পেজ রিলোড করলেও অক্ষুণ্ণ থাকবে।'
+                    : '💾 Doctor details will be saved to your browser\'s localStorage and will persist across reloads.'}
+                </span>
               </div>
 
               <div className="pt-2 flex justify-end gap-3">

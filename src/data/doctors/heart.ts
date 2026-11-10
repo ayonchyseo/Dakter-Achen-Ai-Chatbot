@@ -2,6 +2,43 @@ import { Doctor } from '../../types/doctor';
 
 export const HEART_DOCTORS: Doctor[] = [
   {
+    "slug": "dr-hasan-imam-cardiology",
+    "name": "ডাঃ হাসান ইমাম",
+    "nameEn": "Dr. Hasan Imam",
+    "ini": "HI",
+    "g": "M",
+    "rank": 5,
+    "specialtyBn": "হৃদরোগ, উচ্চ রক্তচাপ, বাতজ্বর ও মেডিসিন বিশেষজ্ঞ",
+    "specialtyEn": "Cardiology (Heart, Hypertension, Rheumatic Fever) & Medicine",
+    "specialtyKey": "heart",
+    "degrees": "MBBS (CMC), BCS (Health), FCPS (Medicine), MD (Cardiology)",
+    "designation": "সাবেক সহযোগী অধ্যাপক (হৃদরোগ বিভাগ, ২৪+ বছরের অভিজ্ঞতা, BMDC Reg: A-29236)",
+    "institution": "চট্টগ্রাম মেডিকেল কলেজ ও হাসপাতাল (সাবেক)",
+    "img": "/assets/doctors/dr-hasan-imam.jpg",
+    "ch": [
+      {
+        "name": "পপুলার ডায়াগনস্টিক সেন্টার, চট্টগ্রাম",
+        "address": "২০/বি, কে. বি. ফজলুল কাদের রোড, পাঁচলাইশ, চট্টগ্রাম",
+        "area": "Panchlaish",
+        "days": [
+          "Sat",
+          "Sun",
+          "Mon",
+          "Wed"
+        ],
+        "start": "15:00",
+        "end": "18:00",
+        "serial": [
+          "01704-402608",
+          "02334455888",
+          "09613-787810"
+        ],
+        "fee": "১০০০ টাকা"
+      }
+    ],
+    "verified": "2026-11-10"
+  },
+  {
     "slug": "dr-abu-sayem-omar-faroque",
     "name": "ডাঃ আবু সায়েম মোহাম্মদ ওমর ফারুক",
     "nameEn": "Dr. Abu Sayem Mohammed Omar Faroque",
