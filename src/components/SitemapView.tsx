@@ -45,6 +45,16 @@ const SPECIALTY_NAMES: Record<string, { bn: string; en: string }> = {
   psychiatry: { bn: 'মানসিক রোগ ও মাদকাসক্তি', en: 'Psychiatry & Mental Health' },
   surgery: { bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' },
   dental: { bn: 'দন্ত চিকিৎসা (ডেন্টাল)', en: 'Dental Care' },
+  urology: { bn: 'ইউরোলজি (মূত্রনালী, প্রোস্টেট ও পাথর)', en: 'Urology & Andrology' },
+  neurosurgery: { bn: 'নিউরোসার্জারি (ব্রেন ও স্পাইন সার্জন)', en: 'Neurosurgery (Brain & Spine)' },
+  hepatology: { bn: 'লিভার ও হেপাটোলজি বিশেষজ্ঞ', en: 'Hepatology & Liver' },
+  rheumatology: { bn: 'রিউমাটোলজি (বাত ও জয়েন্ট প্রদাহ)', en: 'Rheumatology' },
+  hematology: { bn: 'রক্তরোগ ও থ্যালাসেমিয়া (হেমাটোলজি)', en: 'Hematology & Blood' },
+  plasticsurgery: { bn: 'প্লাস্টিক, বার্ন ও কসমেটিক সার্জারি', en: 'Plastic & Burn Surgery' },
+  colorectal: { bn: 'পাইলস, ফিস্টুলা ও কলোরেক্টাল সার্জারি', en: 'Colorectal & Piles Surgery' },
+  vascular: { bn: 'ভাস্কুলার ও কার্ডিওথোরাসিক সার্জারি', en: 'Vascular & Cardiac Surgery' },
+  pedsurgery: { bn: 'শিশু সার্জারি (পেডিয়াট্রিক সার্জন)', en: 'Pediatric Surgery' },
+  nutrition: { bn: 'পুষ্টি ও ডায়েটিক্স (ডায়েটিশিয়ান)', en: 'Nutrition & Dietetics' },
 };
 
 export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onNavigateHome }: SitemapViewProps) {
@@ -173,8 +183,8 @@ RewriteRule . /index.php [L]
 
           <p className="text-sm sm:text-base text-white/90 max-w-2xl leading-relaxed">
             {lang === 'bn'
-              ? 'চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ চিকিৎসক (১৮টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ, ১৮টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
-              : 'Complete index of 1,800+ specialist doctors (100 per department across 18 departments), 106+ medical articles, 18 specialties, and 14 Chittagong healthcare hubs.'}
+              ? 'চট্টগ্রামের ১৬,৮০০+ বিশেষজ্ঞ চিকিৎসক (২৮টি বিভাগে প্রতিটিতে ৬০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ, ২৮টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
+              : 'Complete index of 16,800+ specialist doctors (600 per department across 28 departments), 106+ medical articles, 28 specialties, and 14 Chittagong healthcare hubs.'}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-2.5">
@@ -419,7 +429,7 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <FolderTree size={18} className="text-[#0E7490]" />
-              <span>{lang === 'bn' ? '১৮টি বিশেষজ্ঞ চিকিৎসা বিভাগ' : '18 Specialty Categories'}</span>
+              <span>{lang === 'bn' ? '২৮টি বিশেষজ্ঞ চিকিৎসা বিভাগ' : '28 Specialty Categories'}</span>
             </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">

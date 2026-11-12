@@ -38,6 +38,16 @@ const SPECIALTY_META: Record<string, { bn: string; en: string }> = {
   psychiatry: { bn: 'মানসিক রোগ ও মাদকাসক্তি', en: 'Psychiatry & Mental Health' },
   surgery: { bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' },
   dental: { bn: 'দন্ত চিকিৎসা (ডেন্টাল)', en: 'Dental Care' },
+  urology: { bn: 'ইউরোলজি (মূত্রনালী, প্রোস্টেট ও পাথর)', en: 'Urology & Andrology' },
+  neurosurgery: { bn: 'নিউরোসার্জারি (ব্রেন ও স্পাইন সার্জন)', en: 'Neurosurgery (Brain & Spine)' },
+  hepatology: { bn: 'লিভার ও হেপাটোলজি বিশেষজ্ঞ', en: 'Hepatology & Liver' },
+  rheumatology: { bn: 'রিউমাটোলজি (বাত ও জয়েন্ট প্রদাহ)', en: 'Rheumatology' },
+  hematology: { bn: 'রক্তরোগ ও থ্যালাসেমিয়া (হেমাটোলজি)', en: 'Hematology & Blood' },
+  plasticsurgery: { bn: 'প্লাস্টিক, বার্ন ও কসমেটিক সার্জারি', en: 'Plastic & Burn Surgery' },
+  colorectal: { bn: 'পাইলস, ফিস্টুলা ও কলোরেক্টাল সার্জারি', en: 'Colorectal & Piles Surgery' },
+  vascular: { bn: 'ভাস্কুলার ও কার্ডিওথোরাসিক সার্জারি', en: 'Vascular & Cardiac Surgery' },
+  pedsurgery: { bn: 'শিশু সার্জারি (পেডিয়াট্রিক সার্জন)', en: 'Pediatric Surgery' },
+  nutrition: { bn: 'পুষ্টি ও ডায়েটিক্স (ডায়েটিশিয়ান)', en: 'Nutrition & Dietetics' },
 };
 
 function escapeHtmlAttr(str: string): string {
@@ -228,14 +238,14 @@ for (const post of BLOG_POSTS) {
   blogCount++;
 }
 
-// 4. Pre-render all 18 Specialty Department Pages (/specialty/<key>/index.html)
+// 4. Pre-render all 28 Specialty Department Pages (/specialty/<key>/index.html)
 let specCount = 0;
 for (const specKey of SPECIALTIES) {
   const info = SPECIALTY_META[specKey] || { bn: specKey, en: specKey };
   const canonicalUrl = `${origin}/specialty/${specKey}`;
   const html = buildRouteHtml({
     title: `${info.bn} বিশেষজ্ঞ ডাক্তার তালিকা, চট্টগ্রাম — সিরিয়াল নম্বরসহ | ডাক্তার আছেন`,
-    description: `চট্টগ্রামের সেরা ১০০+ ${info.bn} (${info.en}) বিশেষজ্ঞ ডাক্তারদের চেম্বারের ঠিকানা, বসার সময়সূচি ও সরাসরি সিরিয়াল বুকিং নম্বর।`,
+    description: `চট্টগ্রামের সেরা ৬০০+ ${info.bn} (${info.en}) বিশেষজ্ঞ ডাক্তারদের চেম্বারের ঠিকানা, বসার সময়সূচি ও সরাসরি সিরিয়াল বুকিং নম্বর।`,
     canonicalUrl,
   });
   writeRouteFile(`specialty/${specKey}`, html);
@@ -264,9 +274,9 @@ for (const area of allAreas) {
   writeRouteFile(`area/${area}`, html);
 }
 
-// 6. Pre-render Doctor Profile Pages (/doctor/<slug>/index.html)
+// 6. Pre-render Featured Doctor Profile Pages (/doctor/<slug>/index.html)
 let docCount = 0;
-for (const doc of INITIAL_DOCTORS) {
+for (const doc of INITIAL_DOCTORS.slice(0, 200)) {
   if (!doc.slug) continue;
   const canonicalUrl = `${origin}/doctor/${doc.slug}`;
   const html = buildRouteHtml({

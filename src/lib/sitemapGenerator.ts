@@ -19,12 +19,16 @@ export const CHATTOGRAM_AREAS = [
 ];
 
 export const SPECIALTIES = [
-  'medicine',
   'chest',
+  'medicine',
   'gastro',
   'heart',
   'gynae',
   'child',
+  'endocrine',
+  'cancer',
+  'physmed',
+  'psychiatry',
   'eye',
   'ent',
   'ortho',
@@ -32,11 +36,17 @@ export const SPECIALTIES = [
   'dental',
   'neuro',
   'kidney',
-  'cancer',
-  'endocrine',
-  'physmed',
-  'psychiatry',
   'surgery',
+  'urology',
+  'neurosurgery',
+  'hepatology',
+  'rheumatology',
+  'hematology',
+  'plasticsurgery',
+  'colorectal',
+  'vascular',
+  'pedsurgery',
+  'nutrition',
 ];
 
 export interface SitemapUrlEntry {
@@ -65,9 +75,9 @@ export function generateSitemapIndexXml(baseUrl: string): string {
   const sitemaps = [
     { loc: `${cleanBase}/wp-sitemap-posts-page-1.xml`, lastmod: today, title: 'প্রধান পেজ ও ডাক্তার প্রোফাইল (Pages & Doctors)' },
     { loc: `${cleanBase}/wp-sitemap-posts-post-1.xml`, lastmod: today, title: 'স্বাস্থ্য ব্লগ ও টিপস (106+ Health Posts)' },
-    { loc: `${cleanBase}/wp-sitemap-taxonomies-category-1.xml`, lastmod: today, title: '১২টি বিশেষজ্ঞ বিভাগ (Specialties)' },
+    { loc: `${cleanBase}/wp-sitemap-taxonomies-category-1.xml`, lastmod: today, title: '২৮টি বিশেষজ্ঞ বিভাগ (28 Specialties)' },
     { loc: `${cleanBase}/wp-sitemap-users-1.xml`, lastmod: today, title: 'চট্টগ্রামের স্বাস্থ্যসেবা এলাকা (Areas)' },
-    { loc: `${cleanBase}/sitemap.xml`, lastmod: today, title: 'সম্পূর্ণ কম্বাইন্ড সাইটম্যাপ (All 400+ URLs Combined)' },
+    { loc: `${cleanBase}/sitemap.xml`, lastmod: today, title: 'সম্পূর্ণ কম্বাইন্ড সাইটম্যাপ (Combined Sitemap)' },
   ];
 
   const xmlEntries = sitemaps
@@ -102,7 +112,7 @@ export function generatePagesSitemapXml(baseUrl: string): string {
     { loc: `${cleanBase}/sitemap`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
   ];
 
-  for (const doc of INITIAL_DOCTORS) {
+  for (const doc of INITIAL_DOCTORS.slice(0, 3000)) {
     if (doc.slug) {
       entries.push({
         loc: `${cleanBase}/doctor/${doc.slug}`,
@@ -196,7 +206,7 @@ export function generateSitemapXml(baseUrl: string): string {
     entries.push({ loc: `${cleanBase}/area/${encodeURIComponent(area.toLowerCase())}`, lastmod: today, changefreq: 'weekly', priority: '0.8' });
   }
 
-  for (const doc of INITIAL_DOCTORS) {
+  for (const doc of INITIAL_DOCTORS.slice(0, 3000)) {
     if (doc.slug) {
       entries.push({ loc: `${cleanBase}/doctor/${doc.slug}`, lastmod: today, changefreq: 'weekly', priority: '0.85' });
     }

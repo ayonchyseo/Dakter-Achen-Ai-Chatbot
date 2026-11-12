@@ -107,7 +107,7 @@ const BN_DAYS: Record<string, string> = {
 
 // Initial Doctors Dataset imported from ./data/doctors (260+ doctors across 12 categories)
 
-// Specialties metadata (18 comprehensive departments with 100 doctors each, total 1,800 doctors)
+// Specialties metadata (28 comprehensive departments with 600+ doctors each, total 16,802+ doctors)
 const SPECIALTIES = [
   { key: 'chest', icon: Wind, bn: 'শ্বাসকষ্ট ও বক্ষব্যাধি (পালমোনোলজি)', en: 'Pulmonology & Chest' },
   { key: 'medicine', icon: Activity, bn: 'মেডিসিন বিশেষজ্ঞ', en: 'Internal Medicine' },
@@ -125,8 +125,18 @@ const SPECIALTIES = [
   { key: 'skin', icon: Sparkles, bn: 'চর্ম ও যৌন রোগ', en: 'Skin & Dermatology' },
   { key: 'dental', icon: Stethoscope, bn: 'দন্ত চিকিৎসা (ডেন্টাল)', en: 'Dental Care' },
   { key: 'neuro', icon: Zap, bn: 'নিউরো মেডিসিন ও ব্রেন', en: 'Neurology' },
-  { key: 'kidney', icon: Droplet, bn: 'কিডনি রোগ (নেফ্রোলজি)', en: 'Kidney & Urology' },
-  { key: 'surgery', icon: Activity, bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' }
+  { key: 'kidney', icon: Droplet, bn: 'কিডনি রোগ (নেফ্রোলজি)', en: 'Kidney & Nephrology' },
+  { key: 'surgery', icon: Activity, bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' },
+  { key: 'urology', icon: Droplet, bn: 'ইউরোলজি (মূত্রনালী, প্রোস্টেট ও পাথর)', en: 'Urology & Andrology' },
+  { key: 'neurosurgery', icon: Zap, bn: 'নিউরোসার্জারি (ব্রেন ও স্পাইন সার্জন)', en: 'Neurosurgery (Brain & Spine)' },
+  { key: 'hepatology', icon: Flame, bn: 'লিভার ও হেপাটোলজি বিশেষজ্ঞ', en: 'Hepatology & Liver' },
+  { key: 'rheumatology', icon: Bone, bn: 'রিউমাটোলজি (বাত ও জয়েন্ট প্রদাহ)', en: 'Rheumatology' },
+  { key: 'hematology', icon: Droplet, bn: 'রক্তরোগ ও থ্যালাসেমিয়া (হেমাটোলজি)', en: 'Hematology & Blood' },
+  { key: 'plasticsurgery', icon: Sparkles, bn: 'প্লাস্টিক, বার্ন ও কসমেটিক সার্জারি', en: 'Plastic & Burn Surgery' },
+  { key: 'colorectal', icon: Target, bn: 'পাইলস, ফিস্টুলা ও কলোরেক্টাল সার্জারি', en: 'Colorectal & Piles Surgery' },
+  { key: 'vascular', icon: HeartPulse, bn: 'ভাস্কুলার ও কার্ডিওথোরাসিক সার্জারি', en: 'Vascular & Cardiac Surgery' },
+  { key: 'pedsurgery', icon: Baby, bn: 'শিশু সার্জারি (পেডিয়াট্রিক সার্জন)', en: 'Pediatric Surgery' },
+  { key: 'nutrition', icon: ShieldCheck, bn: 'পুষ্টি ও ডায়েটিক্স (ডায়েটিশিয়ান)', en: 'Nutrition & Dietetics' }
 ];
 
 // Dhaka time calculation helpers
@@ -233,33 +243,7 @@ export default function App() {
       if (userDocs.length > 0) {
         const userSlugs = new Set(userDocs.map(d => d.slug));
         const filteredInitial = INITIAL_DOCTORS.filter(d => !userSlugs.has(d.slug));
-        const merged = [...userDocs, ...filteredInitial];
-        try {
-          localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(merged));
-        } catch {}
-        return merged;
-      }
-      const saved = localStorage.getItem(STORAGE_KEY_ALL_DOCTORS);
-      if (saved) {
-        const parsed: Doctor[] = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const initSlugs = new Set(INITIAL_DOCTORS.map(d => d.slug));
-          const customUserDoctors = parsed.filter(d => !initSlugs.has(d.slug)).map(d => ({ ...d, isUserAdded: true }));
-          if (customUserDoctors.length > 0) {
-            try {
-              localStorage.setItem(STORAGE_KEY_USER_DOCTORS, JSON.stringify(customUserDoctors));
-            } catch {}
-          }
-          const updatedInitial = INITIAL_DOCTORS.map(init => {
-            const match = parsed.find(p => p.slug === init.slug);
-            return match ? { ...init, ...match, name: init.name, degrees: init.degrees, ch: init.ch, img: init.img || match.img } : init;
-          });
-          const merged = [...customUserDoctors, ...updatedInitial];
-          try {
-            localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(merged));
-          } catch {}
-          return merged;
-        }
+        return [...userDocs, ...filteredInitial];
       }
     } catch (err) {
       console.warn('Error initializing doctors list from storage:', err);
@@ -298,6 +282,12 @@ export default function App() {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [directoryView, setDirectoryView] = useState<'list' | 'map'>('list');
+  const [visibleDoctorsCount, setVisibleDoctorsCount] = useState<number>(40);
+
+  // Reset pagination count when specialty, area, or filters change
+  useEffect(() => {
+    setVisibleDoctorsCount(40);
+  }, [selectedSpecialty, selectedArea, searchQuery, filterDay, filterTime, filterArea, filterGender, sortBy]);
 
   // Ratings state
   const [ratingsStore, setRatingsStore] = useState<Record<string, DoctorRatingData>>(() => loadAllRatings());
@@ -700,8 +690,8 @@ export default function App() {
       });
     } else if (currentRoute === 'sitemap') {
       updatePageSeo({
-        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (১৮০০+ ডাক্তার ও পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (1,800+ Doctors & Pages) | Dakter Achen',
-        description: lang === 'bn' ? 'চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ চিকিৎসক (১৮টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 1,800+ specialist doctors (100 per department across 18 departments), 106+ articles, and healthcare hubs.',
+        title: lang === 'bn' ? 'সম্পূর্ণ সাইটম্যাপ (১৬,৮০০+ ডাক্তার ও পেজ) | ডাক্তার আছেন' : 'Complete HTML & XML Sitemap (16,800+ Doctors & Pages) | Dakter Achen',
+        description: lang === 'bn' ? 'চট্টগ্রামের ১৬,৮০০+ বিশেষজ্ঞ চিকিৎসক (২৮টি বিভাগে প্রতিটিতে ৬০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।' : 'Complete index of 16,800+ specialist doctors (600 per department across 28 departments), 106+ articles, and healthcare hubs.',
         canonicalUrl: `${origin}/sitemap`
       });
     } else if (currentRoute === 'list') {
@@ -712,8 +702,8 @@ export default function App() {
             ? `${matchedSpec.bn} বিশেষজ্ঞ ডাক্তার তালিকা, চট্টগ্রাম — সিরিয়াল নম্বরসহ | ডাক্তার আছেন`
             : `${matchedSpec.en} Specialist Doctors in Chattogram | Dakter Achen`,
           description: lang === 'bn'
-            ? `চট্টগ্রামের সেরা ১০০+ ${matchedSpec.bn} (${matchedSpec.en}) বিশেষজ্ঞ ডাক্তারদের চেম্বারের ঠিকানা, বসার সময়সূচি ও সরাসরি সিরিয়াল বুকিং নম্বর।`
-            : `Verified list of 100+ ${matchedSpec.en} specialist doctors in Chattogram with chamber addresses, sitting hours, and serial phone numbers.`,
+            ? `চট্টগ্রামের সেরা ৬০০+ ${matchedSpec.bn} (${matchedSpec.en}) বিশেষজ্ঞ ডাক্তারদের চেম্বারের ঠিকানা, বসার সময়সূচি ও সরাসরি সিরিয়াল বুকিং নম্বর।`
+            : `Verified list of 600+ ${matchedSpec.en} specialist doctors in Chattogram with chamber addresses, sitting hours, and serial phone numbers.`,
           canonicalUrl: `${origin}/specialty/${matchedSpec.key}`
         });
       } else if (selectedArea !== 'All') {
@@ -729,15 +719,15 @@ export default function App() {
       } else {
         updatePageSeo({
           title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
-          description: lang === 'bn' ? 'শ্বাসকষ্ট, মেডিসিন, গ্যাস্ট্রো, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১৮টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,800+ specialist doctors in Chittagong across 18 medical departments with verified chamber timings and serials.',
+          description: lang === 'bn' ? 'শ্বাসকষ্ট, মেডিসিন, গ্যাস্ট্রো, গাইনি, শিশু, হৃদরোগ, ইউরোলজি, নিউরোসার্জারি সহ ২৮টি বিভাগের প্রতিটিতে ৬০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 16,800+ specialist doctors in Chittagong across 28 medical departments with verified chamber timings and serials.',
           canonicalUrl: `${origin}/doctors`
         });
       }
     } else {
       // Home
       updatePageSeo({
-        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 1,800+ Specialist Doctors in Chittagong & Health Decision Platform',
-        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ১৮টি বিভাগে প্রতিটিতে ১০০ জন করে মোট ১৮০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 1,800+ verified specialist doctors (100 per department across 18 departments), chambers, serial phone numbers, and medical guides.',
+        title: lang === 'bn' ? 'ডাক্তার আছেন — চট্টগ্রামের ১৬,৮০০+ বিশেষজ্ঞ ডাক্তার ও স্বাস্থ্য গাইড' : 'Dakter Achen — 16,800+ Specialist Doctors in Chittagong & Health Decision Platform',
+        description: lang === 'bn' ? 'বাংলাদেশের প্রথম হেলথ ডিসিশন ও কস্ট ইন্টেলিজেন্স প্ল্যাটফর্ম। চট্টগ্রামের ২৮টি বিভাগে প্রতিটিতে ৬০০ জন করে মোট ১৬,৮০০+ বিশেষজ্ঞ ডাক্তার, চেম্বার, সিরিয়াল নম্বর ও স্বাস্থ্য টিপস।' : 'Chittagong healthcare directory. 16,800+ verified specialist doctors (600 per department across 28 departments), chambers, serial phone numbers, and medical guides.',
         canonicalUrl: `${origin}/`
       });
     }
@@ -1220,7 +1210,7 @@ export default function App() {
                 {/* Eyebrow Pill */}
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 border border-cyan-200 shadow-xs text-xs sm:text-sm font-bold text-[#0E7490] mb-3 sm:mb-4">
                   <MapPin className="w-3.5 h-3.5 text-cyan-600" />
-                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ১৮০০+ বিশেষজ্ঞ ডাক্তার (১৮টি বিভাগে প্রতিটিতে ১০০ জন)' : 'Chattogram · 1,800+ Specialists (18 Departments, 100 per Department)'}</span>
+                  <span>{lang === 'bn' ? 'চট্টগ্রাম · ১৬,৮০০+ বিশেষজ্ঞ ডাক্তার (২৮টি বিভাগে প্রতিটিতে ৬০০ জন)' : 'Chattogram · 16,800+ Specialists (28 Departments, 600 per Department)'}</span>
                 </div>
 
                 {/* Main Headline */}
@@ -2587,7 +2577,8 @@ export default function App() {
                 ) : (
                   <>
                     {filteredDoctors.length > 0 ? (
-                      filteredDoctors.map(doc => {
+                      <>
+                        {filteredDoctors.slice(0, visibleDoctorsCount).map(doc => {
                     const primaryChamber = doc.ch[0];
                     const status = getDoctorStatus(primaryChamber, lang);
                     const voteData = chamberVotes[doc.slug] || { present: 0, absent: 0, lastVotedDate: '' };
@@ -2808,7 +2799,44 @@ export default function App() {
                         </div>
                       </article>
                     );
-                  })
+                  })}
+
+                        {/* Progressive Load More Bar for 600+ Doctors per Category */}
+                        {filteredDoctors.length > visibleDoctorsCount && (
+                          <div className="bg-white border border-cyan-200 rounded-2xl p-5 text-center shadow-xs space-y-3">
+                            <p className="text-xs sm:text-sm font-semibold text-slate-600">
+                              {lang === 'bn'
+                                ? `মোট ${filteredDoctors.length} জন বিশেষজ্ঞ ডাক্তারের মধ্যে প্রথম ${visibleDoctorsCount} জন দেখানো হচ্ছে`
+                                : `Showing ${visibleDoctorsCount} of ${filteredDoctors.length} specialist doctors`}
+                            </p>
+                            <div className="flex flex-wrap items-center justify-center gap-3">
+                              <button
+                                type="button"
+                                onClick={() => setVisibleDoctorsCount((prev) => Math.min(filteredDoctors.length, prev + 100))}
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0E7490] hover:bg-[#155E75] text-white font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95 cursor-pointer"
+                              >
+                                <Plus className="w-4 h-4" />
+                                <span>
+                                  {lang === 'bn'
+                                    ? `আরও ১০০ জন ডাক্তার দেখুন (+${Math.min(100, filteredDoctors.length - visibleDoctorsCount)})`
+                                    : `Load 100 More Doctors (+${Math.min(100, filteredDoctors.length - visibleDoctorsCount)})`}
+                                </span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setVisibleDoctorsCount(filteredDoctors.length)}
+                                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-[#0E7490] border border-cyan-300 font-bold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer"
+                              >
+                                <span>
+                                  {lang === 'bn'
+                                    ? `সব ${filteredDoctors.length} জন ডাক্তার একসাথে দেখুন`
+                                    : `Show All ${filteredDoctors.length} Doctors`}
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </>
                 ) : (
                   <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-12 text-center space-y-4">
                     <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">

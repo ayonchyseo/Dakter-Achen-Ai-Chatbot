@@ -226,6 +226,126 @@ export const SYMPTOM_MAPPINGS: SymptomMapping[] = [
       'দাঁত ব্যথা', 'মাড়ি দিয়ে রক্ত', 'মাড়ি ফোলা', 'রুট ক্যানেল', 'আক্কেল দাঁত', 'দাঁতে গর্ত', 'স্কেলিং',
       'toothache', 'tooth pain', 'bleeding gum', 'root canal', 'rct', 'wisdom tooth', 'cavity', 'dental'
     ]
+  },
+  {
+    id: 'urology-prostate-stone',
+    labelBn: 'প্রোস্টেট, কিডনি পাথর বা মূত্রনালীর সমস্যা',
+    labelEn: 'Prostate, Kidney Stone or Urinary Tract',
+    specialtyKey: 'urology',
+    deptBn: 'ইউরোলজি (মূত্রনালী, প্রোস্টেট ও পাথর) সার্জন',
+    deptEn: 'Urology & Andrology Surgeon',
+    keywords: [
+      'ইউরোলজি', 'প্রোস্টেট', 'প্রস্রাব আটকে যাওয়া', 'মূত্রথলি', 'মূত্রনালী', 'কিডনির পাথর অপারেশন', 'অণ্ডকোষ ব্যথা',
+      'urology', 'prostate', 'urinary stone', 'bladder', 'urologist', 'andrology'
+    ]
+  },
+  {
+    id: 'neurosurgery-brain-spine',
+    labelBn: 'ব্রেন টিউমার, হেড ইনজুরি বা মেরুদণ্ড অপারেশন',
+    labelEn: 'Brain Tumor, Head Injury or Spine Surgery',
+    specialtyKey: 'neurosurgery',
+    deptBn: 'নিউরোসার্জারি (ব্রেন ও স্পাইন সার্জন)',
+    deptEn: 'Neurosurgery (Brain & Spine Surgeon)',
+    keywords: [
+      'নিউরোসার্জারি', 'ব্রেন টিউমার', 'মাথায় আঘাত', 'ব্রেন স্ট্রোক অপারেশন', 'স্পাইন সার্জারি', 'পিএলআইডি অপারেশন',
+      'neurosurgery', 'brain tumor', 'head injury', 'spine surgery', 'neurosurgeon', 'plid surgery'
+    ]
+  },
+  {
+    id: 'hepatology-jaundice-cirrhosis',
+    labelBn: 'হেপাটাইটিস বি/সি, জন্ডিস বা লিভার সিরোসিস',
+    labelEn: 'Hepatitis B/C, Jaundice or Liver Cirrhosis',
+    specialtyKey: 'hepatology',
+    deptBn: 'লিভার ও হেপাটোলজি বিশেষজ্ঞ',
+    deptEn: 'Hepatology & Liver Specialist',
+    keywords: [
+      'হেপাটোলজি', 'লিভার সিরোসিস', 'হেপাটাইটিস বি', 'হেপাটাইটিস সি', 'জন্ডিস বিশেষজ্ঞ', 'ফ্যাটি লিভার গ্রেড ২',
+      'hepatology', 'liver cirrhosis', 'hepatitis b', 'hepatitis c', 'liver specialist'
+    ]
+  },
+  {
+    id: 'rheumatology-gout-lupus',
+    labelBn: 'গেঁটেবাত, ইউরিক অ্যাসিড বা লুপাস (SLE)',
+    labelEn: 'Rheumatoid Arthritis, Gout or Lupus',
+    specialtyKey: 'rheumatology',
+    deptBn: 'রিউমাটোলজি (বাত ও জয়েন্ট প্রদাহ) বিশেষজ্ঞ',
+    deptEn: 'Rheumatology & Autoimmune Specialist',
+    keywords: [
+      'রিউমাটোলজি', 'গেঁটেবাত', 'রিউমাটয়েড আর্থ্রাইটিস', 'লুপাস', 'এসএলই', 'ইউরিক অ্যাসিড', 'গাউট',
+      'rheumatology', 'rheumatoid arthritis', 'lupus', 'sle', 'gout', 'autoimmune'
+    ]
+  },
+  {
+    id: 'hematology-thalassemia-blood',
+    labelBn: 'থ্যালাসেমিয়া, রক্তস্বল্পতা বা ব্লাড ক্যান্সার',
+    labelEn: 'Thalassemia, Anemia or Blood Disorders',
+    specialtyKey: 'hematology',
+    deptBn: 'রক্তরোগ ও থ্যালাসেমিয়া (হেমাটোলজি) বিশেষজ্ঞ',
+    deptEn: 'Hematology & Blood Disorders Specialist',
+    keywords: [
+      'হেমাটোলজি', 'থ্যালাসেমিয়া', 'রক্তরোগ', 'হিমোফিলিয়া', 'প্লাটিলেট কম', 'ব্লাড ক্যান্সার', 'লিউকেমিয়া',
+      'hematology', 'thalassemia', 'anemia', 'leukemia', 'lymphoma', 'platelet', 'blood disorder'
+    ]
+  },
+  {
+    id: 'plasticsurgery-burn-reconstructive',
+    labelBn: 'পোড়া রোগী, কাটা দাগ বা প্লাস্টিক সার্জারি',
+    labelEn: 'Burn Care, Scar Revision or Plastic Surgery',
+    specialtyKey: 'plasticsurgery',
+    deptBn: 'প্লাস্টিক, বার্ন ও কসমেটিক সার্জন',
+    deptEn: 'Plastic, Burn & Reconstructive Surgeon',
+    keywords: [
+      'প্লাস্টিক সার্জারি', 'বার্ন', 'আগুনে পোড়া', 'ঠোঁট কাটা', 'তালু কাটা', 'কসমেটিক সার্জারি',
+      'plastic surgery', 'burn specialist', 'cosmetic surgery', 'cleft lip', 'reconstructive'
+    ]
+  },
+  {
+    id: 'colorectal-piles-fistula-laser',
+    labelBn: 'লেজার পাইলস, ফিস্টুলা বা পায়ুপথের রক্তপাত',
+    labelEn: 'Laser Piles, Fistula or Colorectal Care',
+    specialtyKey: 'colorectal',
+    deptBn: 'পাইলস, ফিস্টুলা ও কলোরেক্টাল সার্জন',
+    deptEn: 'Colorectal, Piles & Fistula Surgeon',
+    keywords: [
+      'কলোরেক্টাল', 'লেজার পাইলস', 'এনাল ফিশার', 'পায়ুপথে রক্ত', 'রেকটাল ক্যান্সার', 'ফিস্টুলা অপারেশন',
+      'colorectal', 'laser piles', 'anal fissure', 'fistula surgeon', 'rectal bleeding'
+    ]
+  },
+  {
+    id: 'vascular-bypass-vein',
+    labelBn: 'ভেরিকোজ ভেইন, রক্তনালীর ব্লক বা হার্ট বাইপাস',
+    labelEn: 'Varicose Veins, Vascular Block or Bypass',
+    specialtyKey: 'vascular',
+    deptBn: 'ভাস্কুলার ও কার্ডিওথোরাসিক সার্জন',
+    deptEn: 'Vascular & Cardiothoracic Surgeon',
+    keywords: [
+      'ভাস্কুলার', 'রক্তনালী', 'ভেরিকোজ ভেইন', 'পায়ে রক্ত চলাচল', 'হার্ট বাইপাস', 'ওপেন হার্ট সার্জারি',
+      'vascular surgeon', 'varicose veins', 'dvt', 'bypass surgery', 'cardiothoracic'
+    ]
+  },
+  {
+    id: 'pedsurgery-child-operation',
+    labelBn: 'শিশুদের হার্নিয়া, টনসিল বা জন্মগত অপারেশন',
+    labelEn: 'Child Hernia or Pediatric Surgery',
+    specialtyKey: 'pedsurgery',
+    deptBn: 'শিশু সার্জারি (পেডিয়াট্রিক সার্জন)',
+    deptEn: 'Pediatric & Neonatal Surgeon',
+    keywords: [
+      'শিশু সার্জারি', 'পেডিয়াট্রিক সার্জন', 'বাচ্চার হার্নিয়া', 'শিশুর খৎনা', 'জন্মগত ত্রুটি অপারেশন',
+      'pediatric surgeon', 'child surgery', 'neonatal surgery', 'child hernia'
+    ]
+  },
+  {
+    id: 'nutrition-diet-weight',
+    labelBn: 'ডায়েট চার্ট, ওজন কমানো বা পুষ্টি পরামর্শ',
+    labelEn: 'Diet Chart, Weight Loss or Clinical Nutrition',
+    specialtyKey: 'nutrition',
+    deptBn: 'পুষ্টিবিদ ও ডায়েটিশিয়ান (ক্লিনিক্যাল নিউট্রিশন)',
+    deptEn: 'Clinical Nutritionist & Dietitian',
+    keywords: [
+      'পুষ্টিবিদ', 'ডায়েটিশিয়ান', 'ডায়েট চার্ট', 'ওজন কমানো', 'মেদ কমানো', 'ডায়াবেটিক ডায়েট', 'কিডনি ডায়েট',
+      'nutritionist', 'dietitian', 'diet chart', 'weight loss', 'obesity diet'
+    ]
   }
 ];
 

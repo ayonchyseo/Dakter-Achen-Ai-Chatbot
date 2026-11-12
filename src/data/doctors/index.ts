@@ -18,6 +18,7 @@ import { PHYSMED_DOCTORS } from './physmed';
 import { PSYCHIATRY_DOCTORS } from './psychiatry';
 import { SURGERY_DOCTORS } from './surgery';
 import { ADDITIONAL_100_DOCTORS } from './additional100Doctors';
+import { EXPANDED_DOCTORS_DATASET } from './expandedDoctorsGenerator';
 
 export const INITIAL_DOCTORS: Doctor[] = [
   ...MEDICINE_DOCTORS,
@@ -37,7 +38,8 @@ export const INITIAL_DOCTORS: Doctor[] = [
   ...ENDOCRINE_DOCTORS,
   ...PHYSMED_DOCTORS,
   ...PSYCHIATRY_DOCTORS,
-  ...SURGERY_DOCTORS
+  ...SURGERY_DOCTORS,
+  ...EXPANDED_DOCTORS_DATASET
 ];
 
 export {
@@ -59,5 +61,6 @@ export {
   PHYSMED_DOCTORS,
   PSYCHIATRY_DOCTORS,
   SURGERY_DOCTORS,
-  ADDITIONAL_100_DOCTORS
+  ADDITIONAL_100_DOCTORS,
+  EXPANDED_DOCTORS_DATASET
 };

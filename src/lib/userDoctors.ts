@@ -29,22 +29,29 @@ export function loadUserAddedDoctors(): Doctor[] {
     console.warn('Error reading user-added doctors from dedicated storage:', err);
   }
 
-  // 2. Fallback check: look for any doctors with isUserAdded in all doctors storage
+  // 2. Fallback check: migrate any legacy user-added doctors from STORAGE_KEY_ALL_DOCTORS and clean up oversized cache
   try {
     const rawAll = localStorage.getItem(STORAGE_KEY_ALL_DOCTORS);
     if (rawAll) {
       const parsedAll: Doctor[] = JSON.parse(rawAll);
       if (Array.isArray(parsedAll)) {
+        let migratedAny = false;
         parsedAll.forEach((doc) => {
           if (doc && doc.slug && (doc.isUserAdded || doc.slug.startsWith('user-doc-')) && !seenSlugs.has(doc.slug)) {
             seenSlugs.add(doc.slug);
             result.push({ ...doc, isUserAdded: true });
+            migratedAny = true;
           }
         });
+        if (migratedAny) {
+          localStorage.setItem(STORAGE_KEY_USER_DOCTORS, JSON.stringify(result));
+        }
       }
+      // Remove legacy full-array cache so 16,800+ doctors are never shadowed or quota-limited
+      localStorage.removeItem(STORAGE_KEY_ALL_DOCTORS);
     }
   } catch (err) {
-    console.warn('Error reading user-added doctors from all doctors storage:', err);
+    console.warn('Error migrating legacy doctors storage:', err);
   }
 
   return result;
@@ -55,7 +62,7 @@ export function loadUserAddedDoctors(): Doctor[] {
  */
 export function saveUserAddedDoctorToStorage(
   newDoc: Doctor,
-  initialDoctors: Doctor[],
+  _initialDoctors: Doctor[],
   currentList: Doctor[]
 ): { updatedList: Doctor[]; userDoctors: Doctor[] } {
   const docWithMeta: Doctor = {
@@ -75,15 +82,9 @@ export function saveUserAddedDoctorToStorage(
     console.warn('Failed to save to STORAGE_KEY_USER_DOCTORS:', err);
   }
 
-  // Update full doctors list state
+  // Update full doctors list state in memory
   const currentFiltered = currentList.filter((d) => d.slug !== docWithMeta.slug);
   const updatedAll = [docWithMeta, ...currentFiltered];
-
-  try {
-    localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(updatedAll));
-  } catch (err) {
-    console.warn('Failed to save to STORAGE_KEY_ALL_DOCTORS:', err);
-  }
 
   return {
     updatedList: updatedAll,
@@ -136,13 +137,7 @@ export function checkAndSyncUserDoctors(
   });
 
   if (missingFromState.length > 0 || userDocsModified) {
-    // Merge missing user docs at the beginning of the list
     const finalMerged = [...missingFromState, ...updatedCurrentList];
-
-    // Ensure localStorage is also updated
-    try {
-      localStorage.setItem(STORAGE_KEY_ALL_DOCTORS, JSON.stringify(finalMerged));
-    } catch {}
 
     return {
       updatedList: finalMerged,
