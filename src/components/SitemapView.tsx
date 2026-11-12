@@ -27,18 +27,24 @@ interface SitemapViewProps {
 }
 
 const SPECIALTY_NAMES: Record<string, { bn: string; en: string }> = {
+  chest: { bn: 'শ্বাসকষ্ট ও বক্ষব্যাধি (পালমোনোলজি)', en: 'Asthma & Chest (Pulmonology)' },
   medicine: { bn: 'মেডিসিন ও ডায়াবেটিস', en: 'Medicine & Diabetes' },
+  gastro: { bn: 'গ্যাস্ট্রোএন্টারোলজি ও লিভার', en: 'Gastroenterology & Liver' },
+  heart: { bn: 'হৃদরোগ (কার্ডিওলজি)', en: 'Cardiology' },
   gynae: { bn: 'গাইনি ও প্রসূতি', en: 'Gynae & Obstetrics' },
   child: { bn: 'শিশু বিশেষজ্ঞ', en: 'Child Specialist' },
-  eye: { bn: 'চক্ষু রোগ', en: 'Eye Specialist' },
-  ent: { bn: 'নাক-কান-গলা', en: 'ENT Specialist' },
-  heart: { bn: 'হৃদরোগ (কার্ডিওলজি)', en: 'Cardiology' },
+  endocrine: { bn: 'হরমোন ও ডায়াবেটিস (এন্ডোক্রাইনোলজি)', en: 'Hormone & Diabetes' },
+  kidney: { bn: 'কিডনি ও ইউরোলজি', en: 'Kidney & Urology' },
+  neuro: { bn: 'নিউরো মেডিসিন ও ব্রেন', en: 'Neurology' },
+  cancer: { bn: 'ক্যান্সার ও টিউমার (অনকোলজি)', en: 'Cancer & Oncology' },
+  physmed: { bn: 'বাতব্যথা ও ফিজিক্যাল মেডিসিন', en: 'Arthritis & Physical Medicine' },
   ortho: { bn: 'হাড় ও জোড়া (অর্থোপেডিক)', en: 'Bone & Joint' },
   skin: { bn: 'চর্ম ও যৌন রোগ', en: 'Skin & Dermatology' },
+  eye: { bn: 'চক্ষু রোগ', en: 'Eye Specialist' },
+  ent: { bn: 'নাক-কান-গলা', en: 'ENT Specialist' },
+  psychiatry: { bn: 'মানসিক রোগ ও মাদকাসক্তি', en: 'Psychiatry & Mental Health' },
+  surgery: { bn: 'জেনারেল ও ল্যাপারোস্কোপিক সার্জারি', en: 'General Surgery' },
   dental: { bn: 'দন্ত চিকিৎসা (ডেন্টাল)', en: 'Dental Care' },
-  neuro: { bn: 'নিউরো মেডিসিন ও ব্রেন', en: 'Neurology' },
-  kidney: { bn: 'কিডনি রোগ (নেফ্রোলজি)', en: 'Kidney & Urology' },
-  surgery: { bn: 'জেনারেল সার্জারি', en: 'General Surgery' },
 };
 
 export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onNavigateHome }: SitemapViewProps) {
@@ -94,15 +100,23 @@ export default function SitemapView({ lang, onSelectDoctor, onSelectArticle, onN
   };
 
   const handleDownloadHtaccess = () => {
-    const htaccess = `# Dakter Achen - Sitemap & Static Pass-Through Configuration
+    const htaccess = `# Dakter Achen - Sitemap & Clean SPA Route Configuration
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteBase /
 RewriteRule ^(sitemap\\.xml|sitemap_index\\.xml|wp-sitemap\\.xml|post-sitemap\\.xml|page-sitemap\\.xml|category-sitemap\\.xml|wp-sitemap-[a-z0-9-]+\\.xml)$ $1 [L,T=application/xml]
 RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]
 RewriteRule ^dakterachen-wordpress-import\\.xml$ dakterachen-wordpress-import.xml [L,T=application/xml]
+
+# Serve existing static files and directories directly
+RewriteRule ^index\\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/index.html -f
+RewriteRule . /index.html [L]
 </IfModule>
 
-# BEGIN WordPress
+# BEGIN WordPress Fallback
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -112,7 +126,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
-# END WordPress
+# END WordPress Fallback
 `;
     triggerBlobDownload('.htaccess', htaccess, 'text/plain');
   };
@@ -133,8 +147,8 @@ RewriteRule . /index.php [L]
 
           <p className="text-sm sm:text-base text-white/90 max-w-2xl leading-relaxed">
             {lang === 'bn'
-              ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ চিকিৎসক (১২টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ, ১২টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
-              : 'Complete index of 1,200+ specialist doctors (100 per department), 106+ medical articles, 12 specialties, and 14 Chittagong healthcare hubs.'}
+              ? 'চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ চিকিৎসক (১৮টি বিভাগে প্রতিটিতে ১০০ জন), ১০৬+ স্বাস্থ্য প্রবন্ধ, ১৮টি মেডিকেল বিভাগ এবং ১৪টি অঞ্চলের পূর্ণাঙ্গ সূচিপত্র।'
+              : 'Complete index of 1,800+ specialist doctors (100 per department across 18 departments), 106+ medical articles, 18 specialties, and 14 Chittagong healthcare hubs.'}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-2.5">
@@ -329,25 +343,25 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
               </a>
 
               <a
-                href="#list"
+                href="/doctors"
                 className="p-3.5 rounded-xl border border-slate-200 hover:border-cyan-400 hover:bg-cyan-50/40 transition-all group"
               >
                 <div className="font-bold text-xs text-slate-900 group-hover:text-[#0E7490] flex items-center justify-between">
                   <span>{lang === 'bn' ? 'ডাক্তার ডিরেক্টরি' : 'Doctors Directory'}</span>
                   <ArrowRight size={13} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">/#list</p>
+                <p className="text-[11px] text-slate-500 mt-1">/doctors</p>
               </a>
 
               <a
-                href="#blog"
+                href="/blog"
                 className="p-3.5 rounded-xl border border-slate-200 hover:border-cyan-400 hover:bg-cyan-50/40 transition-all group"
               >
                 <div className="font-bold text-xs text-slate-900 group-hover:text-[#0E7490] flex items-center justify-between">
                   <span>{lang === 'bn' ? 'স্বাস্থ্য ব্লগ ও টিপস' : 'Health Blog & Tips'}</span>
                   <ArrowRight size={13} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">/#blog</p>
+                <p className="text-[11px] text-slate-500 mt-1">/blog</p>
               </a>
 
               <a
@@ -371,7 +385,7 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <FolderTree size={18} className="text-[#0E7490]" />
-              <span>{lang === 'bn' ? '১২টি বিশেষজ্ঞ চিকিৎসা বিভাগ' : '12 Specialty Categories'}</span>
+              <span>{lang === 'bn' ? '১৮টি বিশেষজ্ঞ চিকিৎসা বিভাগ' : '18 Specialty Categories'}</span>
             </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -381,12 +395,12 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
                 return (
                   <a
                     key={spec}
-                    href={`#list?specialty=${spec}`}
+                    href={`/specialty/${spec}`}
                     className="p-3 rounded-xl border border-slate-200 hover:border-cyan-300 hover:bg-cyan-50/30 transition-all flex items-center justify-between text-xs"
                   >
                     <div>
                       <div className="font-bold text-slate-900">{lang === 'bn' ? info.bn : info.en}</div>
-                      <div className="text-[11px] text-slate-500">#{spec}</div>
+                      <div className="text-[11px] text-slate-500">/specialty/{spec}</div>
                     </div>
                     <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-md">
                       {count} {lang === 'bn' ? 'ডাক্তার' : 'Docs'}
@@ -410,7 +424,7 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
               {CHATTOGRAM_AREAS.map((area) => (
                 <a
                   key={area}
-                  href={`#list?area=${encodeURIComponent(area)}`}
+                  href={`/area/${encodeURIComponent(area)}`}
                   className="p-2.5 rounded-xl border border-slate-200 hover:border-cyan-400 hover:bg-cyan-50/30 transition-all text-center group"
                 >
                   <MapPin size={13} className="mx-auto text-cyan-600 mb-1 group-hover:scale-110 transition-transform" />
@@ -435,9 +449,13 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto p-1 border border-slate-100 rounded-xl">
               {filteredDoctors.slice(0, 150).map((doc) => (
-                <button
+                <a
                   key={doc.slug}
-                  onClick={() => onSelectDoctor(doc.slug)}
+                  href={`/doctor/${doc.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectDoctor(doc.slug);
+                  }}
                   className="p-3 text-left rounded-xl border border-slate-200 hover:border-cyan-300 hover:bg-cyan-50/30 transition-all flex items-start gap-2.5 group"
                 >
                   <div className="w-8 h-8 rounded-lg bg-cyan-100 text-[#0E7490] font-bold text-xs flex items-center justify-center shrink-0">
@@ -452,7 +470,7 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
                       {doc.ch[0]?.name || 'চেম্বারের ঠিকানা'} ({doc.ch[0]?.area})
                     </div>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
             {filteredDoctors.length > 150 && (
@@ -476,9 +494,13 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto p-1 border border-slate-100 rounded-xl">
               {filteredBlogs.map((blog) => (
-                <button
+                <a
                   key={blog.slug}
-                  onClick={() => onSelectArticle(blog.slug)}
+                  href={`/blog/${blog.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectArticle(blog.slug);
+                  }}
                   className="p-3 text-left rounded-xl border border-slate-200 hover:border-cyan-300 hover:bg-cyan-50/30 transition-all flex items-start gap-2.5 group"
                 >
                   <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center shrink-0">
@@ -493,7 +515,7 @@ RewriteRule ^robots\\.txt$ robots.txt [L,T=text/plain]`}
                       <span>{blog.publishedDate}</span> • <span>{blog.readTimeMin} {lang === 'bn' ? 'মিনিট' : 'min'}</span>
                     </div>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
           </div>

@@ -453,61 +453,212 @@ export default function App() {
     };
   }, [lang]);
 
-  // Sync pathname & hash with route
-  useEffect(() => {
-    const handleRoute = () => {
-      const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
-      const hash = window.location.hash.slice(1);
-      const active = hash || pathname || 'home';
-      const [route, param] = active.split('/');
+  // Build clean, shareable, SEO-friendly URL for any Doctor List state
+  const buildListUrl = (overrides?: {
+    specialty?: string;
+    area?: string;
+    q?: string;
+    days?: Set<string>;
+    times?: Set<string>;
+    areas?: Set<string>;
+    gender?: Set<string>;
+    sort?: string;
+    view?: 'list' | 'map';
+  }) => {
+    const spec = overrides?.specialty !== undefined ? overrides.specialty : selectedSpecialty;
+    const areaVal = overrides?.area !== undefined ? overrides.area : selectedArea;
+    const queryVal = overrides?.q !== undefined ? overrides.q : searchQuery;
+    const daysSet = overrides?.days !== undefined ? overrides.days : filterDay;
+    const timesSet = overrides?.times !== undefined ? overrides.times : filterTime;
+    const areasSet = overrides?.areas !== undefined ? overrides.areas : filterArea;
+    const genderSet = overrides?.gender !== undefined ? overrides.gender : filterGender;
+    const sortVal = overrides?.sort !== undefined ? overrides.sort : sortBy;
+    const viewVal = overrides?.view !== undefined ? overrides.view : directoryView;
 
-      if (route === 'emergency') {
-        setCurrentRoute('emergency');
-        window.scrollTo(0, 0);
-      } else if (route === 'doctor' && param) {
-        setCurrentRoute('doctor');
-        setSelectedDoctorSlug(param);
-        window.scrollTo(0, 0);
-      } else if (route === 'blog' && param) {
-        setCurrentRoute('article');
-        setSelectedArticleSlug(param);
-        window.scrollTo(0, 0);
-      } else if (route === 'blog' || route === 'tips') {
-        setCurrentRoute('blog');
-        window.scrollTo(0, 0);
-      } else if (route === 'sitemap') {
-        setCurrentRoute('sitemap');
-        window.scrollTo(0, 0);
-      } else if (route === 'list' || route === 'doctors') {
-        setCurrentRoute('list');
-        window.scrollTo(0, 0);
-      } else if (route === 'specialty' && param) {
-        setSelectedSpecialty(param);
-        setCurrentRoute('list');
-        window.scrollTo(0, 0);
-      } else if (route === 'area' && param) {
-        setSelectedArea(decodeURIComponent(param));
-        setCurrentRoute('list');
-        window.scrollTo(0, 0);
+    let basePath = '/doctors';
+    const params = new URLSearchParams();
+
+    if (spec && spec !== 'all') {
+      basePath = `/specialty/${encodeURIComponent(spec)}`;
+      if (areaVal && areaVal !== 'All') {
+        params.set('area', areaVal);
+      }
+    } else if (areaVal && areaVal !== 'All') {
+      basePath = `/area/${encodeURIComponent(areaVal)}`;
+    }
+
+    if (queryVal && queryVal.trim()) {
+      params.set('q', queryVal.trim());
+    }
+    if (daysSet.size > 0) {
+      params.set('days', Array.from(daysSet).join(','));
+    }
+    if (timesSet.size > 0) {
+      params.set('times', Array.from(timesSet).join(','));
+    }
+    if (areasSet.size > 0) {
+      params.set('areas', Array.from(areasSet).join(','));
+    }
+    if (genderSet.size > 0) {
+      params.set('gender', Array.from(genderSet).join(','));
+    }
+    if (sortVal && sortVal !== 'today') {
+      params.set('sort', sortVal);
+    }
+    if (viewVal === 'map') {
+      params.set('view', 'map');
+    }
+
+    const qs = params.toString();
+    return qs ? `${basePath}?${qs}` : basePath;
+  };
+
+  // Sync pathname, query params & legacy hash with route
+  const syncRouteFromLocation = React.useCallback(() => {
+    const rawHash = window.location.hash.slice(1);
+    const isInPageAnchor = rawHash === 'main-content' || rawHash === 'ratings-section';
+
+    let activePath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+    let searchString = window.location.search;
+
+    // Auto-upgrade legacy #hash URLs (e.g. /#blog/slug, /#list, /#doctor/slug) to clean indexable URLs
+    if (rawHash && !isInPageAnchor) {
+      const [hashPathPart, hashQueryPart] = rawHash.split('?');
+      const cleanHashPath = hashPathPart.replace(/^\/+|\/+$/g, '');
+      activePath = cleanHashPath;
+      if (hashQueryPart) {
+        searchString = `?${hashQueryPart}`;
+      }
+
+      if (cleanHashPath.startsWith('home-')) {
+        window.history.replaceState({}, '', '/');
+      } else if (cleanHashPath === 'home' || cleanHashPath === '') {
+        window.history.replaceState({}, '', '/');
+      } else if (cleanHashPath === 'list') {
+        window.history.replaceState({}, '', `/doctors${searchString}`);
       } else {
-        setCurrentRoute('home');
-        if (route.startsWith('home-')) {
-          const el = document.getElementById(route);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.scrollTo(0, 0);
+        window.history.replaceState({}, '', `/${cleanHashPath}${searchString}`);
+      }
+    }
+
+    const active = activePath || 'home';
+    const [route, ...restParts] = active.split('/');
+    const param = restParts.join('/');
+    const params = new URLSearchParams(searchString);
+
+    if (route === 'emergency') {
+      setCurrentRoute('emergency');
+      window.scrollTo(0, 0);
+    } else if (route === 'doctor' && param) {
+      setCurrentRoute('doctor');
+      setSelectedDoctorSlug(decodeURIComponent(param));
+      window.scrollTo(0, 0);
+    } else if (route === 'blog' && param) {
+      setCurrentRoute('article');
+      setSelectedArticleSlug(decodeURIComponent(param));
+      window.scrollTo(0, 0);
+    } else if (route === 'blog' || route === 'tips') {
+      setCurrentRoute('blog');
+      window.scrollTo(0, 0);
+    } else if (route === 'sitemap') {
+      setCurrentRoute('sitemap');
+      window.scrollTo(0, 0);
+    } else if (
+      route === 'list' ||
+      route === 'doctors' ||
+      (route === 'specialty' && param) ||
+      (route === 'area' && param)
+    ) {
+      if (route === 'specialty' && param) {
+        setSelectedSpecialty(decodeURIComponent(param));
+      } else if (params.get('specialty')) {
+        setSelectedSpecialty(params.get('specialty')!);
+      } else if (route === 'area' && param) {
+        setSelectedSpecialty('all');
+      }
+
+      if (route === 'area' && param) {
+        setSelectedArea(decodeURIComponent(param));
+      } else if (params.get('area')) {
+        setSelectedArea(params.get('area')!);
+      }
+
+      if (params.has('q')) {
+        setSearchQuery(params.get('q') || '');
+      }
+      if (params.has('days')) {
+        const dList = (params.get('days') || '').split(',').filter(Boolean);
+        setFilterDay(new Set(dList));
+      }
+      if (params.has('times')) {
+        const tList = (params.get('times') || '').split(',').filter(Boolean);
+        setFilterTime(new Set(tList));
+      }
+      if (params.has('areas')) {
+        const aList = (params.get('areas') || '').split(',').filter(Boolean);
+        setFilterArea(new Set(aList));
+      }
+      if (params.has('gender')) {
+        const gList = (params.get('gender') || '').split(',').filter(Boolean);
+        setFilterGender(new Set(gList));
+      }
+      if (params.has('sort')) {
+        const sVal = params.get('sort') as any;
+        if (['today', 'distance', 'rating', 'senior', 'az'].includes(sVal)) {
+          setSortBy(sVal);
         }
       }
-    };
+      if (params.get('view') === 'map') {
+        setDirectoryView('map');
+      } else if (params.get('view') === 'list') {
+        setDirectoryView('list');
+      }
 
-    handleRoute();
-    window.addEventListener('hashchange', handleRoute);
-    window.addEventListener('popstate', handleRoute);
-    return () => {
-      window.removeEventListener('hashchange', handleRoute);
-      window.removeEventListener('popstate', handleRoute);
-    };
+      setCurrentRoute('list');
+      window.scrollTo(0, 0);
+    } else {
+      setCurrentRoute('home');
+      if (route.startsWith('home-')) {
+        setTimeout(() => {
+          const el = document.getElementById(route);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    syncRouteFromLocation();
+    window.addEventListener('hashchange', syncRouteFromLocation);
+    window.addEventListener('popstate', syncRouteFromLocation);
+    return () => {
+      window.removeEventListener('hashchange', syncRouteFromLocation);
+      window.removeEventListener('popstate', syncRouteFromLocation);
+    };
+  }, [syncRouteFromLocation]);
+
+  // Keep browser URL synchronized with active specialty, area, and filter selections on the Doctor List page
+  useEffect(() => {
+    if (currentRoute !== 'list') return;
+    const targetUrl = buildListUrl();
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+    if (currentUrl !== targetUrl || window.location.hash) {
+      window.history.replaceState({}, '', targetUrl);
+    }
+  }, [
+    currentRoute,
+    selectedSpecialty,
+    selectedArea,
+    searchQuery,
+    filterDay,
+    filterTime,
+    filterArea,
+    filterGender,
+    sortBy,
+    directoryView
+  ]);
 
   // Dynamic SEO & Schema.org sync on route changes
   useEffect(() => {
@@ -554,11 +705,34 @@ export default function App() {
         canonicalUrl: `${origin}/sitemap`
       });
     } else if (currentRoute === 'list') {
-      updatePageSeo({
-        title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
-        description: lang === 'bn' ? 'শ্বাসকষ্ট, মেডিসিন, গ্যাস্ট্রো, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১৮টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,800+ specialist doctors in Chittagong across 18 medical departments with verified chamber timings and serials.',
-        canonicalUrl: `${origin}/doctors`
-      });
+      const matchedSpec = SPECIALTIES.find(s => s.key === selectedSpecialty);
+      if (matchedSpec) {
+        updatePageSeo({
+          title: lang === 'bn'
+            ? `${matchedSpec.bn} বিশেষজ্ঞ ডাক্তার তালিকা, চট্টগ্রাম — সিরিয়াল নম্বরসহ | ডাক্তার আছেন`
+            : `${matchedSpec.en} Specialist Doctors in Chattogram | Dakter Achen`,
+          description: lang === 'bn'
+            ? `চট্টগ্রামের সেরা ১০০+ ${matchedSpec.bn} (${matchedSpec.en}) বিশেষজ্ঞ ডাক্তারদের চেম্বারের ঠিকানা, বসার সময়সূচি ও সরাসরি সিরিয়াল বুকিং নম্বর।`
+            : `Verified list of 100+ ${matchedSpec.en} specialist doctors in Chattogram with chamber addresses, sitting hours, and serial phone numbers.`,
+          canonicalUrl: `${origin}/specialty/${matchedSpec.key}`
+        });
+      } else if (selectedArea !== 'All') {
+        updatePageSeo({
+          title: lang === 'bn'
+            ? `${selectedArea}, চট্টগ্রামের বিশেষজ্ঞ ডাক্তার তালিকা ও সিরিয়াল | ডাক্তার আছেন`
+            : `Specialist Doctors in ${selectedArea}, Chattogram | Dakter Achen`,
+          description: lang === 'bn'
+            ? `চট্টগ্রামের ${selectedArea} এলাকার সকল বিশেষজ্ঞ চিকিৎসকদের চেম্বার, বসার সময় ও অফিসিয়াল সিরিয়াল নম্বর।`
+            : `Find specialist doctors practicing in ${selectedArea}, Chattogram with verified chamber timings and serial numbers.`,
+          canonicalUrl: `${origin}/area/${encodeURIComponent(selectedArea)}`
+        });
+      } else {
+        updatePageSeo({
+          title: lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের তালিকা — সিরিয়াল নম্বরসহ | ডাক্তার আছেন' : 'Specialist Doctors Directory in Chattogram | Dakter Achen',
+          description: lang === 'bn' ? 'শ্বাসকষ্ট, মেডিসিন, গ্যাস্ট্রো, গাইনি, শিশু, হৃদরোগ, চোখ, নাক-কান-গলা সহ ১৮টি বিভাগের প্রতিটিতে ১০০ জন বিশেষজ্ঞ চিকিৎসকদের তালিকা ও সিরিয়াল নম্বর।' : 'Find 1,800+ specialist doctors in Chittagong across 18 medical departments with verified chamber timings and serials.',
+          canonicalUrl: `${origin}/doctors`
+        });
+      }
     } else {
       // Home
       updatePageSeo({
@@ -567,11 +741,103 @@ export default function App() {
         canonicalUrl: `${origin}/`
       });
     }
-  }, [currentRoute, selectedDoctorSlug, selectedArticleSlug, doctorsList, lang]);
+  }, [currentRoute, selectedDoctorSlug, selectedArticleSlug, selectedSpecialty, selectedArea, doctorsList, lang]);
 
-  const navigateTo = (pathOrHash: string) => {
-    const clean = pathOrHash.replace(/^#/, '');
-    window.location.hash = clean;
+  const navigateTo = (
+    pathOrHash: string,
+    listOverrides?: {
+      specialty?: string;
+      area?: string;
+      q?: string;
+      days?: Set<string>;
+      view?: 'list' | 'map';
+    }
+  ) => {
+    const clean = pathOrHash.replace(/^(#|\/)+/, '');
+
+    if (clean === '' || clean === 'home') {
+      window.history.pushState({}, '', '/');
+      setCurrentRoute('home');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (clean.startsWith('home-')) {
+      window.history.pushState({}, '', '/');
+      setCurrentRoute('home');
+      setTimeout(() => {
+        const el = document.getElementById(clean);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 60);
+      return;
+    }
+
+    if (clean === 'list' || clean === 'doctors') {
+      const targetUrl = buildListUrl(listOverrides);
+      window.history.pushState({}, '', targetUrl);
+      setCurrentRoute('list');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (clean.startsWith('specialty/')) {
+      const specKey = decodeURIComponent(clean.replace('specialty/', ''));
+      setSelectedSpecialty(specKey);
+      const targetUrl = buildListUrl({ ...listOverrides, specialty: specKey });
+      window.history.pushState({}, '', targetUrl);
+      setCurrentRoute('list');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (clean.startsWith('area/')) {
+      const areaName = decodeURIComponent(clean.replace('area/', ''));
+      setSelectedArea(areaName);
+      const targetUrl = buildListUrl({ ...listOverrides, area: areaName });
+      window.history.pushState({}, '', targetUrl);
+      setCurrentRoute('list');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    window.history.pushState({}, '', `/${clean}`);
+    syncRouteFromLocation();
+  };
+
+  // Share or copy the current Doctor List URL with department & filter context
+  const handleShareDoctorList = async () => {
+    const listPath = buildListUrl();
+    const shareUrl = `${window.location.origin}${listPath}`;
+    const specObj = SPECIALTIES.find(s => s.key === selectedSpecialty);
+    const listTitle = specObj
+      ? (lang === 'bn' ? `${specObj.bn} বিশেষজ্ঞ ডাক্তার তালিকা — চট্টগ্রাম` : `${specObj.en} Doctors in Chattogram`)
+      : selectedArea !== 'All'
+      ? (lang === 'bn' ? `${selectedArea} এলাকার বিশেষজ্ঞ ডাক্তার তালিকা` : `Doctors in ${selectedArea}, Chattogram`)
+      : (lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তার তালিকা' : 'Chattogram Specialist Doctors List');
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${listTitle} | ডাক্তার আছেন`,
+          text: lang === 'bn'
+            ? `${listTitle} (${filteredDoctors.length} জন ডাক্তার, চেম্বার ও সিরিয়াল নম্বর):`
+            : `${listTitle} (${filteredDoctors.length} doctors with chamber serials):`,
+          url: shareUrl
+        });
+        return;
+      } catch {}
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast(
+        lang === 'bn'
+          ? `🔗 "${listTitle}" লিংক কপি হয়েছে! এখন যে কারো সাথে শেয়ার করুন।`
+          : `🔗 "${listTitle}" link copied! Ready to share.`
+      );
+    } catch {
+      showToast(lang === 'bn' ? 'লিংক কপি করা যায়নি' : 'Could not copy link');
+    }
   };
 
   const openChat = (message?: string) => {
@@ -744,7 +1010,14 @@ export default function App() {
     setSearchQuery('');
   };
 
-  const totalActiveFilters = filterDay.size + filterTime.size + filterArea.size + filterGender.size + (selectedSpecialty !== 'all' ? 1 : 0) + (selectedArea !== 'All' ? 1 : 0);
+  const totalActiveFilters =
+    filterDay.size +
+    filterTime.size +
+    filterArea.size +
+    filterGender.size +
+    (selectedSpecialty !== 'all' ? 1 : 0) +
+    (selectedArea !== 'All' ? 1 : 0) +
+    (searchQuery.trim() ? 1 : 0);
 
   // New Doctor Form State
   const [newDoctor, setNewDoctor] = useState({
@@ -829,7 +1102,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <a
-            href="#home"
+            href="/"
             onClick={(e) => { e.preventDefault(); navigateTo('home'); }}
             className="flex items-center gap-3 group focus:outline-none"
           >
@@ -1044,9 +1317,10 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedSpecialty(autocompleteResults.symptomMatch!.specialtyKey);
+                              const specKey = autocompleteResults.symptomMatch!.specialtyKey;
+                              setSelectedSpecialty(specKey);
                               setAutocompleteOpen(false);
-                              navigateTo('list');
+                              navigateTo(`specialty/${specKey}`);
                             }}
                             className="px-2.5 py-1 rounded-md bg-[#0E7490] text-white text-[11px] font-bold shrink-0 hover:bg-[#155E75] cursor-pointer"
                           >
@@ -1067,7 +1341,7 @@ export default function App() {
                               onClick={() => {
                                 setSelectedSpecialty(spec.key);
                                 setAutocompleteOpen(false);
-                                navigateTo('list');
+                                navigateTo(`specialty/${spec.key}`);
                               }}
                               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-800 text-sm font-medium transition-colors text-left"
                             >
@@ -1134,25 +1408,28 @@ export default function App() {
                     { label: 'চক্ষু', key: 'eye' },
                     { label: 'চর্ম ও যৌন', key: 'skin' }
                   ].map(chip => (
-                    <button
+                    <a
                       key={chip.key}
-                      onClick={() => {
+                      href={`/specialty/${chip.key}`}
+                      onClick={(e) => {
+                        e.preventDefault();
                         setSelectedSpecialty(chip.key);
-                        navigateTo('list');
+                        navigateTo(`specialty/${chip.key}`);
                       }}
                       className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-300 text-slate-700 text-xs sm:text-sm font-semibold transition-all shadow-2xs active:scale-95 cursor-pointer"
                     >
                       {chip.label}
-                    </button>
+                    </a>
                   ))}
                   {/* 1-Tap Friday Open Filter */}
                   <button
                     key="friday-open-shortcut"
                     onClick={() => {
+                      const friSet = new Set(['Fri']);
                       setSelectedSpecialty('all');
-                      setFilterDay(new Set(['Fri']));
+                      setFilterDay(friSet);
                       setDirectoryView('list');
-                      navigateTo('list');
+                      navigateTo('list', { specialty: 'all', days: friSet, view: 'list' });
                     }}
                     className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-[#047857] text-xs sm:text-sm font-bold transition-all shadow-2xs active:scale-95 cursor-pointer inline-flex items-center gap-1"
                   >
@@ -1163,7 +1440,7 @@ export default function App() {
                     key="map-view-shortcut"
                     onClick={() => {
                       setDirectoryView('map');
-                      navigateTo('list');
+                      navigateTo('list', { view: 'map' });
                     }}
                     className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 text-[#0E7490] text-xs sm:text-sm font-bold transition-all shadow-2xs active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
                   >
@@ -1182,10 +1459,11 @@ export default function App() {
                       key={sym.id}
                       type="button"
                       onClick={() => {
+                        const qText = lang === 'bn' ? sym.labelBn.split(',')[0] : sym.labelEn.split(',')[0];
                         setSelectedSpecialty(sym.specialtyKey);
-                        setSearchQuery(lang === 'bn' ? sym.labelBn.split(',')[0] : sym.labelEn.split(',')[0]);
+                        setSearchQuery(qText);
                         setDirectoryView('list');
-                        navigateTo('list');
+                        navigateTo(`specialty/${sym.specialtyKey}`, { specialty: sym.specialtyKey, q: qText, view: 'list' });
                       }}
                       className="px-2.5 py-1 rounded-lg bg-slate-100/90 hover:bg-cyan-50 border border-slate-200/80 hover:border-cyan-300 text-slate-600 hover:text-[#0E7490] text-[11px] sm:text-xs font-medium transition-all cursor-pointer"
                     >
@@ -1382,13 +1660,14 @@ export default function App() {
                       : 'Select any department below to view its specialist doctors, chamber photo galleries, and serial numbers'}
                   </p>
                 </div>
-                <button
-                  onClick={() => { setSelectedSpecialty('medicine'); navigateTo('list'); }}
+                <a
+                  href="/specialty/medicine"
+                  onClick={(e) => { e.preventDefault(); setSelectedSpecialty('medicine'); navigateTo('specialty/medicine'); }}
                   className="inline-flex items-center gap-1 text-sm font-bold text-[#0E7490] hover:text-[#155E75] hover:underline cursor-pointer"
                 >
                   <span>{lang === 'bn' ? 'বিভাগভিত্তিক তালিকা খুলুন' : 'Browse by Department'}</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
@@ -1396,11 +1675,13 @@ export default function App() {
                   const SpecIcon = spec.icon;
                   const count = doctorsList.filter(d => d.specialtyKey === spec.key).length;
                   return (
-                    <div
+                    <a
                       key={spec.key}
-                      onClick={() => {
+                      href={`/specialty/${spec.key}`}
+                      onClick={(e) => {
+                        e.preventDefault();
                         setSelectedSpecialty(spec.key);
-                        navigateTo('list');
+                        navigateTo(`specialty/${spec.key}`);
                       }}
                       className={`group p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-cyan-500 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer ${count === 0 ? 'border-dashed opacity-85' : ''}`}
                     >
@@ -1417,7 +1698,7 @@ export default function App() {
                             : (lang === 'bn' ? 'শীঘ্রই — যোগ করুন' : 'Coming soon — help add')}
                         </p>
                       </div>
-                    </div>
+                    </a>
                   );
                 })}
               </div>
@@ -1443,14 +1724,14 @@ export default function App() {
                     </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => navigateTo('blog')}
+                  <a
+                    href="/blog"
+                    onClick={(e) => { e.preventDefault(); navigateTo('blog'); }}
                     className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-cyan-500 text-slate-800 font-bold text-xs sm:text-sm shadow-2xs hover:shadow-xs transition-all cursor-pointer self-start sm:self-auto"
                   >
                     <span>{lang === 'bn' ? 'সকল ব্লগ ও টিপস দেখুন' : 'Explore All Articles'}</span>
                     <ArrowRight className="w-4 h-4 text-cyan-600" />
-                  </button>
+                  </a>
                 </div>
 
                 {/* Grid: Daily Tip Card + 2 Top Featured Articles */}
@@ -1463,9 +1744,10 @@ export default function App() {
                   {/* 2 Featured Health Blog Articles */}
                   <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {BLOG_POSTS.slice(0, 2).map((post) => (
-                      <div
+                      <a
                         key={post.slug}
-                        onClick={() => navigateTo(`blog/${post.slug}`)}
+                        href={`/blog/${post.slug}`}
+                        onClick={(e) => { e.preventDefault(); navigateTo(`blog/${post.slug}`); }}
                         className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
                       >
                         <div>
@@ -1511,7 +1793,7 @@ export default function App() {
                             {lang === 'bn' ? 'পড়ুন' : 'Read'} →
                           </span>
                         </div>
-                      </div>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -1533,11 +1815,13 @@ export default function App() {
                 {allAreas.map(area => {
                   const count = doctorsList.filter(d => d.ch.some(c => c.area === area)).length;
                   return (
-                    <button
+                    <a
                       key={area}
-                      onClick={() => {
+                      href={`/area/${encodeURIComponent(area)}`}
+                      onClick={(e) => {
+                        e.preventDefault();
                         setSelectedArea(area);
-                        navigateTo('list');
+                        navigateTo(`area/${encodeURIComponent(area)}`);
                       }}
                       className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-cyan-400 hover:shadow-xs transition-all text-xs sm:text-sm font-semibold text-slate-800 cursor-pointer active:scale-95"
                     >
@@ -1546,7 +1830,7 @@ export default function App() {
                       <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[11px] font-bold num">
                         {count > 0 ? count : (Math.floor(Math.random() * 40) + 15)}
                       </span>
-                    </button>
+                    </a>
                   );
                 })}
               </div>
@@ -1680,16 +1964,36 @@ export default function App() {
         {currentRoute === 'list' && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 animate-fade-in">
             {/* Breadcrumb */}
-            <nav className="text-xs sm:text-sm text-slate-500 mb-4 flex items-center gap-1.5">
-              <a href="#home" onClick={(e) => { e.preventDefault(); navigateTo('home'); }} className="hover:text-slate-800 font-semibold">
+            <nav className="text-xs sm:text-sm text-slate-500 mb-4 flex items-center gap-1.5 flex-wrap">
+              <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('home'); }} className="hover:text-slate-800 font-semibold">
                 {lang === 'bn' ? 'হোম' : 'Home'}
               </a>
               <span>›</span>
-              <span className="text-slate-800 font-bold">
-                {selectedSpecialty === 'all'
-                  ? (lang === 'bn' ? 'সকল ডাক্তার' : 'All Doctors')
-                  : (SPECIALTIES.find(s => s.key === selectedSpecialty)?.[lang === 'bn' ? 'bn' : 'en'] || selectedSpecialty)}
-              </span>
+              <a
+                href="/doctors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  clearFilters();
+                  navigateTo('doctors', { specialty: 'all', area: 'All', q: '' });
+                }}
+                className="hover:text-slate-800 font-semibold"
+              >
+                {lang === 'bn' ? 'ডাক্তার তালিকা' : 'Doctors'}
+              </a>
+              {selectedSpecialty !== 'all' && (
+                <>
+                  <span>›</span>
+                  <span className="text-slate-800 font-bold">
+                    {SPECIALTIES.find(s => s.key === selectedSpecialty)?.[lang === 'bn' ? 'bn' : 'en'] || selectedSpecialty}
+                  </span>
+                </>
+              )}
+              {selectedArea !== 'All' && (
+                <>
+                  <span>›</span>
+                  <span className="text-slate-800 font-bold">{selectedArea}</span>
+                </>
+              )}
             </nav>
 
             {/* List Header */}
@@ -1700,19 +2004,48 @@ export default function App() {
                   <span>
                     {selectedSpecialty === 'all'
                       ? (lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তার তালিকা' : 'Chattogram Specialist Directory')
-                      : (SPECIALTIES.find(s => s.key === selectedSpecialty)?.[lang === 'bn' ? 'bn' : 'en'])}
+                      : (SPECIALTIES.find(s => s.key === selectedSpecialty)?.[lang === 'bn' ? 'bn' : 'en'] || selectedSpecialty)}
                   </span>
                 </div>
                 <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                  {lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তার ও সিরিয়াল' : 'Specialist Doctors & Chamber Serials in Chattogram'}
+                  {selectedSpecialty !== 'all'
+                    ? (lang === 'bn'
+                        ? `${SPECIALTIES.find(s => s.key === selectedSpecialty)?.bn || ''} বিশেষজ্ঞ ডাক্তার ও সিরিয়াল`
+                        : `${SPECIALTIES.find(s => s.key === selectedSpecialty)?.en || ''} Specialist Doctors & Serials`)
+                    : selectedArea !== 'All'
+                    ? (lang === 'bn'
+                        ? `${selectedArea}, চট্টগ্রামের বিশেষজ্ঞ ডাক্তার ও সিরিয়াল`
+                        : `Specialist Doctors in ${selectedArea}, Chattogram`)
+                    : (lang === 'bn' ? 'চট্টগ্রামের বিশেষজ্ঞ ডাক্তার ও সিরিয়াল' : 'Specialist Doctors & Chamber Serials in Chattogram')}
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1 num">
-                  {lang === 'bn' ? `মোট ${filteredDoctors.length} জন ডাক্তার তালিকাভুক্ত` : `${filteredDoctors.length} doctors found`} · {lang === 'bn' ? 'সর্বশেষ যাচাই: সেপ্টেম্বর ২০২৬' : 'Verified: Sep 2026'}
-                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                  <p className="text-xs sm:text-sm text-slate-500 num">
+                    {lang === 'bn' ? `মোট ${filteredDoctors.length} জন ডাক্তার তালিকাভুক্ত` : `${filteredDoctors.length} doctors found`} · {lang === 'bn' ? 'সর্বশেষ যাচাই: সেপ্টেম্বর ২০২৬' : 'Verified: Sep 2026'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleShareDoctorList}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-slate-100 hover:bg-cyan-50 text-slate-600 hover:text-[#0E7490] border border-slate-200 hover:border-cyan-300 text-[11px] font-mono transition-colors cursor-pointer"
+                    title={lang === 'bn' ? 'এই তালিকার সরাসরি লিংক কপি বা শেয়ার করুন' : 'Copy or share direct URL for this list'}
+                  >
+                    <span>dakterachen.com{buildListUrl()}</span>
+                    <Copy className="w-3 h-3 text-cyan-700 shrink-0" />
+                  </button>
+                </div>
               </div>
 
-              {/* View Toggle (List vs Map), Mobile Filter Sheet Trigger & Sort */}
+              {/* Share List Button, View Toggle (List vs Map), Mobile Filter Sheet Trigger & Sort */}
               <div className="flex items-center gap-2.5 flex-wrap justify-between sm:justify-end">
+                {/* 1-Click Share Doctor List Button */}
+                <button
+                  type="button"
+                  onClick={handleShareDoctorList}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold shadow-2xs transition-all cursor-pointer active:scale-95"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>{lang === 'bn' ? 'তালিকা শেয়ার করুন' : 'Share List'}</span>
+                </button>
+
                 {/* View Switcher: List vs Map */}
                 <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-2xs">
                   <button
@@ -2093,9 +2426,45 @@ export default function App() {
                 {totalActiveFilters > 0 && (
                   <div className="flex flex-wrap items-center gap-2 mb-2 p-3 bg-slate-100/80 rounded-xl border border-slate-200">
                     <span className="text-xs font-bold text-slate-500">{lang === 'bn' ? 'সক্রিয় ফিল্টার:' : 'Active:'}</span>
+
+                    {selectedSpecialty !== 'all' && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0E7490] text-white text-xs font-bold shadow-2xs">
+                        <span>
+                          {selectedSpecialty === 'user_added'
+                            ? (lang === 'bn' ? 'আমার সংরক্ষিত ডাক্তার' : 'Saved Locally')
+                            : (SPECIALTIES.find(s => s.key === selectedSpecialty)?.[lang === 'bn' ? 'bn' : 'en'] || selectedSpecialty)}
+                        </span>
+                        <X
+                          className="w-3.5 h-3.5 cursor-pointer hover:text-cyan-200"
+                          onClick={() => setSelectedSpecialty('all')}
+                        />
+                      </span>
+                    )}
+
+                    {selectedArea !== 'All' && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 text-xs font-bold">
+                        <MapPin className="w-3 h-3 text-cyan-700" />
+                        <span>{selectedArea}</span>
+                        <X
+                          className="w-3.5 h-3.5 cursor-pointer hover:text-cyan-950"
+                          onClick={() => setSelectedArea('All')}
+                        />
+                      </span>
+                    )}
+
+                    {searchQuery.trim() && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold">
+                        <span>"{searchQuery.trim()}"</span>
+                        <X
+                          className="w-3.5 h-3.5 cursor-pointer hover:text-amber-950"
+                          onClick={() => setSearchQuery('')}
+                        />
+                      </span>
+                    )}
+
                     {Array.from(filterDay).map(day => (
                       <span key={day} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs font-semibold">
-                        <span>{day === 'today' ? (lang === 'bn' ? 'আজ' : 'Today') : (lang === 'bn' ? BN_DAYS[day] : day)}</span>
+                        <span>{day === 'today' ? (lang === 'bn' ? 'আজ বসছেন' : 'Today') : (lang === 'bn' ? BN_DAYS[day] : day)}</span>
                         <X
                           className="w-3 h-3 cursor-pointer hover:text-cyan-950"
                           onClick={() => {
@@ -2106,6 +2475,29 @@ export default function App() {
                         />
                       </span>
                     ))}
+
+                    {Array.from(filterTime).map(slotKey => {
+                      const slotMap: Record<string, string> = {
+                        morn: lang === 'bn' ? 'সকাল' : 'Morning',
+                        aft: lang === 'bn' ? 'দুপুর' : 'Afternoon',
+                        eve: lang === 'bn' ? 'সন্ধ্যা' : 'Evening',
+                        night: lang === 'bn' ? 'রাত' : 'Night'
+                      };
+                      return (
+                        <span key={slotKey} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs font-semibold">
+                          <span>{slotMap[slotKey] || slotKey}</span>
+                          <X
+                            className="w-3 h-3 cursor-pointer hover:text-cyan-950"
+                            onClick={() => {
+                              const next = new Set(filterTime);
+                              next.delete(slotKey);
+                              setFilterTime(next);
+                            }}
+                          />
+                        </span>
+                      );
+                    })}
+
                     {Array.from(filterArea).map(area => (
                       <span key={area} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs font-semibold">
                         <span>{area}</span>
@@ -2119,12 +2511,38 @@ export default function App() {
                         />
                       </span>
                     ))}
-                    <button
-                      onClick={clearFilters}
-                      className="text-xs font-bold text-red-600 hover:underline ml-auto"
-                    >
-                      {lang === 'bn' ? 'সব মুছুন' : 'Clear all'}
-                    </button>
+
+                    {Array.from(filterGender).map(gKey => (
+                      <span key={gKey} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs font-semibold">
+                        <span>{gKey === 'M' ? (lang === 'bn' ? 'পুরুষ ডাক্তার' : 'Male') : (lang === 'bn' ? 'মহিলা ডাক্তার' : 'Female')}</span>
+                        <X
+                          className="w-3 h-3 cursor-pointer hover:text-cyan-950"
+                          onClick={() => {
+                            const next = new Set(filterGender);
+                            next.delete(gKey);
+                            setFilterGender(next);
+                          }}
+                        />
+                      </span>
+                    ))}
+
+                    <div className="ml-auto flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={handleShareDoctorList}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#0E7490] hover:underline cursor-pointer"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                        <span>{lang === 'bn' ? 'লিংক কপি' : 'Copy Link'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        className="text-xs font-bold text-red-600 hover:underline cursor-pointer"
+                      >
+                        {lang === 'bn' ? 'সব মুছুন' : 'Clear all'}
+                      </button>
+                    </div>
                   </div>
                 )}
 
@@ -2380,7 +2798,7 @@ export default function App() {
                           </button>
 
                           <a
-                            href={`#doctor/${doc.slug}`}
+                            href={`/doctor/${doc.slug}`}
                             onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${doc.slug}`); }}
                             className="col-span-2 sm:col-span-1 min-h-[44px] px-4 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-1 transition-colors sm:ml-auto"
                           >
@@ -2442,12 +2860,20 @@ export default function App() {
         {currentRoute === 'doctor' && activeDoctor && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fade-in pb-28 md:pb-16">
             {/* Breadcrumb */}
-            <nav className="text-xs sm:text-sm text-slate-500 mb-6 flex items-center gap-1.5">
-              <a href="#home" onClick={(e) => { e.preventDefault(); navigateTo('home'); }} className="hover:text-slate-800 font-semibold">
+            <nav className="text-xs sm:text-sm text-slate-500 mb-6 flex items-center gap-1.5 flex-wrap">
+              <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('home'); }} className="hover:text-slate-800 font-semibold">
                 {lang === 'bn' ? 'হোম' : 'Home'}
               </a>
               <span>›</span>
-              <a href="#list" onClick={(e) => { e.preventDefault(); navigateTo('list'); }} className="hover:text-slate-800 font-semibold">
+              <a
+                href={`/specialty/${activeDoctor.specialtyKey}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedSpecialty(activeDoctor.specialtyKey);
+                  navigateTo(`specialty/${activeDoctor.specialtyKey}`);
+                }}
+                className="hover:text-slate-800 font-semibold"
+              >
                 {activeDoctor.specialtyBn}
               </a>
               <span>›</span>
@@ -2923,7 +3349,7 @@ export default function App() {
                         return (
                           <a
                             key={sDoc.slug}
-                            href={`#doctor/${sDoc.slug}`}
+                            href={`/doctor/${sDoc.slug}`}
                             onClick={(e) => { e.preventDefault(); navigateTo(`doctor/${sDoc.slug}`); }}
                             className="py-3 flex items-center gap-3 group text-left"
                           >
@@ -3032,7 +3458,7 @@ export default function App() {
               }}
               onNavigateToSpecialty={(specKey) => {
                 setSelectedSpecialty(specKey);
-                navigateTo('list');
+                navigateTo(specKey === 'all' ? 'doctors' : `specialty/${specKey}`);
               }}
               onToast={showToast}
             />
@@ -3048,7 +3474,7 @@ export default function App() {
               onBack={() => navigateTo('blog')}
               onNavigateToSpecialty={(specKey) => {
                 setSelectedSpecialty(specKey);
-                navigateTo('list');
+                navigateTo(specKey === 'all' ? 'doctors' : `specialty/${specKey}`);
               }}
               onSelectArticle={(slug) => {
                 setSelectedArticleSlug(slug);
@@ -3110,29 +3536,29 @@ export default function App() {
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
               <li>
-                <button onClick={() => navigateTo('blog')} className="hover:text-cyan-400 transition-colors font-semibold text-cyan-300 text-left">
+                <a href="/blog" onClick={(e) => { e.preventDefault(); navigateTo('blog'); }} className="hover:text-cyan-400 transition-colors font-semibold text-cyan-300 text-left block">
                   {lang === 'bn' ? 'সকল স্বাস্থ্য নিবন্ধ →' : 'All Health Guides →'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => navigateTo('blog/dengue-fever-warning-signs-chattogram')} className="hover:text-white transition-colors text-left line-clamp-1">
+                <a href="/blog/dengue-fever-warning-signs-chattogram" onClick={(e) => { e.preventDefault(); navigateTo('blog/dengue-fever-warning-signs-chattogram'); }} className="hover:text-white transition-colors text-left line-clamp-1 block">
                   {lang === 'bn' ? 'ডেঙ্গু জ্বর ও বিপদচিহ্ন' : 'Dengue Warning Signs'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => navigateTo('blog/diabetes-diet-and-exercise-bangladesh')} className="hover:text-white transition-colors text-left line-clamp-1">
+                <a href="/blog/diabetes-diet-and-exercise-bangladesh" onClick={(e) => { e.preventDefault(); navigateTo('blog/diabetes-diet-and-exercise-bangladesh'); }} className="hover:text-white transition-colors text-left line-clamp-1 block">
                   {lang === 'bn' ? 'ডায়াবেটিস নিয়ন্ত্রণ ও খাদ্য' : 'Diabetes Diet Guide'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => navigateTo('blog/heart-attack-emergency-first-aid-response')} className="hover:text-white transition-colors text-left line-clamp-1">
+                <a href="/blog/heart-attack-emergency-first-aid-response" onClick={(e) => { e.preventDefault(); navigateTo('blog/heart-attack-emergency-first-aid-response'); }} className="hover:text-white transition-colors text-left line-clamp-1 block">
                   {lang === 'bn' ? 'হার্ট অ্যাটাক ফার্স্ট এইড' : 'Heart Attack First Aid'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => navigateTo('blog/pregnancy-first-trimester-care-nutrition-bangladesh')} className="hover:text-white transition-colors text-left line-clamp-1">
+                <a href="/blog/pregnancy-first-trimester-care-nutrition-bangladesh" onClick={(e) => { e.preventDefault(); navigateTo('blog/pregnancy-first-trimester-care-nutrition-bangladesh'); }} className="hover:text-white transition-colors text-left line-clamp-1 block">
                   {lang === 'bn' ? 'গর্ভাবস্থায় প্রথম ৩ মাসের যত্ন' : 'Pregnancy 1st Trimester'}
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -3143,24 +3569,24 @@ export default function App() {
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
               <li>
-                <button onClick={() => { setSelectedSpecialty('medicine'); navigateTo('list'); }} className="hover:text-white transition-colors">
+                <a href="/specialty/medicine" onClick={(e) => { e.preventDefault(); setSelectedSpecialty('medicine'); navigateTo('specialty/medicine'); }} className="hover:text-white transition-colors block">
                   {lang === 'bn' ? 'মেডিসিন ও ডায়াবেটিস' : 'Medicine & Diabetes'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => { setSelectedSpecialty('gynae'); navigateTo('list'); }} className="hover:text-white transition-colors">
+                <a href="/specialty/gynae" onClick={(e) => { e.preventDefault(); setSelectedSpecialty('gynae'); navigateTo('specialty/gynae'); }} className="hover:text-white transition-colors block">
                   {lang === 'bn' ? 'গাইনি ও প্রসূতি' : 'Gynae & Obstetrics'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => { setSelectedSpecialty('heart'); navigateTo('list'); }} className="hover:text-white transition-colors">
+                <a href="/specialty/heart" onClick={(e) => { e.preventDefault(); setSelectedSpecialty('heart'); navigateTo('specialty/heart'); }} className="hover:text-white transition-colors block">
                   {lang === 'bn' ? 'হৃদরোগ বিশেষজ্ঞ' : 'Cardiologist'}
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => { setSelectedSpecialty('child'); navigateTo('list'); }} className="hover:text-white transition-colors">
+                <a href="/specialty/child" onClick={(e) => { e.preventDefault(); setSelectedSpecialty('child'); navigateTo('specialty/child'); }} className="hover:text-white transition-colors block">
                   {lang === 'bn' ? 'শিশু বিশেষজ্ঞ' : 'Child Specialist'}
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -3172,9 +3598,9 @@ export default function App() {
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
               {['Panchlaish', 'O.R. Nizam Road', 'Chawkbazar', 'Agrabad'].map(a => (
                 <li key={a}>
-                  <button onClick={() => { setSelectedArea(a); navigateTo('list'); }} className="hover:text-white transition-colors">
+                  <a href={`/area/${encodeURIComponent(a)}`} onClick={(e) => { e.preventDefault(); setSelectedArea(a); navigateTo(`area/${encodeURIComponent(a)}`); }} className="hover:text-white transition-colors block">
                     {a}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>

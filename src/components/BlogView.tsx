@@ -231,8 +231,12 @@ export default function BlogView({
             </span>
           </div>
 
-          <div
-            onClick={() => onSelectArticle(featuredPost.slug)}
+          <a
+            href={`/blog/${featuredPost.slug}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onSelectArticle(featuredPost.slug);
+            }}
             className="group bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg transition-all cursor-pointer grid grid-cols-1 md:grid-cols-12"
           >
             <div className="md:col-span-6 relative overflow-hidden h-64 md:h-full min-h-[260px]">
@@ -306,7 +310,7 @@ export default function BlogView({
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </section>
       )}
 
@@ -331,9 +335,13 @@ export default function BlogView({
               {paginatedPosts.map(post => {
                 const isSaved = bookmarkedArticles.includes(post.slug);
                 return (
-                  <article
+                  <a
                     key={post.slug}
-                    onClick={() => onSelectArticle(post.slug)}
+                    href={`/blog/${post.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onSelectArticle(post.slug);
+                    }}
                     className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
                   >
                     <div>
@@ -396,7 +404,7 @@ export default function BlogView({
                         <ChevronRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
-                  </article>
+                  </a>
                 );
               })}
             </div>
@@ -510,7 +518,7 @@ export default function BlogView({
             {lang === 'bn' ? 'বিশেষজ্ঞ চেম্বার ও সিরিয়াল' : 'Doctor Directory'}
           </span>
           <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-            {lang === 'bn' ? 'চট্টগ্রামের ১২০০+ বিশেষজ্ঞ ডাক্তারের সময়সূচি' : 'Find 1,200+ Specialist Doctors in Chattogram'}
+            {lang === 'bn' ? 'চট্টগ্রামের ১৮০০+ বিশেষজ্ঞ ডাক্তারের সময়সূচি' : 'Find 1,800+ Specialist Doctors in Chattogram'}
           </h3>
           <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
             {lang === 'bn'
@@ -519,14 +527,17 @@ export default function BlogView({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onNavigateToSpecialty('all')}
+        <a
+          href="/doctors"
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigateToSpecialty('all');
+          }}
           className="px-6 py-3.5 rounded-xl bg-[#0E7490] hover:bg-[#155E75] text-white font-black text-sm shadow-md transition-all shrink-0 cursor-pointer active:scale-95 inline-flex items-center gap-2"
         >
           <Stethoscope className="w-4 h-4" />
           <span>{lang === 'bn' ? 'ডাক্তার খুঁজুন' : 'Search Doctors'}</span>
-        </button>
+        </a>
       </section>
     </div>
   );

@@ -63,8 +63,10 @@ export default function ArticleDetailView({
     } catch {}
   };
 
+  const canonicalPath = `/blog/${article.slug}`;
+  const canonicalUrl = `${window.location.origin}${canonicalPath}`;
+
   const handleShare = async () => {
-    const url = window.location.href;
     const title = lang === 'bn' ? article.titleBn : article.titleEn;
 
     if (navigator.share) {
@@ -72,15 +74,19 @@ export default function ArticleDetailView({
         await navigator.share({
           title,
           text: lang === 'bn' ? article.excerptBn : article.excerptEn,
-          url
+          url: canonicalUrl
         });
         return;
       } catch {}
     }
 
     try {
-      await navigator.clipboard.writeText(url);
-      onToast(lang === 'bn' ? 'নিবন্ধের লিংক কপি হয়েছে!' : 'Article link copied to clipboard!');
+      await navigator.clipboard.writeText(canonicalUrl);
+      onToast(
+        lang === 'bn'
+          ? `🔗 নিবন্ধের ক্লিন লিংক কপি হয়েছে: ${canonicalPath}`
+          : `🔗 Clean article link copied: ${canonicalPath}`
+      );
     } catch {
       onToast(lang === 'bn' ? 'লিংক কপি করা যায়নি' : 'Failed to copy link');
     }
@@ -93,14 +99,17 @@ export default function ArticleDetailView({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fade-in">
       {/* Top Navigation / Breadcrumbs */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200">
-        <button
-          type="button"
-          onClick={onBack}
+        <a
+          href="/blog"
+          onClick={(e) => {
+            e.preventDefault();
+            onBack();
+          }}
           className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-[#0E7490] transition-colors cursor-pointer group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           <span>{lang === 'bn' ? 'ব্লগে ফিরে যান' : 'Back to Blog'}</span>
-        </button>
+        </a>
 
         <div className="flex items-center gap-2">
           <button
@@ -145,6 +154,15 @@ export default function ArticleDetailView({
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
             <span>{article.publishedDate}</span>
           </span>
+          <span className="text-slate-300">·</span>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-cyan-50 text-slate-600 hover:text-[#0E7490] border border-slate-200 font-mono text-[11px] transition-colors cursor-pointer"
+            title={lang === 'bn' ? 'ক্লিন ইনডেক্সেবল URL কপি করুন' : 'Copy clean indexable URL'}
+          >
+            <span>dakterachen.com/blog/{article.slug}</span>
+          </button>
         </div>
 
         {/* Title */}
@@ -179,14 +197,17 @@ export default function ArticleDetailView({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onNavigateToSpecialty(article.recommendedSpecialty)}
+          <a
+            href={`/specialty/${article.recommendedSpecialty}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateToSpecialty(article.recommendedSpecialty);
+            }}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-300 text-emerald-800 text-xs font-bold hover:bg-emerald-100 transition-colors self-start sm:self-center cursor-pointer shadow-2xs"
           >
             <Stethoscope className="w-3.5 h-3.5" />
             <span>{lang === 'bn' ? 'এই বিশেষজ্ঞের সিরিয়াল দেখুন' : 'Find Specialists'}</span>
-          </button>
+          </a>
         </div>
       </header>
 
@@ -331,14 +352,17 @@ export default function ArticleDetailView({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onNavigateToSpecialty(article.recommendedSpecialty)}
+        <a
+          href={`/specialty/${article.recommendedSpecialty}`}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigateToSpecialty(article.recommendedSpecialty);
+          }}
           className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0E7490] font-black text-sm shadow-md hover:bg-cyan-50 transition-all shrink-0 cursor-pointer active:scale-95"
         >
           <span>{lang === 'bn' ? 'ডাক্তারদের তালিকা দেখুন' : 'View Doctor List'}</span>
           <ChevronRight className="w-4 h-4" />
-        </button>
+        </a>
       </div>
 
       {/* Related Articles Section */}
@@ -350,9 +374,11 @@ export default function ArticleDetailView({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {relatedArticles.map((rel) => (
-              <div
+              <a
                 key={rel.slug}
-                onClick={() => {
+                href={`/blog/${rel.slug}`}
+                onClick={(e) => {
+                  e.preventDefault();
                   onSelectArticle(rel.slug);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
@@ -382,7 +408,7 @@ export default function ArticleDetailView({
                     </span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>
