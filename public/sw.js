@@ -1,6 +1,7 @@
-const CACHE_NAME = 'dakterachen-cache-v1';
+const CACHE_NAME = 'dakterachen-cache-v2';
 const PRECACHE_URLS = [
   '/',
+  '/index.html',
   '/manifest.json',
   '/assets/icon-192.png',
   '/assets/icon-512.png',
@@ -28,22 +29,38 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Do not intercept non-GET requests or server API calls
-  if (event.request.method !== 'GET' || url.pathname.startsWith('/api/')) {
+  // Do not intercept non-GET requests, server API calls, or XML/txt sitemaps
+  if (
+    event.request.method !== 'GET' ||
+    url.pathname.startsWith('/api/') ||
+    url.pathname.endsWith('.xml') ||
+    url.pathname === '/robots.txt'
+  ) {
     return;
   }
 
-  // Network-first strategy for HTML pages, cache fallback
-  if (event.request.headers.get('accept')?.includes('text/html')) {
+  // Network-first strategy for HTML navigation requests with automatic SPA index.html fallback on 404
+  if (
+    event.request.mode === 'navigate' ||
+    event.request.headers.get('accept')?.includes('text/html')
+  ) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
-          return response;
+          if (response && response.status === 200) {
+            const cloned = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+            return response;
+          }
+          // If static host returns 404 for a clean SPA URL (/blog/*, /specialty/*, /doctor/*), serve root index.html
+          return fetch('/index.html')
+            .then((rootRes) => (rootRes && rootRes.ok ? rootRes : caches.match('/index.html') || caches.match('/')))
+            .then((fallback) => fallback || response);
         })
         .catch(() => {
-          return caches.match(event.request).then((cached) => cached || caches.match('/'));
+          return caches
+            .match(event.request)
+            .then((cached) => cached || caches.match('/index.html') || caches.match('/'));
         })
     );
     return;

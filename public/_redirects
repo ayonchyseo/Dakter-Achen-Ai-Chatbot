@@ -1,0 +1,19 @@
+# Netlify / Cloudflare Pages / Static Host SPA Redirect Rules
+/sitemap.xml /sitemap.xml 200
+/sitemap_index.xml /sitemap_index.xml 200
+/wp-sitemap.xml /wp-sitemap.xml 200
+/wp-sitemap-posts-page-1.xml /wp-sitemap-posts-page-1.xml 200
+/wp-sitemap-posts-post-1.xml /wp-sitemap-posts-post-1.xml 200
+/wp-sitemap-taxonomies-category-1.xml /wp-sitemap-taxonomies-category-1.xml 200
+/wp-sitemap-users-1.xml /wp-sitemap-users-1.xml 200
+/dakterachen-wordpress-import.xml /dakterachen-wordpress-import.xml 200
+/robots.txt /robots.txt 200
+/blog/* /index.html 200
+/doctor/* /index.html 200
+/specialty/* /index.html 200
+/area/* /index.html 200
+/doctors /index.html 200
+/list /index.html 200
+/emergency /index.html 200
+/sitemap /index.html 200
+/* /index.html 200

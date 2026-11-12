@@ -131,6 +131,32 @@ RewriteRule . /index.php [L]
     triggerBlobDownload('.htaccess', htaccess, 'text/plain');
   };
 
+  const handleDownloadVercelJson = () => {
+    const vercelConfig = JSON.stringify(
+      {
+        cleanUrls: true,
+        trailingSlash: false,
+        rewrites: [
+          { source: '/blog/:slug*', destination: '/index.html' },
+          { source: '/doctor/:slug*', destination: '/index.html' },
+          { source: '/specialty/:key*', destination: '/index.html' },
+          { source: '/area/:area*', destination: '/index.html' },
+          { source: '/doctors', destination: '/index.html' },
+          { source: '/list', destination: '/index.html' },
+          { source: '/emergency', destination: '/index.html' },
+          { source: '/sitemap', destination: '/index.html' },
+          {
+            source: '/((?!api/|assets/|sitemap.*\\.xml|wp-sitemap.*\\.xml|robots\\.txt|manifest\\.json|sw\\.js|dakterachen-.*).*)',
+            destination: '/index.html',
+          },
+        ],
+      },
+      null,
+      2
+    );
+    triggerBlobDownload('vercel.json', vercelConfig, 'application/json');
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
       {/* Header */}
@@ -168,7 +194,15 @@ RewriteRule . /index.php [L]
               className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? 'স্ট্যাটিক sitemap.xml ডাউনলোড (৪০৩+ URL)' : 'Download sitemap.xml'}</span>
+              <span>{lang === 'bn' ? 'স্ট্যাটিক sitemap.xml ডাউনলোড (১৯৩০+ URL)' : 'Download sitemap.xml'}</span>
+            </button>
+
+            <button
+              onClick={handleDownloadVercelJson}
+              className="inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-slate-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition-all active:scale-95"
+            >
+              <Download size={15} />
+              <span>{lang === 'bn' ? 'vercel.json ডাউনলোড (Vercel 404 ফিক্স)' : 'Download vercel.json (404 Fix)'}</span>
             </button>
 
             <button
@@ -176,7 +210,7 @@ RewriteRule . /index.php [L]
               className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95"
             >
               <Download size={15} />
-              <span>{lang === 'bn' ? '.htaccess ডাউনলোড (404 ফিক্স)' : 'Download .htaccess'}</span>
+              <span>{lang === 'bn' ? '.htaccess ডাউনলোড (cPanel 404 ফিক্স)' : 'Download .htaccess'}</span>
             </button>
 
             <button

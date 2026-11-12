@@ -1,0 +1,67 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(sitemap\\.xml|sitemap_index\\.xml|wp-sitemap.*\\.xml|dakterachen-wordpress-import\\.xml)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog/:slug*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/doctor/:slug*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/specialty/:key*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/area/:area*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/doctors",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/list",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/emergency",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sitemap",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api/|assets/|sitemap.*\\.xml|wp-sitemap.*\\.xml|robots\\.txt|manifest\\.json|sw\\.js|dakterachen-.*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
